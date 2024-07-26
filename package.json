@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "generate-contentful-types": "cf-content-types-generator --v10 --spaceId p79kctcd7ahy --token CFPAT-TKfcU5SPl6Xd7ylx2ieK-H7h7dhyr2ekHGsGXBSgnOc --out ./src/lib/contentfulTypes",
+    "generate-contentful-types": "npm explore handy-node-scripts -- npm run generate-contentful-types",
     "generate": "COMPONENTS_DIR=src/components npm explore handy-node-scripts -- npm run generate",
     "rebuild-component-index": "COMPONENTS_DIR=src/components npm explore handy-node-scripts -- npm run rebuild-component-index"
   },
