@@ -11,7 +11,8 @@
     "prettier:write": "prettier --write .",
     "generate-contentful-types": "npm explore handy-node-scripts -- npm run generate-contentful-types",
     "generate": "COMPONENTS_DIR=src/components npm explore handy-node-scripts -- npm run generate",
-    "rebuild-component-index": "COMPONENTS_DIR=src/components npm explore handy-node-scripts -- npm run rebuild-component-index"
+    "rebuild-component-index": "COMPONENTS_DIR=src/components npm explore handy-node-scripts -- npm run rebuild-component-index",
+    "upgrade-react-19": "npm install --save-exact react@rc react-dom@rc --force"
   },
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^16.6.7",
