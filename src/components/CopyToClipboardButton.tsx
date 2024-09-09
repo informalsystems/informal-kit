@@ -33,21 +33,20 @@ export function CopyToClipboardButton<T extends ElementType = 'button'>({
   const [copiedText, copy] = useCopyToClipboard()
 
   useEffect(() => {
-    if (copiedText !== payload) return
-
-    setIsCopied(true)
-
-    const timeout = setTimeout(() => setIsCopied(false), 2000)
-
-    return () => clearTimeout(timeout)
-  }, [copiedText])
+    setIsCopied(false)
+  }, [payload])
 
   function handleClickCopy(text: string, event: MouseEvent) {
     event.preventDefault()
 
-    copy(text).catch((error) => {
-      console.error('Failed to copy!', error)
-    })
+    copy(text)
+      .then(() => {
+        setIsCopied(true)
+        setTimeout(() => setIsCopied(false), 2000)
+      })
+      .catch(error => {
+        console.error('Failed to copy!', error)
+      })
   }
 
   const Component = String(as || 'button') as ElementType
