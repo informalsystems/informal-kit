@@ -17,7 +17,7 @@ export const classNames = {
       modalState === 'opening' || modalState === 'open'
         ? `
           pointer-events-auto
-          bg-shadedBgColor/20
+          bg-shadedBgColor
           opacity-100
           backdrop-blur-md
         `

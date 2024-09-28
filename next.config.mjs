@@ -1,14 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    reactCompiler: true,
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.ctfassets.net',
         port: '',
-        pathname: '/p79kctcd7ahy/**',
+        pathname: `/${process.env.CONTENTFUL_SPACE_ID}/**`,
       },
-      ...[1, 2, 3, 4, 5].map((i) => ({
+      ...[1, 2, 3, 4, 5].map(i => ({
         protocol: 'https',
         hostname: `images${i}.bamboohr.com`,
         port: '',

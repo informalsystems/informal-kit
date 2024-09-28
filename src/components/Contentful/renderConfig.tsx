@@ -6,10 +6,11 @@ import { Icon } from '@/components/Icon'
 import { OrphanController } from '@/components/OrphanController'
 import { StyledText } from '@/components/StyledText'
 import { ZoomableImage } from '@/components/ZoomableImage'
+import { isExternalHref } from '@/lib/isExternalHref'
 import { Options } from '@contentful/rich-text-react-renderer'
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import Link from 'next/link'
-import { Children } from 'react'
+import { Children, MouseEvent } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export const renderConfig: (context: {
@@ -24,8 +25,8 @@ export const renderConfig: (context: {
   paragraphsControlOrphans = false,
 }) => ({
   renderMark: {
-    [MARKS.BOLD]: (text) => <strong>{text}</strong>,
-    [MARKS.CODE]: (text) => {
+    [MARKS.BOLD]: text => <strong>{text}</strong>,
+    [MARKS.CODE]: text => {
       const isMultiLine = String(text).includes('\n')
 
       return (
@@ -51,10 +52,10 @@ export const renderConfig: (context: {
         </code>
       )
     },
-    [MARKS.ITALIC]: (text) => <em>{text}</em>,
+    [MARKS.ITALIC]: text => <em>{text}</em>,
   },
   renderNode: {
-    [BLOCKS.EMBEDDED_ASSET]: (node) => {
+    [BLOCKS.EMBEDDED_ASSET]: node => {
       const fileInfo = node.data.target.fields.file
       const {
         contentType,
@@ -78,7 +79,7 @@ export const renderConfig: (context: {
 
       return <div>Unsupported Asset Type: {contentType}</div>
     },
-    [BLOCKS.EMBEDDED_ENTRY]: (node) => {
+    [BLOCKS.EMBEDDED_ENTRY]: node => {
       const entryType = node.data.target.sys.contentType.sys.id
 
       switch (entryType) {
@@ -197,74 +198,11 @@ export const renderConfig: (context: {
         {children}
       </Contentful.Heading>
     ),
-    [BLOCKS.HR]: () => (
-      <div
-        className="
-          h-1.5
-          w-full
-          border-b
-          border-t
-          border-blue-900/30
-        "
-      />
-    ),
-    [BLOCKS.TABLE]: (node, children) => (
-      <table
-        className="
-          mx-auto
-          w-min
-          border-separate
-          rounded-md
-          border
-          border-brandColor/20
-        "
-      >
-        {children}
-      </table>
-    ),
-    [BLOCKS.TABLE_CELL]: (node, children) => (
-      <td
-        className="
-          border-x
-          border-brandColor/20
-          px-3
-          py-1
-          first:border-l-0
-          last:border-r-0
-        "
-      >
-        {children}
-      </td>
-    ),
-    [BLOCKS.TABLE_HEADER_CELL]: (node, children) => (
-      <th
-        className="
-          bg-brandColor/10
-          px-3
-          py-1
-          text-left
-          text-xs
-          first:rounded-tl
-          last:rounded-tr
-        "
-      >
-        {children}
-      </th>
-    ),
-    [BLOCKS.TABLE_ROW]: (node, children) => (
-      <tr
-        className="
-          odd:bg-brandColor/5
-        "
-      >
-        {children}
-      </tr>
-    ),
     [BLOCKS.PARAGRAPH]: (_, children) => {
       const hasContent =
         children &&
         Array.isArray(children) &&
-        children.some((child) =>
+        children.some(child =>
           typeof child === 'string' ? child.trim() !== '' : true,
         )
 
@@ -272,9 +210,7 @@ export const renderConfig: (context: {
         <ConditionalWrapper
           children={<p>{children}</p>}
           condition={paragraphsControlOrphans}
-          wrapper={(children) => (
-            <OrphanController>{children}</OrphanController>
-          )}
+          wrapper={children => <OrphanController>{children}</OrphanController>}
         />
       ) : null
     },
@@ -288,21 +224,9 @@ export const renderConfig: (context: {
       return (
         <blockquote
           className={twMerge(
-            `
-              mx-6
-              flex
-              flex-col
-              gap-3
-              overflow-x-auto
-              whitespace-pre-wrap
-              rounded-md
-              bg-blue-500/10
-              p-6
-              text-sm
-            `,
             hasIcon &&
               `
-                pl-10
+                !pl-10
                 [&>*:first-child]:-indent-5
               `,
           )}
@@ -329,14 +253,17 @@ export const renderConfig: (context: {
 
       const variant = isButton ? (`button.${buttonType!}` as const) : 'link'
 
-      const isExternalLink = node.data.uri?.startsWith('http')
+      const isExternalLink = isExternalHref(node.data.uri)
 
       return (
         <StyledText
           as={Link}
+          aria-disabled={node.data.uri === '#' ? 'true' : undefined}
           className="not-prose"
           href={node.data.uri}
+          target={isExternalLink ? '_blank' : undefined}
           variant={variant}
+          onClick={(event: MouseEvent) => event.stopPropagation()}
         >
           {isButton
             ? linkContent.replace(/^\[+\s*(.+?)\]+\s*$/, '$1')

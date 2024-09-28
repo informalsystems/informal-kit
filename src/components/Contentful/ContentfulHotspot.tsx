@@ -18,6 +18,7 @@ export function ContentfulHotspot({
   className,
   disableEditing = false,
   contentfulURL,
+  ...otherProps
 }: ContentfulHotspotProps) {
   const containerElementRef = useRef<HTMLDivElement>(null)
 
@@ -38,11 +39,11 @@ export function ContentfulHotspot({
       className={twMerge(
         `
           relative
-          w-full
         `,
         className,
       )}
       ref={containerElementRef}
+      {...otherProps}
     >
       {disableEditing !== true &&
         process.env.NEXT_PUBLIC_SHOW_CONTENTFUL_HOTSPOTS?.toLowerCase() ===

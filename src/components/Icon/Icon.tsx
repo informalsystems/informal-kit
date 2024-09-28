@@ -28,12 +28,12 @@ export function Icon({
           spin && `fa-spin`,
           variant.startsWith('sharp-')
             ? `
-              fa-sharp
-              fa-${variant.replace('sharp-', '')}
-            `
+                fa-sharp
+                fa-${variant.replace('sharp-', '')}
+              `
             : `
-              fa-${variant}
-            `,
+                fa-${variant}
+              `,
         )}
       />
     </span>

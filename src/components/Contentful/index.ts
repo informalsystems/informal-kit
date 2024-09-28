@@ -1,4 +1,5 @@
 import { ContentfulContentRenderer } from './ContentfulContentRenderer'
+import { ContentfulEditMetadataButton } from './ContentfulEditMetadataButton'
 import { ContentfulHeading } from './ContentfulHeading'
 import { ContentfulHotspot } from './ContentfulHotspot'
 import { ContentfulSpotCopyBody } from './ContentfulSpotCopyBody'
@@ -9,6 +10,7 @@ export const Contentful = {
   ContentRenderer: ContentfulContentRenderer,
   Heading: ContentfulHeading,
   Hotspot: ContentfulHotspot,
+  EditMetadataButton: ContentfulEditMetadataButton,
   SpotCopy: {
     Body: ContentfulSpotCopyBody,
     JSON: ContentfulSpotCopyJSON,

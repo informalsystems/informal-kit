@@ -7,6 +7,7 @@ import { twMerge } from 'tailwind-merge'
 import invariant from 'tiny-invariant'
 
 interface EditableBodyProps extends Omit<ComponentProps<'div'>, 'children'> {
+  classNamesForProseBox?: string
   decorativeHeadings?: boolean
   disableEditing?: boolean
   headingLevel?: number
@@ -16,7 +17,7 @@ interface EditableBodyProps extends Omit<ComponentProps<'div'>, 'children'> {
 }
 
 export function ContentfulSpotCopyBody({
-  className,
+  classNamesForProseBox,
   decorativeHeadings = false,
   disableEditing,
   headingLevel = 1,
@@ -39,8 +40,8 @@ export function ContentfulSpotCopyBody({
 
   return !(isClient && content) ? null : (
     <Contentful.Hotspot
-      disableEditing={disableEditing}
       contentfulURL={contentfulURL}
+      disableEditing={disableEditing}
       {...otherProps}
     >
       <ProseBox
@@ -48,7 +49,7 @@ export function ContentfulSpotCopyBody({
           `
             [&_:is(h1,h2,h3,h4)]:mb-2.5
           `,
-          className,
+          classNamesForProseBox,
         )}
       >
         <Contentful.ContentRenderer

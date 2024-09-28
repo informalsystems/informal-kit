@@ -9,21 +9,25 @@ import { Contentful } from '.'
 
 interface EditableMediaProps extends Omit<ComponentProps<'div'>, 'children'> {
   children?: ({ media }: { media: MediaEntryWithNode[] }) => ReactNode
+  classNameForImageContainer?: string
   classNameForImage?: string
   disableEditing?: boolean
   path: string
+  sizes?: string
 }
 
-interface MediaEntryWithNode extends MediaDescriptor {
+export interface MediaEntryWithNode extends MediaDescriptor {
   node: ReactNode
 }
 
 export function ContentfulSpotCopyMedia({
   children,
   className,
+  classNameForImageContainer,
   classNameForImage,
   disableEditing,
   path,
+  sizes,
   ...otherProps
 }: EditableMediaProps) {
   const { spotCopy } = useContext(SiteContext)
@@ -32,7 +36,8 @@ export function ContentfulSpotCopyMedia({
 
   const { attachedMedia, contentfulURL } = spotCopy[path]
 
-  const media = attachedMedia.map(({ url, ...rest }) => ({
+  const media = attachedMedia.map(({ description, url, ...rest }) => ({
+    description,
     node: (
       <div
         className={twMerge(
@@ -41,15 +46,20 @@ export function ContentfulSpotCopyMedia({
             h-full
             w-full
           `,
-          className,
+          classNameForImageContainer,
         )}
         key={url}
-        {...otherProps}
       >
         <Image
-          alt="Image from Contentful"
-          className={twMerge(`object-contain`, classNameForImage)}
+          alt={description}
+          className={twMerge(
+            `
+              object-contain
+            `,
+            classNameForImage,
+          )}
           fill={true}
+          sizes={sizes}
           src={url}
         />
       </div>
@@ -61,13 +71,19 @@ export function ContentfulSpotCopyMedia({
   return (
     <Contentful.Hotspot
       buttonPosition="center"
-      className="h-full"
+      className={twMerge(
+        `
+          h-full
+        `,
+        className,
+      )}
       contentfulURL={contentfulURL}
       disableEditing={disableEditing}
+      {...otherProps}
     >
       {typeof children === 'function'
         ? children({ media })
-        : media.map((image) => image.node)}
+        : media.map(image => image.node)}
     </Contentful.Hotspot>
   )
 }

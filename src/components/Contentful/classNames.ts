@@ -5,7 +5,7 @@ export const classNames = {
     twMerge(
       `
         pointer-events-none
-        z-10
+        z-50
         rounded-[20px]
         transition-[background,opacity]
       `,
@@ -27,6 +27,7 @@ export const classNames = {
       `
         stroke-accent-pink/30
         transition-all
+        inverted:stroke-white
         dark:stroke-white
       `,
       isHovering
@@ -55,8 +56,10 @@ export const classNames = {
         opacity-0
         transition-all
         hover:scale-105
+        inverted:bg-white
         dark:bg-white
         [&_*]:text-white
+        inverted:[&_*]:text-textColor
         dark:[&_*]:text-textColor
       `,
       buttonPosition === 'top right'
