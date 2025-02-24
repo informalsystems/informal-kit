@@ -1,132 +1,159 @@
 'use client'
 
-import { ComponentProps, useEffect, useRef, useState } from 'react'
+import { ComponentProps, ElementType, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
-import { classNames } from './classNames'
+import { useIsClient } from 'usehooks-ts'
 
-export interface ModalWindowProps extends ComponentProps<'div'> {
+type ModalWindowProps<T extends ElementType = 'section'> = ComponentProps<T> & {
+  as?: T
   isOpen: boolean
+  propsForBackdrop?: ComponentProps<'div'>
   onClose: () => void
 }
 
-export function ModalWindow({
+export function ModalWindow<T extends ElementType = 'section'>({
+  as,
   children,
   className,
   isOpen,
+  propsForBackdrop,
   onClose,
   ...otherProps
-}: ModalWindowProps) {
-  const [isClient, setIsClient] = useState(false)
-
+}: ModalWindowProps<T>) {
+  const isClient = useIsClient()
   const [modalState, setModalState] = useState<
-    'opening' | 'open' | 'closing' | 'closed'
+    'closed' | 'opening' | 'open' | 'closing'
   >('closed')
-
-  const windowContentsContainerRef = useRef<HTMLDivElement>(null)
-
-  function handleTransitionEnd() {
-    if (modalState === 'closing') {
-      setModalState('closed')
-      onClose()
-    }
-    if (modalState === 'opening') {
-      setModalState('open')
-    }
-  }
-
-  function handleClose() {
-    setModalState('closing')
-  }
-
-  function focusFirstElement() {
-    const windowContentsContainer = windowContentsContainerRef.current
-
-    if (!windowContentsContainer) {
-      return
-    }
-
-    const firstFocusableElement = windowContentsContainer.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    ) as HTMLElement
-
-    if (firstFocusableElement) {
-      firstFocusableElement.focus()
-    }
-  }
+  const isOpenOrOpening = ['open', 'opening'].includes(modalState)
+  const isClosedOrClosing = ['closed', 'closing'].includes(modalState)
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   useEffect(() => {
-    setIsClient(true)
+    const shortcuts: Record<string, () => void> = {
+      Escape: handleClickClose,
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key in shortcuts) {
+        shortcuts[event.key]()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
   }, [])
 
   useEffect(() => {
     if (isOpen) {
+      clearTimer()
       setModalState('opening')
-      focusFirstElement()
+
+      timerRef.current = setTimeout(() => {
+        setModalState('open')
+      }, 500)
+
+      return clearTimer
     } else {
-      setModalState('closing')
+      handleClickClose()
     }
   }, [isOpen])
 
-  useEffect(() => {
-    if (isOpen) {
-      function handleEscape(event: KeyboardEvent) {
-        if (event.key === 'Escape') {
-          handleClose()
-        }
-      }
+  function handleClickClose() {
+    clearTimer()
+    setModalState('closing')
 
-      window.addEventListener('keydown', handleEscape)
-
-      return () => {
-        window.removeEventListener('keydown', handleEscape)
-      }
-    }
-  }, [isOpen, onClose])
-
-  if (!isClient) {
-    return null
+    timerRef.current = setTimeout(() => {
+      setModalState('closed')
+      onClose()
+    }, 500)
   }
 
-  return createPortal(
-    <>
-      <div
-        className={classNames.backdrop({ modalState })}
-        onClick={handleClose}
-      />
+  function clearTimer() {
+    clearTimeout(timerRef.current ?? 0)
+  }
 
-      <div
-        className={twMerge(classNames.container({ modalState }), className)}
-        ref={windowContentsContainerRef}
-        onTransitionEnd={handleTransitionEnd}
-        {...otherProps}
-      >
-        {children}
-      </div>
-    </>,
-    document.body,
-  )
+  const Component = String(as || 'section') as ElementType
+
+  return !isClient
+    ? null
+    : createPortal(
+        <>
+          <ModalWindow.Backdrop
+            {...propsForBackdrop}
+            className={twMerge(
+              `
+                pointer-events-none
+                opacity-0
+                transition-all
+                duration-500
+              `,
+              isOpenOrOpening &&
+                `
+                  pointer-events-auto
+                  opacity-100
+                `,
+              propsForBackdrop?.className,
+            )}
+            onClick={(...args) => {
+              handleClickClose()
+              propsForBackdrop?.onClick?.(...args)
+            }}
+          />
+
+          <Component
+            className={twMerge(
+              `
+                fixed
+                left-1/2
+                top-1/2
+                z-[1000]
+                -translate-x-1/2
+                -translate-y-1/2
+                transition-all
+                duration-500
+              `,
+              isOpenOrOpening &&
+                `
+                  scale-100
+                  opacity-100
+                `,
+              isClosedOrClosing &&
+                `
+                  pointer-events-none
+                  scale-75
+                  opacity-0
+                `,
+              className,
+            )}
+            {...otherProps}
+          >
+            {children}
+          </Component>
+        </>,
+        document.body,
+      )
 }
 
-ModalWindow.Title = function ModalWindowTitle({
-  children,
+ModalWindow.Backdrop = function Backdrop({
   className,
-}: ComponentProps<'header'>) {
-  return <div className={twMerge(classNames.header, className)}>{children}</div>
-}
-
-ModalWindow.Body = function ModalWindowBody({
-  children,
-  className,
-}: ComponentProps<'main'>) {
-  return <div className={twMerge(classNames.body, className)}>{children}</div>
-}
-
-ModalWindow.Buttons = function ModalWindowBody({
-  children,
-  className,
+  ...otherProps
 }: ComponentProps<'div'>) {
   return (
-    <div className={twMerge(classNames.buttons, className)}>{children}</div>
+    <div
+      className={twMerge(
+        `
+          fixed
+          inset-0
+          z-[999]
+          backdrop-blur-md
+        `,
+        className,
+      )}
+      {...otherProps}
+    />
   )
 }

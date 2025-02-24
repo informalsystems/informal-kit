@@ -19,7 +19,6 @@ interface EditableBodyProps extends Omit<ComponentProps<'div'>, 'children'> {
 export function ContentfulSpotCopyBody({
   classNamesForProseBox,
   decorativeHeadings = false,
-  disableEditing,
   headingLevel = 1,
   headingsControlOrphans = true,
   paragraphsControlOrphans = false,
@@ -41,7 +40,6 @@ export function ContentfulSpotCopyBody({
   return !(isClient && content) ? null : (
     <Contentful.Hotspot
       contentfulURL={contentfulURL}
-      disableEditing={disableEditing}
       {...otherProps}
     >
       <ProseBox

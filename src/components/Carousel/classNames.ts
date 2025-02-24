@@ -1,12 +1,11 @@
-import { tw } from '@/lib/tw'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 
 export const classNames = {
-  container: tw`
+  container: twJoin(`
     relative
-  `,
+  `),
 
-  descriptionAndButtonsContainer: tw`
+  descriptionAndButtonsContainer: twJoin(`
     portrait:mb-12
     landscape:absolute
     landscape:-top-6
@@ -19,7 +18,7 @@ export const classNames = {
     landscape:flex-col
     landscape:justify-between
     landscape:pb-6
-  `,
+  `),
 
   description: ({ isActive = false }) =>
     twMerge(
@@ -34,7 +33,7 @@ export const classNames = {
         `,
     ),
 
-  slideControlsContainer: tw`
+  slideControlsContainer: twJoin(`
     relative
     flex
     items-center
@@ -46,7 +45,7 @@ export const classNames = {
     border-brandColor/5
     p-2
     lowercase
-  `,
+  `),
 
   progressBarContainer: ({ isAutoPlaying = false }) =>
     twMerge(
@@ -63,14 +62,14 @@ export const classNames = {
         `,
     ),
 
-  progressBar: tw`
+  progressBar: twJoin(`
     h-full
     w-0
     rounded-l-full
     bg-brandColor/5
     transition-all
     ease-linear
-  `,
+  `),
 
   playPauseIcon: ({ isAutoPlaying = false }) =>
     twMerge(
@@ -98,14 +97,14 @@ export const classNames = {
         `,
     ),
 
-  imagesContainer: tw`
+  imagesContainer: twJoin(`
     relative
     flex
     h-96
     w-full
     items-end
     transition-all
-  `,
+  `),
 
   imageContainer: ({ isActive = false }) =>
     twMerge(

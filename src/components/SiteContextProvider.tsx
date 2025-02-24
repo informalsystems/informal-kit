@@ -4,7 +4,7 @@ import { Document } from '@contentful/rich-text-types'
 import { ReactNode, createContext } from 'react'
 
 export interface SiteContextObject {
-  spotCopy: SpotCopy
+  editableContent: EditableContent
 }
 
 export interface MediaDescriptor {
@@ -15,8 +15,8 @@ export interface MediaDescriptor {
   width: number
 }
 
-export interface SpotCopy {
-  [codeName: string]: {
+export interface EditableContent {
+  [path: string]: {
     attachedMedia: MediaDescriptor[]
     content?: Document
     json?: any
@@ -25,17 +25,19 @@ export interface SpotCopy {
 }
 
 export const SiteContext = createContext<SiteContextObject>({
-  spotCopy: {},
+  editableContent: {},
 })
 
 export function SiteContextProvider({
   children,
-  spotCopy,
+  editableContent,
 }: {
   children: ReactNode
-  spotCopy: SpotCopy
+  editableContent: EditableContent
 }) {
   return (
-    <SiteContext.Provider value={{ spotCopy }}>{children}</SiteContext.Provider>
+    <SiteContext.Provider value={{ editableContent }}>
+      {children}
+    </SiteContext.Provider>
   )
 }

@@ -25,12 +25,12 @@ export function CopyToClipboardButton<T extends ElementType = 'button'>({
   as,
   children,
   payload,
-  variant = 'button.icon',
+  variant = 'button.primary',
   ...otherProps
 }: CopyToClipboardButtonProps<T>) {
   const [isCopied, setIsCopied] = useState(false)
 
-  const [copiedText, copy] = useCopyToClipboard()
+  const [, copy] = useCopyToClipboard()
 
   useEffect(() => {
     setIsCopied(false)

@@ -1,5 +1,6 @@
 'use client'
 
+import { iconStringToVariantAndName } from '@/lib/iconStringToVariantAndName'
 import { twMerge } from 'tailwind-merge'
 import { IconProps } from './types'
 
@@ -8,9 +9,10 @@ export function Icon({
   name,
   rotate,
   spin = false,
-  variant = 'regular',
   ...otherProps
 }: IconProps) {
+  const [iconVariant = 'regular', iconName] = iconStringToVariantAndName(name)
+
   return (
     <span
       className={twMerge(`!no-underline`, className)}
@@ -21,19 +23,19 @@ export function Icon({
           `
             fa
             fa-fw
-            fa-${name}
+            fa-${iconName}
           `,
           typeof rotate === 'string' && `fa-${rotate}`,
           typeof rotate === 'number' && `fa-rotate-${rotate}`,
           spin && `fa-spin`,
-          variant.startsWith('sharp-')
+          iconVariant && iconVariant.startsWith('sharp-')
             ? `
-                fa-sharp
-                fa-${variant.replace('sharp-', '')}
-              `
+              fa-sharp
+              fa-${iconVariant.replace('sharp-', '')}
+            `
             : `
-                fa-${variant}
-              `,
+              fa-${iconVariant}
+            `,
         )}
       />
     </span>

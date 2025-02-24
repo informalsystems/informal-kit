@@ -36,12 +36,7 @@ export function ContentfulHotspot({
 
   return (
     <div
-      className={twMerge(
-        `
-          relative
-        `,
-        className,
-      )}
+      className={twMerge(`relative`, className)}
       ref={containerElementRef}
       {...otherProps}
     >

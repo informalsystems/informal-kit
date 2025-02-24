@@ -1,8 +1,9 @@
 'use client'
 
-import { Notifications, StyledText } from '@/components'
+import { StyledText } from '@/components'
+import { useToasts } from '@/components/Toasts'
 import { FormActionResponse } from '@/lib/types'
-import { ComponentProps, useActionState } from 'react'
+import { ComponentProps, useActionState, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 interface GoogleFormProps extends ComponentProps<'form'> {
@@ -10,7 +11,7 @@ interface GoogleFormProps extends ComponentProps<'form'> {
 }
 
 async function submitGoogleForm(
-  previousState: FormActionResponse,
+  _previousState: FormActionResponse,
   data: FormData,
 ) {
   const fieldValues = Object.fromEntries(data.entries()) as Record<
@@ -46,10 +47,23 @@ export function GoogleForm({
   googleFormID,
   ...otherProps
 }: GoogleFormProps) {
+  const { setToasts } = useToasts()
   const [formActionResponse, formAction, isSubmitting] = useActionState(
     submitGoogleForm,
     null,
   )
+
+  useEffect(() => {
+    if (formActionResponse?.success) {
+      setToasts([
+        { message: 'Form submitted successfully!', variant: 'success' },
+      ])
+    } else {
+      setToasts([
+        { message: formActionResponse?.messages?.[0], variant: 'error' },
+      ])
+    }
+  }, [formActionResponse])
 
   return (
     <form
@@ -74,8 +88,6 @@ export function GoogleForm({
         name="googleFormID"
         value={googleFormID}
       />
-
-      <Notifications formActionResponse={formActionResponse} />
 
       {children}
 

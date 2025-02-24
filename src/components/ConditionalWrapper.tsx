@@ -6,11 +6,11 @@ interface ConditionalWrapperProps {
   wrapper: (children: ReactNode) => ReactNode
 }
 
-function ConditionalWrapper({
+const ConditionalWrapper = ({
   children,
   condition,
   wrapper,
-}: ConditionalWrapperProps) {
+}: ConditionalWrapperProps) => {
   return <>{condition ? wrapper(children) : children}</>
 }
 

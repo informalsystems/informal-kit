@@ -10,7 +10,8 @@ export async function generateMetadataFromContentful() {
     'Missing NEXT_PUBLIC_METADATA_BASE_URL',
   )
 
-  const headersList = headers()
+  const headersList = await headers()
+
   const requestURL =
     headersList.get('x-url') ?? process.env.NEXT_PUBLIC_METADATA_BASE_URL
 
@@ -21,7 +22,7 @@ export async function generateMetadataFromContentful() {
       routePattern: pathname,
     })
 
-  const { description, keywords, title } = matchingRouteMetadata ?? {}
+  const { pageDescription, keywords, pageTitle } = matchingRouteMetadata ?? {}
 
   const pathSegments = pathname
     .replace(baseRouteMetadata?.routePattern ?? '/', '')
@@ -29,19 +30,18 @@ export async function generateMetadataFromContentful() {
     .filter(Boolean)
 
   const finalTitle = matchingRouteMetadata
-    ? [baseRouteMetadata?.title, title].filter(Boolean).join(' - ')
+    ? [baseRouteMetadata?.pageTitle, pageTitle].filter(Boolean).join(' - ')
     : pathSegments.length
-      ? [baseRouteMetadata?.title, ...pathSegments]
+      ? [baseRouteMetadata?.pageTitle, ...pathSegments]
           .filter(Boolean)
           .map(startCase)
           .join(' - ')
-      : baseRouteMetadata?.title
+      : baseRouteMetadata?.pageTitle
 
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_METADATA_BASE_URL),
-    icons: `/favicon-${baseRouteMetadata?.favicon ?? 'blue-500'}.svg`,
     title: finalTitle,
-    description: description ?? baseRouteMetadata?.description,
+    description: pageDescription ?? baseRouteMetadata?.pageDescription,
     keywords: keywords ?? baseRouteMetadata?.keywords ?? [],
   }
 }

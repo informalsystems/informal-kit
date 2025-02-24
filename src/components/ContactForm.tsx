@@ -1,8 +1,9 @@
 'use client'
 
-import { Input, Notifications, StyledText, TextArea } from '@/components'
+import { Input, StyledText, TextArea } from '@/components'
+import { useToasts } from '@/components/Toasts'
 import { FormActionResponse } from '@/lib/types'
-import { ComponentProps, useActionState } from 'react'
+import { ComponentProps, useActionState, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 interface ContactFormProps extends ComponentProps<'form'> {
@@ -11,7 +12,7 @@ interface ContactFormProps extends ComponentProps<'form'> {
 }
 
 async function sendEmail(
-  previousState: FormActionResponse,
+  _previousState: FormActionResponse,
   formData: FormData,
 ) {
   const body = Object.fromEntries(formData.entries())
@@ -53,10 +54,21 @@ export function ContactForm({
   subject,
   ...otherProps
 }: ContactFormProps) {
+  const { setToasts } = useToasts()
   const [formActionResponse, formAction, isSending] = useActionState(
     sendEmail,
     null,
   )
+
+  useEffect(() => {
+    if (formActionResponse?.success) {
+      setToasts([{ message: 'Message sent successfully!', variant: 'success' }])
+    } else {
+      setToasts([
+        { message: formActionResponse?.messages?.[0], variant: 'error' },
+      ])
+    }
+  }, [formActionResponse])
 
   return (
     <form
@@ -87,8 +99,6 @@ export function ContactForm({
         name="inbox"
         value={inbox}
       />
-
-      <Notifications formActionResponse={formActionResponse} />
 
       <Input
         name="fullName"

@@ -1,5 +1,4 @@
-import { tw } from '@/lib/tw'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 
 export const classNames = {
   backdrop: ({ modalState = 'closed' }) =>
@@ -56,22 +55,22 @@ export const classNames = {
         `,
     ),
 
-  header: tw`
+  header: twJoin(`
     bg-accentColor
     px-3
     py-1
     font-bold
     text-white
-  `,
+  `),
 
-  body: tw`
+  body: twJoin(`
     p-3
-  `,
+  `),
 
-  buttons: tw`
+  buttons: twJoin(`
     flex
     flex-row-reverse
     gap-1
     p-3
-  `,
+  `),
 }

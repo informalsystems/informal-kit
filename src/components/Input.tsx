@@ -1,18 +1,17 @@
-import { tw } from '@/lib/tw'
 import { ComponentProps } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 
 interface InputProps extends Omit<ComponentProps<'input'>, 'children'> {}
 
 export const classNames = {
-  container: tw`
+  container: twJoin(`
     rounded-sm
     border-borderColor
     px-6
     py-2
     text-textColor
     placeholder:text-fadedTextColor
-  `,
+  `),
 }
 
 export function Input({

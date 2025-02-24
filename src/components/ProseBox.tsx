@@ -26,18 +26,6 @@ export function ProseBox<E extends ElementType = 'div'>({
           prose-h3:text-3xl
           prose-h4:text-lg
 
-          [&.text-center_.is-decorated]:after:left-1/2
-          [&.text-center_.is-decorated]:after:-translate-x-1/2
-          [&_.is-decorated]:relative
-          [&_.is-decorated]:mb-6
-          [&_.is-decorated]:pb-6
-          [&_.is-decorated]:after:absolute
-          [&_.is-decorated]:after:left-0
-          [&_.is-decorated]:after:top-full
-          [&_.is-decorated]:after:h-[4px]
-          [&_.is-decorated]:after:w-16
-          [&_.is-decorated]:after:bg-accent-fuchsia
-
           [&_:is(h1,h2,h3)]:font-display
           [&_:is(h1,h2,h3,h4):first-child]:mt-0
           [&_:is(h1,h2,h3,h4)]:font-bold

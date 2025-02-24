@@ -15,7 +15,7 @@ export async function getContentfulRouteMetadata({
   const sanitizedRouteMetadata = allRouteMetadata.map(item => ({
     ...item.fields,
     contentfulURL: `https://app.contentful.com/spaces/${item.sys.space.sys.id}/entries/${item.sys.id}`,
-    keywords: item.fields.keywords?.split(' ') ?? [],
+    keywords: item.fields.keywords ?? [],
   }))
 
   // Sort by length of routePattern, so that the longest (more specific) routes

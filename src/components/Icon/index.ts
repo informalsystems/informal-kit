@@ -1,9 +1,9 @@
 export { Icon } from './Icon'
 export type {
   BrandIconName,
-  IconName,
   IconProps,
   IconRotationOption,
+  IconString,
   IconVariant,
   RegularIconName,
 } from './types'

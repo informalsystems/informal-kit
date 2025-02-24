@@ -1,6 +1,7 @@
 import { SiteContextProvider } from '@/components'
+import { ToastContextProvider } from '@/components/Toasts'
 import { generateMetadataFromContentful } from '@/lib/generateMetadataFromContentful'
-import { getContentfulSpotCopy } from '@/lib/getContentfulSpotCopy'
+import { getEditableContentFromContentful } from '@/lib/getEditableContentFromContentful'
 import type { Viewport } from 'next'
 import { Glegoo, Inter } from 'next/font/google'
 import Script from 'next/script'
@@ -33,10 +34,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const { spotCopy } = await getContentfulSpotCopy('informal/')
+  const { editableContent } = await getEditableContentFromContentful()
 
   return (
-    <SiteContextProvider spotCopy={spotCopy}>
+    <SiteContextProvider editableContent={editableContent}>
       <html
         lang="en"
         style={
@@ -63,7 +64,7 @@ export default async function RootLayout({
             `,
           )}
         >
-          {children}
+          <ToastContextProvider>{children}</ToastContextProvider>
         </body>
       </html>
     </SiteContextProvider>

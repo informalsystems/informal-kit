@@ -1,212 +1,137 @@
-import { tw } from '@/lib/tw'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 
-const buttonClassNames = tw`
-  inline-flex
-  cursor-pointer
-  items-center
-  justify-center
-  gap-1.5
-  transition-all
-  hover:scale-105
-  disabled:pointer-events-none
-  disabled:opacity-40
-`
+const buttonClassNames = twJoin(
+  'inline-flex items-center justify-center gap-1.5',
+  'cursor-default whitespace-nowrap transition-all',
+  'rounded-lg',
+  'disabled:pointer-events-none',
+  'disabled:text-text-disabled',
+)
 
-const headingClassNames = tw`
-  font-display
-  font-bold
-`
+const inputClassNames = twJoin(
+  'w-full border-0 outline-0',
+  'cursor-default',
+  'text-text bg-transparent [font-size:inherit]',
+  'placeholder:text-text-tertiary',
+  'disabled:bg-bg-disabled',
+  'disabled:text-text-ondisabled',
+)
+
+const badgeClassNames = twJoin(
+  'px-2 pt-1 pb-[0.2em] leading-none',
+  'inline-flex items-center gap-1 rounded-full',
+  'whitespace-nowrap not-italic',
+  'cursor-default',
+)
 
 export const classNames = {
-  'link': twMerge(
-    buttonClassNames,
-    `
-      inline
-      text-[var(--tw-prose-links)]
-      underline
-      underline-offset-4
-      hover:scale-100
-      hover:underline-offset-8
-      dark:text-[var(--tw-prose-invert-links)]
-      [&_span]:ml-1
-    `,
-  ),
-
-  'link.subtle': twMerge(
-    buttonClassNames,
-    `
-      inline
-      hover:underline
-      [&_span]:ml-1
-    `,
-  ),
+  'link': twMerge(buttonClassNames, 'whitespace-wrap text-text-brand inline'),
 
   'button.primary': twMerge(
     buttonClassNames,
-    `
-      js-button-primary
-      rounded-md
-      border-2
-      border-brandColor
-      bg-brandColor
-      px-6
-      py-3
-      text-center
-      text-sm
-      font-semibold
-      uppercase
-      leading-none
-      tracking-widest
-      text-white
-      sm:whitespace-nowrap
-      dark:border-white
-      dark:bg-white
-      dark:text-brandColor
-    `,
+    'js-button-primary',
+    'px-4 py-3',
+    'bg-bg-brand text-text-onbrand',
+    'hover:bg-bg-brand-hover hover:text-text-onbrand-hover',
+    'disabled:bg-bg-disabled disabled:text-text-ondisabled',
   ),
 
   'button.secondary': twMerge(
     buttonClassNames,
-    `
-      js-button-secondary
-      relative
-      z-10
-      rounded-md
-      border-2
-      border-brandColor
-      px-6
-      py-3
-      text-center
-      text-sm
-      font-semibold
-      uppercase
-      leading-none
-      tracking-widest
-      text-brandColor
-      backdrop-blur-sm
-      sm:whitespace-nowrap
-      dark:border-white
-      dark:text-white
-    `,
+    'js-button-secondary',
+    'px-4 py-3',
+    'text-text-secondary',
+    'hover:bg-bg-hover hover:text-text-hover',
+  ),
+
+  'button.ghost': twMerge(
+    buttonClassNames,
+    'js-button-ghost',
+    'px-4 py-3',
+    'text-text-brand',
+    'border-border-brand border-2 border-dashed',
+    'bg-bg-brand/5',
+    'hover:bg-bg-brand/10',
+  ),
+
+  'button.togglable': twMerge(
+    buttonClassNames,
+    'js-button-togglable',
+    'text-text-secondary',
+    'px-4 py-3',
+    'data-[active]:bg-bg-hover',
+    'data-[active]:text-text',
+    'hover:bg-bg-hover',
   ),
 
   'button.icon': twMerge(
     buttonClassNames,
-    `
-      size-10
-      rounded-full
-      bg-shadedBgColor
-      hover:bg-brandColor
-      hover:text-white
-    `,
+    'js-button-icon',
+    'flex items-center justify-center',
+    'h-9 min-w-9 px-2',
+    'hover:bg-bg-hover hover:text-text-hover',
   ),
 
-  'button.tool': tw`
-    -my-0.5
-    inline-flex
-    items-center
-    justify-center
-    gap-2
-    rounded-sm
-    px-1
-    py-0.5
-    text-sm
-    text-inherit
-    hover:bg-textColor/15
-    dark:text-white
-  `,
-
-  'footnote': tw`
-    text-xs
-    leading-relaxed
-    text-fadedTextColor
-    dark:text-fadedTextColorInDarkMode
-  `,
-
-  'h1': twMerge(
-    headingClassNames,
-    `
-      text-5xl
-      [&>strong]:font-normal
-      [&>strong]:text-brandColor/60
-    `,
+  'button.icon.togglable': twMerge(
+    buttonClassNames,
+    'js-button-icon-selectable',
+    'flex items-center justify-center',
+    'h-9 min-w-9 px-2',
+    'text-text-secondary bg-transparent',
+    'hover:bg-bg-hover hover:text-text-hover',
+    'data-[active]:bg-bg-selected',
+    'data-[active]:text-text-selected',
+    'data-[active]:hover:bg-bg-selected-hover',
+    'data-[active]:hover:text-text-onselected-hover',
   ),
 
-  'h2': twMerge(
-    headingClassNames,
-    `
-      text-4xl
-      [&>strong]:font-normal
-      [&>strong]:text-brandColor/60
-    `,
+  'button.icon.togglable.secondary': twMerge(
+    buttonClassNames,
+    'js-button-icon-selectable',
+    'flex items-center justify-center',
+    'h-9 min-w-9 px-2',
+    'text-text-secondary border border-transparent',
+    'hover:bg-bg-hover hover:text-text-hover',
+    'data-[active]:bg-bg',
+    'data-[active]:text-text',
+    'data-[active]:border-border',
   ),
 
-  'h3': twMerge(
-    headingClassNames,
-    `
-      text-3xl
-      [&>strong]:font-normal
-      [&>strong]:text-brandColor/60
-    `,
+  'input': twJoin(
+    inputClassNames,
+    'px-2 py-1',
+    'bg-bg-secondary rounded-lg',
+    'hover:outline-border hover:outline',
+    'focus:outline-border-selected focus:outline',
   ),
 
-  'h4': twMerge(
-    headingClassNames,
-    `
-      font-body
-      text-lg
-    `,
+  'inputWithoutBorder': inputClassNames,
+
+  'label': twJoin('text-text-secondary text-sm'),
+
+  'badge.propertyName': twJoin(
+    badgeClassNames,
+    'text-text-component font-mono',
+    'border-border-component rounded-lg border-2',
   ),
 
-  'superHeading': tw`
-    text-xs
-    font-bold
-    uppercase
-    tracking-[0.2em]
-    text-teal-400
-  `,
+  'badge.propertyValue': twJoin(
+    badgeClassNames,
+    'text-text font-mono',
+    'border-border rounded-lg border',
+    'hover:bg-bg-hover',
+  ),
 
-  'headingDecoratorCentered': tw`
-    relative
-    pb-6
-    text-center
-    after:absolute
-    after:left-1/2
-    after:top-full
-    after:h-[4px]
-    after:w-16
-    after:-translate-x-1/2
-    after:bg-accent-fuchsia
-  `,
+  'pill.danger': twJoin(badgeClassNames, 'bg-bg-danger text-text-ondanger'),
 
-  'headingDecoratorLeft': tw`
-    relative
-    pb-6
-    after:absolute
-    after:left-0
-    after:top-full
-    after:h-[4px]
-    after:w-16
-    after:bg-accent-fuchsia
-  `,
+  'pill.neutral': twJoin(badgeClassNames, 'bg-bg-hover text-text-hover'),
 
-  'importantValue': tw`
-    font-display
-    text-5xl
-    font-bold
-    dark:text-white
-  `,
-
-  'importantValueLabel': tw`
-    border-b-2
-    pb-2
-    text-xs
-    uppercase
-  `,
-
-  'label': tw`
-    text-sm
-    text-fadedTextColor
-  `,
+  'pill.interactive': twJoin(
+    badgeClassNames,
+    'border border-transparent',
+    'bg-bg text-text',
+    'hover:text-text-brand',
+    'hover:bg-bg-hover',
+    'hover:border-border-brand',
+  ),
 }

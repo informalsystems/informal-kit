@@ -31,10 +31,10 @@ export function Carousel({
   )
 
   const showNext = () =>
-    setActiveImageIndex((index) => (index + 1) % images.length)
+    setActiveImageIndex(index => (index + 1) % images.length)
 
   const showPrevious = () =>
-    setActiveImageIndex((index) => (index - 1 + images.length) % images.length)
+    setActiveImageIndex(index => (index - 1 + images.length) % images.length)
 
   const handleClickNext = () => {
     setIsAutoPlaying(false)
@@ -67,9 +67,8 @@ export function Carousel({
     <div className={classNames.container}>
       <div className={classNames.descriptionAndButtonsContainer}>
         <div>
-          <Contentful.SpotCopy.Body
+          <Contentful.EditableContent.Body
             disableEditing={true}
-            decorativeHeadings
             headingLevel={2}
             path="informal/about/meet-the-team"
           />
@@ -92,7 +91,7 @@ export function Carousel({
           <StyledText
             role="button"
             variant="link"
-            onClick={() => setIsAutoPlaying((isAutoPlaying) => !isAutoPlaying)}
+            onClick={() => setIsAutoPlaying(isAutoPlaying => !isAutoPlaying)}
           >
             <Icon
               className={classNames.playPauseIcon({ isAutoPlaying })}

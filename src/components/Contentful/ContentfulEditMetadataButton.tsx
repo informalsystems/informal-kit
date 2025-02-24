@@ -9,10 +9,7 @@ import { twMerge } from 'tailwind-merge'
 import invariant from 'tiny-invariant'
 
 export function ContentfulEditMetadataButton() {
-  invariant(
-    process.env.NEXT_PUBLIC_METADATA_BASE_URL,
-    'Missing NEXT_PUBLIC_METADATA_BASE_URL',
-  )
+  invariant(process.env.NEXT_PUBLIC_URL, 'Missing NEXT_PUBLIC_URL')
 
   const [isExpanded, setIsExpanded] = useState(false)
 

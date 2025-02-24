@@ -1,6 +1,6 @@
 'use client'
 
-import { Icon, IconName } from '@/components/Icon'
+import { Icon, IconString } from '@/components/Icon'
 import { ComponentProps, ElementType } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -18,7 +18,7 @@ type FileDownloadButtonProps<T extends ElementType = 'button'> = Omit<
 interface ContentTypeIconDescriptor {
   className: string
   extension: string | null
-  iconName: IconName
+  icon: IconString
 }
 
 type SupportedContentType = keyof typeof contentTypeIconMap
@@ -27,13 +27,13 @@ const contentTypeIconMap = {
   'DEFAULT': {
     className: 'text-neutral-500',
     extension: null,
-    iconName: 'file',
+    icon: 'file',
   },
 
   'application/pdf': {
     className: 'text-red-600',
     extension: 'pdf',
-    iconName: 'file-pdf',
+    icon: 'file-pdf',
   },
 } satisfies Record<string, ContentTypeIconDescriptor>
 
@@ -51,7 +51,7 @@ export function FileDownloadButton<T extends ElementType = 'button'>({
   const {
     className: iconClassName,
     extension,
-    iconName = 'file',
+    icon = 'file',
   } = contentTypeIconMap[contentType]
 
   return (
@@ -96,7 +96,7 @@ export function FileDownloadButton<T extends ElementType = 'button'>({
       >
         <Icon
           className="text-2xl"
-          name={iconName}
+          name={icon}
         />
 
         <div className="font-bold">

@@ -1,5 +1,7 @@
-import { ComponentProps, ElementType } from 'react'
+import { ConditionalWrapper } from '@/components/ConditionalWrapper'
+import { ComponentProps, ElementType, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Tooltip } from '../Tooltip'
 import { classNames } from './classNames'
 
 type StyledTextVariant = keyof typeof classNames
@@ -10,12 +12,14 @@ export type StyledTextProps<T extends ElementType = 'span'> = Omit<
 > & {
   as?: T
   variant?: StyledTextVariant | StyledTextVariant[]
+  tooltip?: ReactNode
 }
 
 export function StyledText<T extends ElementType = 'span'>({
   as,
   className,
   variant,
+  tooltip = null,
   ...otherProps
 }: StyledTextProps<T>) {
   const Component = as || 'span'
@@ -27,9 +31,16 @@ export function StyledText<T extends ElementType = 'span'>({
       : ``
 
   return (
-    <Component
-      className={twMerge(classNamesForVariant, className)}
-      {...otherProps}
-    />
+    <ConditionalWrapper
+      condition={tooltip !== null}
+      wrapper={(children) => (
+        <Tooltip tipContents={tooltip}>{children}</Tooltip>
+      )}
+    >
+      <Component
+        className={twMerge(classNamesForVariant, className)}
+        {...otherProps}
+      />
+    </ConditionalWrapper>
   )
 }
