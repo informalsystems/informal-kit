@@ -21,7 +21,7 @@ export function TH({
       className={twMerge(
         `
           group/table-cell
-          flex-grow
+          grow
           px-5
           py-1
           text-sm
@@ -68,7 +68,7 @@ export function TH({
                 transition-all
                 group-hover/table-cell:opacity-50
               `,
-              isSorted ? "!opacity-100" : "opacity-0",
+              isSorted ? "opacity-100!" : "opacity-0",
               sortDirection === "ASC" ? "rotate-0" : "rotate-180",
               textAlign === "right" && "-order-1",
               !isSorted &&

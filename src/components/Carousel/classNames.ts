@@ -112,8 +112,8 @@ export const classNames = {
         relative
         mr-6
         size-32
-        flex-shrink-0
-        flex-grow-0
+        shrink-0
+        grow-0
         overflow-hidden
         rounded
         shadow-inner

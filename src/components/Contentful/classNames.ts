@@ -58,9 +58,9 @@ export const classNames = {
         hover:scale-105
         inverted:bg-white
         dark:bg-white
-        [&_*]:text-white
+        **:text-white
         inverted:[&_*]:text-textColor
-        dark:[&_*]:text-textColor
+        dark:**:text-textColor
       `,
       buttonPosition === 'top right'
         ? `

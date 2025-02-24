@@ -59,8 +59,8 @@ export const classNames = {
     'js-button-togglable',
     'text-text-secondary',
     'px-4 py-3',
-    'data-[active]:bg-bg-hover',
-    'data-[active]:text-text',
+    'data-active:bg-bg-hover',
+    'data-active:text-text',
     'hover:bg-bg-hover',
   ),
 
@@ -79,10 +79,10 @@ export const classNames = {
     'h-9 min-w-9 px-2',
     'text-text-secondary bg-transparent',
     'hover:bg-bg-hover hover:text-text-hover',
-    'data-[active]:bg-bg-selected',
-    'data-[active]:text-text-selected',
-    'data-[active]:hover:bg-bg-selected-hover',
-    'data-[active]:hover:text-text-onselected-hover',
+    'data-active:bg-bg-selected',
+    'data-active:text-text-selected',
+    'data-active:hover:bg-bg-selected-hover',
+    'data-active:hover:text-text-onselected-hover',
   ),
 
   'button.icon.togglable.secondary': twMerge(
@@ -92,9 +92,9 @@ export const classNames = {
     'h-9 min-w-9 px-2',
     'text-text-secondary border border-transparent',
     'hover:bg-bg-hover hover:text-text-hover',
-    'data-[active]:bg-bg',
-    'data-[active]:text-text',
-    'data-[active]:border-border',
+    'data-active:bg-bg',
+    'data-active:text-text',
+    'data-active:border-border',
   ),
 
   'input': twJoin(

@@ -14,7 +14,7 @@ export function LoadingScreen({
         `
           fixed
           inset-0
-          z-[1000]
+          z-1000
           flex
           items-center
           justify-center

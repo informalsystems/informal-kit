@@ -47,7 +47,7 @@ export const classNames = {
   toastContainer: twJoin(`
     mt-3
     grid
-    grid-cols-[min-content,auto,min-content]
+    grid-cols-[min-content_auto_min-content]
     grid-rows-2
     items-center
     rounded-md
@@ -62,7 +62,7 @@ export const classNames = {
     -z-10
     h-1/3
     w-screen
-    bg-gradient-to-tl
+    bg-linear-to-tl
     from-palette-text
     via-transparent
     to-transparent

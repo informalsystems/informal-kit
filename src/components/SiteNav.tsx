@@ -76,7 +76,7 @@ export function SiteNav({
           `
             bottom-0
             bg-textColor/30
-            backdrop-blur-sm
+            backdrop-blur-xs
           `,
         isMobileNavOpen &&
           isInverted &&
@@ -262,8 +262,8 @@ export function SiteNav({
                             opacity-0
                             shadow-2xl
                             shadow-brandColor/20
-                            group-has-[:focus]/navItem:pointer-events-auto
-                            group-has-[:focus]/navItem:opacity-100
+                            group-has-focus/navItem:pointer-events-auto
+                            group-has-focus/navItem:opacity-100
                           `,
                     )}
                     onClick={handleClickPopupMenu}

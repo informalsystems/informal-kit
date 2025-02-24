@@ -111,7 +111,7 @@ function CloseButton({
         size-16
         cursor-pointer
         justify-end
-        bg-gradient-to-bl
+        bg-linear-to-bl
         from-transparent
         via-transparent
         to-transparent
@@ -125,10 +125,10 @@ function CloseButton({
         group-hover:via-transparent
         group-hover:to-transparent
         group-hover:opacity-100
-        group-hover:hover:size-24
-        group-hover:hover:pr-2
-        group-hover:hover:pt-2
-        group-hover:hover:text-lg
+        hover:group-hover:size-24
+        hover:group-hover:pr-2
+        hover:group-hover:pt-2
+        hover:group-hover:text-lg
       "
     >
       {children}

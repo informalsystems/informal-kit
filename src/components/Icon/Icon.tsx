@@ -15,7 +15,7 @@ export function Icon({
 
   return (
     <span
-      className={twMerge(`!no-underline`, className)}
+      className={twMerge(`no-underline!`, className)}
       {...otherProps}
     >
       <i
