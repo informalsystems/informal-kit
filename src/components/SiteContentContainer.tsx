@@ -15,9 +15,6 @@ export function SiteContentContainer({
           container
           mx-auto
           px-6
-          xl:max-w-(--breakpoint-lg)
-          xl:p-0
-          2xl:max-w-(--breakpoint-xl)
         `,
         className,
       )}

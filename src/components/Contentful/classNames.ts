@@ -26,8 +26,8 @@ export const classNames = {
     twMerge(
       `
         stroke-accent-pink/30
-        transition-all
         inverted:stroke-white
+        transition-all
         dark:stroke-white
       `,
       isHovering
@@ -44,34 +44,34 @@ export const classNames = {
   editButton: ({ buttonPosition = 'top right', isHovering = false }) =>
     twMerge(
       `
+        bg-accent-pink
+        inverted:bg-white
+        inverted:[&_*]:text-text-color
+        dark:**:text-text-color
         pointer-events-none
         absolute
         flex
         gap-1
-        whitespace-nowrap
-        bg-accent-pink
         px-3
         py-1
         text-xs
+        whitespace-nowrap
         opacity-0
         transition-all
-        hover:scale-105
-        inverted:bg-white
-        dark:bg-white
         **:text-white
-        inverted:[&_*]:text-textColor
-        dark:**:text-textColor
+        hover:scale-105
+        dark:bg-white
       `,
       buttonPosition === 'top right'
         ? `
-            right-0
             top-0
+            right-0
             origin-top-right
             rounded-bl
           `
         : `
-            left-1/2
             top-1/2
+            left-1/2
             -translate-x-1/2
             -translate-y-1/2
             rounded

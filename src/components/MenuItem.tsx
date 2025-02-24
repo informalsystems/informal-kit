@@ -1,11 +1,11 @@
+import { Atom, AtomProps } from '@/components/Atom'
 import { Icon, IconString } from '@/components/Icon'
-import { StyledText, StyledTextProps } from '@/components/StyledText'
 import Link from 'next/link'
 import { ElementType, MouseEvent, ReactNode } from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 
 export type MenuItemProps<T extends 'button' | 'a' | typeof Link> = Omit<
-  StyledTextProps<T>,
+  AtomProps<T>,
   'as' | 'children'
 > & {
   as?: T
@@ -42,7 +42,7 @@ export function MenuItem<T extends 'button' | 'a' | typeof Link>({
   }
 
   return (
-    <StyledText
+    <Atom
       as={Component}
       className={twMerge(
         'group flex w-full items-center gap-2',
@@ -81,6 +81,6 @@ export function MenuItem<T extends 'button' | 'a' | typeof Link>({
           </span>
         )}
       </span>
-    </StyledText>
+    </Atom>
   )
 }

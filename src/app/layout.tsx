@@ -7,7 +7,6 @@ import { Glegoo, Inter } from 'next/font/google'
 import Script from 'next/script'
 import { CSSProperties } from 'react'
 import { twJoin } from 'tailwind-merge'
-import { sitePalette } from '../../tailwind.config'
 import './global.css'
 
 export async function generateMetadata() {
@@ -31,20 +30,14 @@ const displayFont = Glegoo({
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   const { editableContent } = await getEditableContentFromContentful()
 
   return (
     <SiteContextProvider editableContent={editableContent}>
       <html
         lang="en"
-        style={
-          {
-            '--text-color': sitePalette.brand[500],
-          } as CSSProperties
-        }
+        style={{ '--text-color': 'var(--color-text-color)' } as CSSProperties}
       >
         <head>
           <Script
@@ -59,8 +52,9 @@ export default async function RootLayout({
             bodyFont.variable,
             displayFont.variable,
             `
-              overflow-x-hidden
               text-textColor
+              min-h-screen
+              overflow-x-hidden
             `,
           )}
         >

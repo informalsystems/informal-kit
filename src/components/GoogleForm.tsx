@@ -1,6 +1,6 @@
 'use client'
 
-import { StyledText } from '@/components'
+import { Atom } from '@/components'
 import { useToasts } from '@/components/Toasts'
 import { FormActionResponse } from '@/lib/types'
 import { ComponentProps, useActionState, useEffect } from 'react'
@@ -98,12 +98,12 @@ export function GoogleForm({
           lg:col-span-2
         "
       >
-        <StyledText
+        <Atom
           as="button"
           variant="button.primary"
         >
           Send
-        </StyledText>
+        </Atom>
       </div>
     </form>
   )

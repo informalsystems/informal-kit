@@ -12,7 +12,7 @@ import { ItalicText } from './renderers/ItalicText'
 import { Paragraph } from './renderers/Paragraph'
 import { Quote } from './renderers/Quote'
 
-interface ContentfulContentProps {
+interface ContentRendererProps {
   content?: Document
   decorativeHeadings?: boolean
   headingLevel?: number
@@ -20,13 +20,13 @@ interface ContentfulContentProps {
   paragraphsControlOrphans?: boolean
 }
 
-export function ContentfulContentRenderer({
+export function ContentRenderer({
   content,
   decorativeHeadings = false,
   headingLevel = 1,
   headingsControlOrphans = true,
   paragraphsControlOrphans = false,
-}: ContentfulContentProps) {
+}: ContentRendererProps) {
   if (!content) return null
 
   function getHeadingProps(originalLevel: number) {

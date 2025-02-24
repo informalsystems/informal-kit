@@ -1,6 +1,6 @@
 'use client'
 
-import { twMerge } from 'tailwind-merge'
+import { Atom } from '@/components/Atom'
 import { Popover, PopoverProps } from './Popover'
 
 type SharedPopoverProps = Omit<
@@ -21,15 +21,17 @@ export function Tooltip({
 }: TooltipProps) {
   return (
     <Popover
-      classNamesForPopover={twMerge(
-        'dark',
-        'pointer-events-none',
-        'w-max max-w-60 px-4 py-2',
-        'rounded-2xl bg-black/90 text-white',
-        'text-left text-sm font-normal',
-        classNamesForTooltip,
-      )}
-      childrenForPopover={tipContents}
+      triggerType="hover"
+      classNamesForPopover="pointer-events-none"
+      childrenForPopover={
+        <Atom
+          as="div"
+          variant="popover"
+          className={classNamesForTooltip}
+        >
+          {tipContents}
+        </Atom>
+      }
       {...otherProps}
     >
       {children}

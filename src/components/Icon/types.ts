@@ -12,6 +12,8 @@ export type IconString =
   | `brands:${BrandIconName}`
   | `${Exclude<IconVariant, 'brands'>}:${RegularIconName}`
 
+export type IconName = RegularIconName | BrandIconName
+
 export type IconRotationOption =
   | 90
   | 180

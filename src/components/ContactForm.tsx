@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, StyledText, TextArea } from '@/components'
+import { Atom, Input, TextArea } from '@/components'
 import { useToasts } from '@/components/Toasts'
 import { FormActionResponse } from '@/lib/types'
 import { ComponentProps, useActionState, useEffect } from 'react'
@@ -130,12 +130,12 @@ export function ContactForm({
           lg:col-span-2
         "
       >
-        <StyledText
+        <Atom
           as="button"
           variant="button.primary"
         >
           Send
-        </StyledText>
+        </Atom>
       </div>
     </form>
   )

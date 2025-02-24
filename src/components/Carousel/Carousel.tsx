@@ -1,6 +1,6 @@
 'use client'
 
-import { Contentful, Icon, StyledText } from '@/components'
+import { Atom, Contentful, Icon } from '@/components'
 import { ReactNode, useEffect, useState } from 'react'
 import { classNames } from './classNames'
 
@@ -79,16 +79,16 @@ export function Carousel({
         </div>
 
         <div className={classNames.slideControlsContainer}>
-          <StyledText
+          <Atom
             role="button"
             variant="link"
             onClick={handleClickPrevious}
           >
             <Icon name="arrow-left-long" />
             <span className="sr-only">Previous</span>
-          </StyledText>
+          </Atom>
 
-          <StyledText
+          <Atom
             role="button"
             variant="link"
             onClick={() => setIsAutoPlaying(isAutoPlaying => !isAutoPlaying)}
@@ -99,18 +99,18 @@ export function Carousel({
               variant="sharp-solid"
             />
             <span className="sr-only">{isAutoPlaying ? 'Pause' : 'Play'}</span>
-          </StyledText>
+          </Atom>
 
-          <StyledText
+          <Atom
             role="button"
             variant="link"
             onClick={handleClickNext}
           >
             <span className="sr-only">Next</span>
             <Icon name="arrow-right-long" />
-          </StyledText>
+          </Atom>
 
-          <StyledText
+          <Atom
             className={classNames.progressText({ isTransitioning })}
             style={{
               transitionDuration: `${transitionDuration}ms`,
@@ -118,7 +118,7 @@ export function Carousel({
             variant="label"
           >
             {activeImageIndex + 1} of {images.length}
-          </StyledText>
+          </Atom>
 
           <div className={classNames.progressBarContainer({ isAutoPlaying })}>
             <div

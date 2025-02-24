@@ -1,5 +1,5 @@
+import { Atom } from '@/components/Atom'
 import { Icon } from '@/components/Icon'
-import { StyledText } from '@/components/StyledText'
 import { isExternalHref } from '@/lib/isExternalHref'
 import Link from 'next/link'
 import { Children, MouseEvent, ReactNode } from 'react'
@@ -27,13 +27,10 @@ export function Hyperlink({
 
   const variant = isButton ? (`button.${buttonType!}` as const) : 'link'
 
-  const isExternalLink = isExternalHref(
-    node.data.uri,
-    typeof window !== 'undefined',
-  )
+  const isExternalLink = isExternalHref(node.data.uri)
 
   return (
-    <StyledText
+    <Atom
       as={Link}
       aria-disabled={node.data.uri === '#' ? 'true' : undefined}
       className="not-prose"
@@ -51,6 +48,6 @@ export function Hyperlink({
           variant="light"
         />
       )}
-    </StyledText>
+    </Atom>
   )
 }

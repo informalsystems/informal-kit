@@ -1,12 +1,32 @@
 'use client'
 
-import { Contentful, SiteContentContainer } from '@/components'
+import { Atom, ContentfulSpotCopy, SiteContentContainer } from '@/components'
+import { MenuButton } from '@/components/MenuButton'
 
 export default function Home() {
   return (
     <SiteContentContainer>
-      <h1>Editable Content Demo</h1>
-      <Contentful.EditableContent.Body path="editable-content-demo" />
+      <Atom variant="label">Editable Content Demo</Atom>
+      <ContentfulSpotCopy path="editable-content-demo" />
+
+      <MenuButton
+        items={[
+          {
+            icon: 'arrow-right-long',
+            label: 'Editable Content Demo',
+            onClick: () => {
+              console.log('Editable Content Demo')
+            },
+          },
+        ]}
+      >
+        <Atom
+          variant="button.primary"
+          tooltip="Optional tooltip prop"
+        >
+          Editable Content Demo
+        </Atom>
+      </MenuButton>
     </SiteContentContainer>
   )
 }

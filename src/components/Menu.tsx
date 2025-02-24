@@ -1,3 +1,4 @@
+import { Atom } from '@/components/Atom'
 import { MenuItem, MenuItemProps } from '@/components/MenuItem'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -8,7 +9,11 @@ export interface MenuProps extends Omit<ComponentProps<'ul'>, 'children'> {
 
 export function Menu({ items, ...props }: MenuProps) {
   return (
-    <ul {...props}>
+    <Atom
+      as="ul"
+      variant="popover"
+      {...props}
+    >
       {items.map(({ className, ...buttonProps }, index) => (
         <li key={index}>
           <MenuItem
@@ -17,6 +22,6 @@ export function Menu({ items, ...props }: MenuProps) {
           />
         </li>
       ))}
-    </ul>
+    </Atom>
   )
 }

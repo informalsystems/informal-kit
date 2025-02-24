@@ -1,7 +1,7 @@
 'use client'
 
+import { Atom, AtomProps } from '@/components/Atom'
 import { Icon } from '@/components/Icon'
-import { StyledText, StyledTextProps } from '@/components/StyledText'
 import {
   ComponentProps,
   ElementType,
@@ -18,7 +18,7 @@ type CopyToClipboardButtonProps<T extends ElementType = 'button'> = Omit<
   as?: T
   children?: (isCopied: boolean) => ReactNode
   payload: string
-  variant?: StyledTextProps<T>['variant']
+  variant?: AtomProps<T>['variant']
 }
 
 export function CopyToClipboardButton<T extends ElementType = 'button'>({
@@ -52,7 +52,7 @@ export function CopyToClipboardButton<T extends ElementType = 'button'>({
   const Component = String(as || 'button') as ElementType
 
   return (
-    <StyledText
+    <Atom
       as={Component}
       variant={variant}
       onClick={handleClickCopy.bind(null, payload)}
@@ -61,6 +61,6 @@ export function CopyToClipboardButton<T extends ElementType = 'button'>({
       {children?.(isCopied) ?? (
         <Icon name={isCopied ? 'clipboard-check' : 'clipboard'} />
       )}
-    </StyledText>
+    </Atom>
   )
 }

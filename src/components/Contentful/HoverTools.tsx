@@ -4,23 +4,29 @@ import { AnimatedOverlay, Icon } from '@/components'
 import { useAdvancedHover } from '@/lib/useAdvancedHover'
 import { ComponentProps, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { useReadLocalStorage } from 'usehooks-ts'
 import { classNames } from './classNames'
 
-interface ContentfulHotspotProps extends ComponentProps<'div'> {
+export interface HoverToolsProps extends ComponentProps<'div'> {
   buttonPosition?: 'top right' | 'center'
   disableEditing?: boolean
   contentfulURL: string
 }
 
-export function ContentfulHotspot({
+export function HoverTools({
   buttonPosition = 'top right',
   children,
   className,
   disableEditing = false,
   contentfulURL,
   ...otherProps
-}: ContentfulHotspotProps) {
+}: HoverToolsProps) {
+  const isHoverToEditEnabled =
+    useReadLocalStorage<boolean>('isHoverToEditEnabled') ?? true
+
   const containerElementRef = useRef<HTMLDivElement>(null)
+
+  const isEnabled = isHoverToEditEnabled === true && disableEditing === false
 
   const isHovering =
     useAdvancedHover({
@@ -28,7 +34,7 @@ export function ContentfulHotspot({
       unHoverDelay: 500,
       margin: 20,
       targetElementRef: containerElementRef,
-    }) && !disableEditing
+    }) && isEnabled
 
   function handleClickToEdit() {
     window.open(contentfulURL, '_blank')
@@ -40,7 +46,7 @@ export function ContentfulHotspot({
       ref={containerElementRef}
       {...otherProps}
     >
-      {disableEditing !== true &&
+      {isEnabled &&
         process.env.NEXT_PUBLIC_SHOW_CONTENTFUL_HOTSPOTS?.toLowerCase() ===
           'true' && (
           <AnimatedOverlay

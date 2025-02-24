@@ -9,9 +9,10 @@ export function Icon({
   name,
   rotate,
   spin = false,
+  variant = 'regular',
   ...otherProps
 }: IconProps) {
-  const [iconVariant = 'regular', iconName] = iconStringToVariantAndName(name)
+  const [iconVariant = variant, iconName] = iconStringToVariantAndName(name)
 
   return (
     <span
