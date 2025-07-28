@@ -134,7 +134,10 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
         className={twMerge(
           'fixed right-6 bottom-6 z-20',
           'flex items-center justify-center',
-          'size-8 rounded-full border-2 border-white',
+          'size-8',
+          'rounded-full',
+          'border-2',
+          'border-theme-bg-color',
           'bg-theme-accent-color/95',
           'text-theme-bg-color',
           'transition-transform duration-200',
