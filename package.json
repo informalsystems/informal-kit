@@ -12,9 +12,9 @@
     "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./src/lib/contentfulTypes"
   },
   "exports": {
-    "./styles/*": "./src/app/styles/*",
-    "./components/*": "./src/components/*",
-    "./lib/*": "./src/lib/*"
+    "./styles/*": "./app/styles/*",
+    "./components/*": "./components/*",
+    "./lib/*": "./lib/*"
   },
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^17.1.0",
