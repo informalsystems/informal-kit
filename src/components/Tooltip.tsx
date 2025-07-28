@@ -1,6 +1,6 @@
 'use client'
 
-import { Atom } from '@/components/Atom'
+import { Atom } from './Atom'
 import { Popover, PopoverProps } from './Popover'
 
 type SharedPopoverProps = Omit<

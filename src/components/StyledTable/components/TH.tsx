@@ -1,6 +1,6 @@
-import { Icon } from "@/components/Icon"
-import { ComponentProps } from "react"
-import { twMerge } from "tailwind-merge"
+import { ComponentProps } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { Icon } from '../../Icon'
 
 export function TH({
   children,
@@ -10,11 +10,11 @@ export function TH({
   sortDirection,
   textAlign,
   ...otherProps
-}: ComponentProps<"th"> & {
+}: ComponentProps<'th'> & {
   isSortable?: boolean
   isSorted?: boolean
-  sortDirection?: "ASC" | "DESC"
-  textAlign?: "center" | "left" | "right"
+  sortDirection?: 'ASC' | 'DESC'
+  textAlign?: 'center' | 'left' | 'right'
 }) {
   return (
     <th
@@ -31,15 +31,15 @@ export function TH({
         `,
         isSortable &&
           `
-            cursor-pointer
             hover:bg-palette-beige/10
+            cursor-pointer
           `,
-        textAlign === "center"
-          ? "sm:text-center"
-          : textAlign === "right"
-            ? "sm:text-right"
-            : "sm:text-left",
-        className
+        textAlign === 'center'
+          ? 'sm:text-center'
+          : textAlign === 'right'
+            ? 'sm:text-right'
+            : 'sm:text-left',
+        className,
       )}
       {...otherProps}
     >
@@ -53,11 +53,11 @@ export function TH({
             gap-1
             whitespace-nowrap
         `,
-          textAlign === "center"
-            ? "text-center"
-            : textAlign === "right"
-              ? "text-right"
-              : "text-left"
+          textAlign === 'center'
+            ? 'text-center'
+            : textAlign === 'right'
+              ? 'text-right'
+              : 'text-left',
         )}
       >
         {children ?? <>&nbsp;</>}
@@ -68,18 +68,18 @@ export function TH({
                 transition-all
                 group-hover/table-cell:opacity-50
               `,
-              isSorted ? "opacity-100!" : "opacity-0",
-              sortDirection === "ASC" ? "rotate-0" : "rotate-180",
-              textAlign === "right" && "-order-1",
+              isSorted ? 'opacity-100!' : 'opacity-0',
+              sortDirection === 'ASC' ? 'rotate-0' : 'rotate-180',
+              textAlign === 'right' && '-order-1',
               !isSorted &&
-                textAlign === "center" &&
+                textAlign === 'center' &&
                 `
                   absolute
-                  left-full
                   top-1/2
-                  -translate-y-1/2
+                  left-full
                   translate-x-1
-                `
+                  -translate-y-1/2
+                `,
             )}
           >
             <Icon name="solid:chevron-up" />

@@ -1,17 +1,16 @@
 'use client'
 
-import { Atom } from '@/components'
-import { useToasts } from '@/components/Toasts'
-import { FormActionResponse } from '@/lib/types'
 import { ComponentProps, useActionState, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { FormActionResponse } from '../lib/types'
+import { useToasts } from './Toasts'
 
 interface GoogleFormProps extends ComponentProps<'form'> {
   googleFormID: string
 }
 
 async function submitGoogleForm(
-  _previousState: FormActionResponse,
+  previousState: FormActionResponse,
   data: FormData,
 ) {
   const fieldValues = Object.fromEntries(data.entries()) as Record<
@@ -41,7 +40,6 @@ async function submitGoogleForm(
 }
 
 export function GoogleForm({
-  action,
   children,
   className,
   googleFormID,
@@ -54,16 +52,15 @@ export function GoogleForm({
   )
 
   useEffect(() => {
-    if (formActionResponse?.success) {
+    if (formActionResponse) {
       setToasts([
-        { message: 'Form submitted successfully!', variant: 'success' },
-      ])
-    } else {
-      setToasts([
-        { message: formActionResponse?.messages?.[0], variant: 'error' },
+        {
+          message: formActionResponse.messages[0],
+          variant: formActionResponse.success ? 'success' : 'error',
+        },
       ])
     }
-  }, [formActionResponse])
+  }, [formActionResponse, setToasts])
 
   return (
     <form
@@ -98,12 +95,7 @@ export function GoogleForm({
           lg:col-span-2
         "
       >
-        <Atom
-          as="button"
-          variant="button.primary"
-        >
-          Send
-        </Atom>
+        <button className="button-primary">Send</button>
       </div>
     </form>
   )

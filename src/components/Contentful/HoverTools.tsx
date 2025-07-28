@@ -1,11 +1,60 @@
 'use client'
 
-import { AnimatedOverlay, Icon } from '@/components'
-import { useAdvancedHover } from '@/lib/useAdvancedHover'
 import { ComponentProps, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { useReadLocalStorage } from 'usehooks-ts'
-import { classNames } from './classNames'
+import { useAdvancedHover } from '../../lib/useAdvancedHover'
+import { useIsInverted } from '../../lib/useIsInverted'
+import { Icon } from '../Icon'
+import { AnimatedOverlay } from './AnimatedOverlay'
+
+const classNames = {
+  tracerAndButtonContainer: ({ isHovering = false }) =>
+    twMerge(
+      'pointer-events-none',
+      'z-50',
+      'rounded-[20px]',
+      'transition-[background,opacity]',
+      isHovering
+        ? ['bg-theme-accent-color/5', 'opacity-100', 'duration-500']
+        : ['bg-theme-accent-color/0', 'opacity-50', 'duration-1000'],
+    ),
+
+  path: ({ isHovering = false }) =>
+    twMerge(
+      'stroke-theme-accent-color/30',
+      'transition-all',
+      'is-inverted:stroke-white',
+      isHovering ? 'opacity-100 duration-1000' : 'opacity-0 duration-500',
+    ),
+
+  editButton: ({ buttonPosition = 'top right', isHovering = false }) =>
+    twMerge(
+      'bg-theme-accent-color',
+      'text-theme-bg-color',
+      'pointer-events-none',
+      'absolute',
+      'flex gap-1',
+      'px-3 py-1',
+      'text-xs',
+      'whitespace-nowrap',
+      'opacity-0',
+      'transition-all',
+      'hover:scale-105',
+
+      buttonPosition === 'top right'
+        ? ['top-0', 'right-0', 'origin-top-right', 'rounded-bl']
+        : [
+            'top-1/2',
+            'left-1/2',
+            '-translate-x-1/2',
+            '-translate-y-1/2',
+            'rounded',
+          ],
+
+      isHovering && ['cursor-pointer', 'pointer-events-auto', 'opacity-100'],
+    ),
+}
 
 export interface HoverToolsProps extends ComponentProps<'div'> {
   buttonPosition?: 'top right' | 'center'
@@ -36,13 +85,15 @@ export function HoverTools({
       targetElementRef: containerElementRef,
     }) && isEnabled
 
+  const isInverted = useIsInverted(containerElementRef)
+
   function handleClickToEdit() {
     window.open(contentfulURL, '_blank')
   }
 
   return (
     <div
-      className={twMerge(`relative`, className)}
+      className={twMerge('relative', isInverted && 'is-inverted', className)}
       ref={containerElementRef}
       {...otherProps}
     >

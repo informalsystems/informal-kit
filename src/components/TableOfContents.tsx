@@ -1,25 +1,25 @@
 'use client'
 
-import { slugify } from '@/lib/slugify'
 import { takeWhile } from 'lodash'
 import Link from 'next/link'
 import {
   ComponentProps,
   ReactNode,
   ReactPortal,
+  RefObject,
   useEffect,
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
+import { slugify } from '../lib/slugify'
 
-export interface TableOfContentsProps
-  extends Omit<ComponentProps<'nav'>, 'children'> {
+interface TableOfContentsProps extends Omit<ComponentProps<'nav'>, 'children'> {
   classNamesForButton?: string
   classNamesForChildrenContainer?: string
   classNamesForContainer?: string
   classNamesForItem?: string
-  elementSelector: string
+  forElement: RefObject<HTMLElement | null>
   headingsSelector?: string
   renderButton?: (renderProps: HeadingDescriptor) => ReactNode
   renderHeadingAnchor?: (renderProps: HeadingDescriptor) => ReactNode
@@ -42,7 +42,7 @@ export function TableOfContents({
   classNamesForChildrenContainer,
   classNamesForContainer,
   classNamesForItem,
-  elementSelector,
+  forElement,
   headingsSelector = 'h1, h2, h3, h4, h5, h6',
   renderButton,
   renderHeadingAnchor,
@@ -56,10 +56,8 @@ export function TableOfContents({
   const [portals, setPortals] = useState<ReactPortal[]>([])
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval>
-
     function getHeadingDescriptors() {
-      const element = document.querySelector(elementSelector)
+      const element = forElement.current
 
       if (!element) return
 
@@ -101,10 +99,10 @@ export function TableOfContents({
       )
     }
 
-    interval = setInterval(getHeadingDescriptors, 500)
+    const interval = setInterval(getHeadingDescriptors, 500)
 
     return () => clearInterval(interval)
-  }, [elementSelector, headingsSelector])
+  }, [forElement, headingsSelector, renderHeadingAnchor])
 
   if (!headingDescriptors.length) return null
 

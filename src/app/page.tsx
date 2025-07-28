@@ -1,7 +1,7 @@
 'use client'
 
-import { Atom, ContentfulSpotCopy, SiteContentContainer } from '@/components'
-import { MenuButton } from '@/components/MenuButton'
+import { Atom, ContentfulSpotCopy, SiteContentContainer } from '../components'
+import { MenuButton } from '../components/MenuButton'
 
 export default function Home() {
   return (

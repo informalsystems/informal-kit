@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   createContext,
@@ -7,67 +7,119 @@ import {
   SetStateAction,
   useContext,
   useState,
-} from "react"
-import { createPortal } from "react-dom"
-import { useIsClient } from "usehooks-ts"
-import { classNames } from "./classNames"
-import { Toasts } from "./Toasts"
+} from 'react'
+import { createPortal } from 'react-dom'
+import { useIsClient } from 'usehooks-ts'
+import { CollapsibleBox } from '../CollapsibleBox'
+import { Toast, ToastDescriptor } from '../Toasts'
+import { Toasts } from './Toasts'
 
-export interface Toast {
-  _id?: string
-  variant: keyof (typeof classNames)["variants"]
-  message: ReactNode
+export interface DismissibleToastDescriptor extends ToastDescriptor {
   isDismissible?: boolean
 }
 
 export const ToastContext = createContext<{
-  toasts: Toast[]
-  setToasts: Dispatch<SetStateAction<Toast[]>>
+  toasts: ToastDescriptor[]
+  setToasts: Dispatch<SetStateAction<DismissibleToastDescriptor[]>>
 }>({
   toasts: [],
   setToasts: () => {},
 })
 
+const dismissibleByDefault = ['info', 'warning', 'error', 'success']
+
 export function ToastContextProvider({ children }: { children: ReactNode }) {
   const isClient = useIsClient()
-  const [toasts, setInnerToasts] = useState<Toast[]>([])
+  const [toasts, setInnerToasts] = useState<ToastDescriptor[]>([])
+  const [collapsedToastIds, setCollapsedToastIds] = useState<string[]>([])
 
-  function setToasts(newToasts: Toast[] | ((prevToasts: Toast[]) => Toast[])) {
-    let newToastsWithIds: Toast[]
+  function setToasts(
+    newToasts:
+      | DismissibleToastDescriptor[]
+      | ((prevToasts: ToastDescriptor[]) => DismissibleToastDescriptor[]),
+  ) {
+    setInnerToasts(currentToasts => {
+      const actualNewToasts =
+        typeof newToasts === 'function' ? newToasts(currentToasts) : newToasts
 
-    if (typeof newToasts === "function") {
-      newToastsWithIds = newToasts(toasts).map((toast) => ({
-        ...toast,
-        _id: toast._id ?? crypto.randomUUID(),
-      }))
-    } else {
-      newToastsWithIds = newToasts.map((toast) => ({
-        ...toast,
-        _id: toast._id ?? crypto.randomUUID(),
-      }))
-    }
+      let newToastsWithIdsAndDismissButtons: ToastDescriptor[]
 
-    setInnerToasts(newToastsWithIds)
+      newToastsWithIdsAndDismissButtons = actualNewToasts.map(
+        ({ isDismissible, ...toast }) => {
+          const isNewToast = !toast._id
+
+          const toastId = isNewToast ? crypto.randomUUID() : toast._id!
+
+          const isDismissibleByDefault = dismissibleByDefault.includes(
+            toast.variant,
+          )
+
+          const dismissButton =
+            isNewToast &&
+            (isDismissible ||
+              (isDismissibleByDefault && isDismissible !== false))
+              ? {
+                  label: 'Dismiss',
+                  onClick: collapseToastById.bind(null, toastId),
+                }
+              : undefined
+
+          return {
+            ...toast,
+            _id: toastId,
+            actionButtonPrimary: toast.actionButtonPrimary ?? dismissButton,
+            actionButtonSecondary:
+              toast.actionButtonPrimary && !toast.actionButtonSecondary
+                ? dismissButton
+                : toast.actionButtonSecondary,
+          }
+        },
+      )
+
+      return newToastsWithIdsAndDismissButtons
+    })
   }
+
+  function dismissToastById(toastId: string) {
+    setInnerToasts(prevToasts =>
+      prevToasts.filter(toast => toast._id !== toastId),
+    )
+  }
+
+  function collapseToastById(toastId: string) {
+    setCollapsedToastIds(prevCollapsedToastIds => [
+      ...prevCollapsedToastIds,
+      toastId,
+    ])
+  }
+
+  const renderedToasts = (
+    <Toasts>
+      {toasts.map(({ _id, message, ...toast }) => {
+        const isCollapsed = !!_id && collapsedToastIds.includes(_id)
+
+        return (
+          <CollapsibleBox
+            key={_id}
+            isCollapsed={isCollapsed}
+            onCollapseEnd={!!_id ? dismissToastById.bind(null, _id) : undefined}
+          >
+            <Toast
+              id={_id}
+              {...toast}
+            >
+              {message}
+            </Toast>
+          </CollapsibleBox>
+        )
+      })}
+    </Toasts>
+  )
 
   return isClient ? (
     <ToastContext.Provider value={{ toasts, setToasts }}>
       {children}
-      {createPortal(
-        <Toasts>
-          {toasts.map((toast) => (
-            <Toasts.Toast
-              id={toast._id}
-              key={toast._id}
-              isDismissible={toast.isDismissible}
-              variant={toast.variant}
-            >
-              {toast.message}
-            </Toasts.Toast>
-          ))}
-        </Toasts>,
-        document.body
-      )}
+      {createPortal(renderedToasts, document.body)}
     </ToastContext.Provider>
   ) : null
 }
@@ -75,7 +127,7 @@ export function ToastContextProvider({ children }: { children: ReactNode }) {
 export function useToasts() {
   const context = useContext(ToastContext)
   if (!context) {
-    throw new Error("useToasts must be used within a ToastContextProvider")
+    throw new Error('useToasts must be used within a ToastContextProvider')
   }
   return context
 }

@@ -1,44 +1,62 @@
 'use client'
 
-import { ComponentProps, ReactNode } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { useIntersectionObserver } from 'usehooks-ts'
+import { useEffect, useRef, useState } from 'react'
+import Sticky from 'react-stickynode'
 
-export { StickyBox }
-
-interface StickyBoxProps extends Omit<ComponentProps<'div'>, 'children'> {
-  children: ReactNode | ((renderProps: { isStuck: boolean }) => ReactNode)
-  stickyClasses?: string | string[]
+interface StickyBoxProps {
+  children: React.ReactNode
+  top?: string
+  enabled?: boolean
+  innerZ?: number
+  className?: string
+  bottomBoundary?: string | number
 }
 
-const StickyBox = ({
+export function StickyBox({
   children,
+  top = '.site-header',
+  enabled = true,
+  innerZ = 10,
   className,
-  stickyClasses,
-  ...otherProps
-}: StickyBoxProps) => {
-  const { isIntersecting, ref } = useIntersectionObserver({
-    threshold: 1,
-  })
+  bottomBoundary,
+}: StickyBoxProps) {
+  const [dynamicTop, setDynamicTop] = useState<string>(top)
+  const stickyRef = useRef<Sticky>(null)
+  const resizeObserverRef = useRef<ResizeObserver | null>(null)
 
-  const isStuck = isIntersecting
+  useEffect(() => {
+    if (top.startsWith('.')) {
+      const headerElement = document.querySelector(top)
+      if (!headerElement) return
+
+      const updateTop = () => {
+        const rect = headerElement.getBoundingClientRect()
+        const height = rect.height
+        setDynamicTop(`${height}px`)
+      }
+
+      updateTop()
+
+      resizeObserverRef.current = new ResizeObserver(updateTop)
+      resizeObserverRef.current.observe(headerElement)
+
+      return () => {
+        resizeObserverRef.current?.disconnect()
+      }
+    }
+  }, [top])
 
   return (
-    <div
-      className={twMerge(
-        `
-          group/sticky-box
-          sticky
-          -top-px
-        `,
-        className,
-        isStuck && 'is-stuck',
-        isStuck && stickyClasses,
-      )}
-      ref={ref}
-      {...otherProps}
+    <Sticky
+      ref={stickyRef}
+      activeClass="is-stuck"
+      innerZ={innerZ}
+      top={dynamicTop}
+      enabled={enabled}
+      bottomBoundary={bottomBoundary}
+      className={className}
     >
-      {typeof children === 'function' ? children({ isStuck }) : children}
-    </div>
+      {children}
+    </Sticky>
   )
 }

@@ -1,5 +1,3 @@
-import { Atom } from '@/components/Atom'
-import { useMultipleRefs } from '@/lib/useMultipleRefs'
 import {
   ChangeEvent,
   ComponentPropsWithRef,
@@ -9,6 +7,8 @@ import {
   useState,
 } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { useMultipleRefs } from '../lib/useMultipleRefs'
+import { Atom } from './Atom'
 
 interface ElasticTextareaProps extends ComponentPropsWithRef<'textarea'> {}
 

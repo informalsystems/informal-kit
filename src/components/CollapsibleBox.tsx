@@ -20,8 +20,15 @@ export function CollapsibleBox<T extends ElementType = 'div'>({
   return (
     <Component
       className={twMerge(
-        `grid grid-rows-[0fr] transition-all`,
-        !isCollapsed && `grid-rows-[1fr]`,
+        `
+          grid
+          grid-rows-[0fr]
+          transition-all
+        `,
+        !isCollapsed &&
+          `
+            grid-rows-[1fr]
+          `,
         className,
       )}
       {...otherProps}

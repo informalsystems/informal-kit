@@ -1,0 +1,26 @@
+@utility popover {
+  @apply z-50 min-w-[200px];
+  @apply -mx-3 py-1;
+  @apply bg-theme-bg-color-shaded/80;
+  @apply flex flex-col;
+  @apply overflow-hidden rounded-lg;
+  @apply shadow-theme-accent-color/20 shadow-2xl;
+  @apply backdrop-blur-sm;
+  @apply invisible translate-y-2 opacity-0;
+
+  &[data-is-positioned='true'] {
+    @apply visible;
+  }
+
+  &[data-status] {
+    @apply transition-all;
+  }
+
+  &[data-status='open'] {
+    @apply translate-y-0 opacity-100;
+  }
+
+  &[data-status='close'] {
+    @apply translate-y-2 opacity-0;
+  }
+}

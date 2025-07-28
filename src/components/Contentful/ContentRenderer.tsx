@@ -30,10 +30,19 @@ export function ContentRenderer({
   if (!content) return null
 
   function getHeadingProps(originalLevel: number) {
+    const firstHeadingLevel = content
+      ? Math.min(
+          ...content.content
+            .filter(node => node.nodeType.startsWith('heading-'))
+            .map(node => parseInt(node.nodeType.slice(-1))),
+        )
+      : 1
+    const offset = headingLevel - firstHeadingLevel
+
     return {
       controlOrphans: headingsControlOrphans,
       decorated: decorativeHeadings,
-      headingLevel: headingLevel + (originalLevel - 1),
+      headingLevel: originalLevel + offset,
       originalLevel,
     }
   }
@@ -55,55 +64,29 @@ export function ContentRenderer({
         return <EmbeddedEntry node={node} />
       },
       [BLOCKS.HEADING_1]: (node, children) => (
-        <Heading
-          {...getHeadingProps(1)}
-          children={children}
-        />
+        <Heading {...getHeadingProps(1)}>{children}</Heading>
       ),
       [BLOCKS.HEADING_2]: (node, children) => (
-        <Heading
-          {...getHeadingProps(2)}
-          children={children}
-        />
+        <Heading {...getHeadingProps(2)}>{children}</Heading>
       ),
       [BLOCKS.HEADING_3]: (node, children) => (
-        <Heading
-          {...getHeadingProps(3)}
-          children={children}
-        />
+        <Heading {...getHeadingProps(3)}>{children}</Heading>
       ),
       [BLOCKS.HEADING_4]: (node, children) => (
-        <Heading
-          {...getHeadingProps(4)}
-          children={children}
-        />
+        <Heading {...getHeadingProps(4)}>{children}</Heading>
       ),
       [BLOCKS.HEADING_5]: (node, children) => (
-        <Heading
-          {...getHeadingProps(5)}
-          children={children}
-        />
+        <Heading {...getHeadingProps(5)}>{children}</Heading>
       ),
       [BLOCKS.PARAGRAPH]: (_, children) => (
-        <Paragraph
-          children={children}
-          paragraphsControlOrphans={paragraphsControlOrphans}
-        />
+        <Paragraph paragraphsControlOrphans={paragraphsControlOrphans}>
+          {children}
+        </Paragraph>
       ),
       [BLOCKS.QUOTE]: (node, children) => {
-        return (
-          <Quote
-            node={node}
-            children={children}
-          />
-        )
+        return <Quote node={node}>{children}</Quote>
       },
-      [INLINES.HYPERLINK]: (node, children) => (
-        <Hyperlink
-          node={node}
-          children={children}
-        />
-      ),
+      [INLINES.HYPERLINK]: node => <Hyperlink node={node} />,
     },
   })
 }

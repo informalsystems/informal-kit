@@ -1,13 +1,11 @@
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-interface SiteContentContainerProps extends ComponentProps<'section'> {}
-
 export function SiteContentContainer({
   children,
   className,
   ...otherProps
-}: SiteContentContainerProps) {
+}: ComponentProps<'section'>) {
   return (
     <section
       className={twMerge(
@@ -15,6 +13,10 @@ export function SiteContentContainer({
           container
           mx-auto
           px-6
+          py-20
+          xl:max-w-(--breakpoint-lg)
+          xl:px-0
+          2xl:max-w-(--breakpoint-xl)
         `,
         className,
       )}

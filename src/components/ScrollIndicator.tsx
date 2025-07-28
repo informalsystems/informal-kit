@@ -1,8 +1,8 @@
 'use client'
 
-import { Icon } from '@/components/Icon'
-import { useIsDocumentScrolled } from '@/lib/useIsDocumentScrolled'
 import { twMerge } from 'tailwind-merge'
+import { useIsDocumentScrolled } from '../lib/useIsDocumentScrolled'
+import { Icon } from './Icon'
 
 export function ScrollIndicator() {
   const { isDocumentScrolled, canDocumentScroll } = useIsDocumentScrolled()

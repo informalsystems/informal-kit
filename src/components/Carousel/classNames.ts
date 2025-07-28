@@ -1,28 +1,31 @@
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
+import { tw } from '../../lib/tw'
 
 export const classNames = {
-  container: twJoin(`
+  container: tw`
     relative
-  `),
+  `,
 
-  descriptionAndButtonsContainer: twJoin(`
-    portrait:mb-12
-    landscape:absolute
-    landscape:-top-6
-    landscape:left-[26rem]
-    landscape:right-0
-    landscape:z-10
-    landscape:ml-6
-    landscape:flex
-    landscape:h-64
-    landscape:flex-col
-    landscape:justify-between
-    landscape:pb-6
-  `),
+  descriptionAndButtonsContainer: tw`
+    mb-12
+    lg:absolute
+    lg:-top-6
+    lg:right-0
+    lg:left-104
+    lg:z-10
+    lg:mb-0
+    lg:ml-6
+    lg:flex
+    lg:h-64
+    lg:flex-col
+    lg:justify-between
+    lg:pb-6
+  `,
 
   description: ({ isActive = false }) =>
     twMerge(
       `
+        mt-6
         mb-3
         opacity-0
         transition-opacity
@@ -33,28 +36,22 @@ export const classNames = {
         `,
     ),
 
-  slideControlsContainer: twJoin(`
+  slideControlsContainer: tw`
     relative
     flex
     items-center
-    justify-center
     gap-3
     overflow-hidden
-    rounded-full
-    border-2
-    border-brandColor/5
-    p-2
     lowercase
-  `),
+  `,
 
   progressBarContainer: ({ isAutoPlaying = false }) =>
     twMerge(
       `
-        pointer-events-none
-        absolute
-        inset-0.5
-        opacity-0
-        transition-opacity
+        bg-accent-teal/10
+        w-64
+        opacity-20
+        transition-all
       `,
       isAutoPlaying &&
         `
@@ -62,31 +59,26 @@ export const classNames = {
         `,
     ),
 
-  progressBar: twJoin(`
-    h-full
-    w-0
-    rounded-l-full
-    bg-brandColor/5
-    transition-all
-    ease-linear
-  `),
-
-  playPauseIcon: ({ isAutoPlaying = false }) =>
+  progressBar: ({ isAutoPlaying = false }) =>
     twMerge(
-      isAutoPlaying
-        ? `
-            *:text-accent-pink
-          `
-        : `
-            *:text-accent-teal
-          `,
+      `
+        bg-accent-teal
+        h-2
+        w-0
+        transition-none
+        ease-linear
+      `,
+      isAutoPlaying &&
+        `
+          transition-all
+        `,
     ),
 
   progressText: ({ isTransitioning = false }) =>
     twMerge(
       `
-        whitespace-nowrap
         text-xs
+        whitespace-nowrap
         opacity-100
         transition-opacity
       `,
@@ -97,14 +89,16 @@ export const classNames = {
         `,
     ),
 
-  imagesContainer: twJoin(`
+  imagesContainer: tw`
     relative
+    mb-20
     flex
     h-96
     w-full
     items-end
     transition-all
-  `),
+    sm:mb-0
+  `,
 
   imageContainer: ({ isActive = false }) =>
     twMerge(
@@ -114,16 +108,21 @@ export const classNames = {
         size-32
         shrink-0
         grow-0
+        -translate-x-102
+        translate-y-40
         overflow-hidden
         rounded
         shadow-inner
-        transition-[width,height,margin,opacity]
+        transition-[width,height,margin,opacity,transform]
         ease-in-out
+        sm:translate-x-0
+        sm:translate-y-0
       `,
-
       isActive &&
         `
           size-96
+          translate-x-0
+          translate-y-0
         `,
     ),
 }

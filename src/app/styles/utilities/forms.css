@@ -1,0 +1,98 @@
+@utility hide-spinners {
+  & {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  &[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+@utility input-base {
+  @apply w-full;
+  @apply px-3;
+  @apply py-2;
+  @apply flex;
+  @apply outline-theme-accent-color!;
+  @apply ring-theme-accent-color!;
+  @apply border;
+  @apply rounded-md;
+  @apply bg-transparent;
+  @apply text-sm;
+  @apply transition-colors;
+  @apply focus:border-theme-accent-color;
+  @apply disabled:cursor-not-allowed;
+  @apply disabled:opacity-50;
+
+  &[type='number'] {
+    @apply numeric;
+  }
+}
+
+@utility input-text {
+  @apply input-base;
+}
+
+@utility input-textarea {
+  @apply input-base;
+  @apply resize-y;
+  @apply min-h-[80px];
+}
+
+@utility input-radio {
+  @apply size-4;
+  @apply appearance-none;
+  @apply rounded-full;
+  @apply border;
+  @apply bg-transparent;
+  @apply outline-none;
+  @apply checked:border-transparent;
+  @apply checked:bg-white;
+  @apply checked:shadow-[0_0_0_2px_var(--color-theme-accent-color)_inset];
+  @apply transition-colors;
+}
+
+@utility input-checkbox {
+  @apply input-radio;
+  @apply rounded-sm;
+  @apply border-2;
+  @apply border-theme-accent-color/50;
+  @apply checked:border-theme-accent-color;
+  @apply checked:bg-theme-accent-color;
+}
+
+@utility input-jumbo {
+  @apply input-base;
+  @apply hide-spinners;
+  @apply text-4xl;
+  @apply font-bold;
+  @apply leading-10;
+  @apply px-6;
+  @apply py-3;
+  @apply rounded-md;
+  @apply border-0;
+  @apply bg-theme-bg-color-shaded;
+}
+
+@utility label {
+  @apply text-theme-text-color-faded;
+  @apply text-xs;
+  @apply font-bold;
+  @apply uppercase;
+  @apply tracking-[0.1em];
+  @apply leading-6;
+}
+
+@utility label-field-pair {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-1;
+}

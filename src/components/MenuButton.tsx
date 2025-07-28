@@ -1,7 +1,7 @@
-import { Menu } from '@/components/Menu'
-import { MenuItemProps } from '@/components/MenuItem'
 import Link from 'next/link'
 import { ComponentProps } from 'react'
+import { Menu } from './Menu'
+import { MenuItemProps } from './MenuItem'
 import { Popover } from './Popover'
 
 export interface MenuButtonProps<T extends 'button' | 'a' | typeof Link>

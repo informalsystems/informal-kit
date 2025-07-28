@@ -1,53 +1,48 @@
-import { Atom } from '@/components/Atom'
-import { Icon } from '@/components/Icon'
-import { isExternalHref } from '@/lib/isExternalHref'
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import Link from 'next/link'
-import { Children, MouseEvent, ReactNode } from 'react'
+import { MouseEvent } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { isExternalHref } from '../../../lib/isExternalHref'
+import { Icon } from '../../Icon'
 
-export function Hyperlink({
-  node,
-  children,
-}: {
-  node: any
-  children: ReactNode
-}) {
-  const childrenAsArray = Children.toArray(children)
-  const linkContent = childrenAsArray[0]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function Hyperlink({ node }: { node: any }) {
+  const childrenAsHtml = documentToHtmlString(node)
 
   const isButton =
-    typeof linkContent === 'string' &&
-    linkContent.startsWith('[') &&
-    linkContent.endsWith(']')
+    childrenAsHtml.startsWith('[') && childrenAsHtml.endsWith(']')
 
   const buttonType = isButton
-    ? linkContent.startsWith('[[')
+    ? childrenAsHtml.startsWith('[[')
       ? 'secondary'
       : 'primary'
     : undefined
 
-  const variant = isButton ? (`button.${buttonType!}` as const) : 'link'
+  const variant = isButton ? (`button-${buttonType!}` as const) : 'link'
 
   const isExternalLink = isExternalHref(node.data.uri)
 
   return (
-    <Atom
-      as={Link}
+    <Link
       aria-disabled={node.data.uri === '#' ? 'true' : undefined}
-      className="not-prose"
+      className={twMerge('not-prose', variant)}
       href={node.data.uri}
       target={isExternalLink ? '_blank' : undefined}
-      variant={variant}
       onClick={(event: MouseEvent) => event.stopPropagation()}
     >
-      {isButton
-        ? String(linkContent).replace(/^\[+\s*(.+?)\]+\s*$/, '$1')
-        : linkContent}
+      <span
+        dangerouslySetInnerHTML={{
+          __html: isButton
+            ? childrenAsHtml.replace(/^\[+\s*(.+?)\]+\s*$/, '$1')
+            : childrenAsHtml,
+        }}
+      />
       {isExternalLink && (
         <Icon
           name="arrow-up-right-from-square"
           variant="light"
         />
       )}
-    </Atom>
+    </Link>
   )
 }

@@ -1,7 +1,10 @@
 'use client'
 
-import { Atom, Contentful, Icon } from '@/components'
-import { ReactNode, useEffect, useState } from 'react'
+import { SpotCopy } from '../Contentful/SpotCopy'
+import { Icon } from '../Icon'
+
+import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { twJoin } from 'tailwind-merge'
 import { classNames } from './classNames'
 
 interface CarouselProps {
@@ -30,11 +33,13 @@ export function Carousel({
     [[], []] as [ReactNode[], string[]],
   )
 
-  const showNext = () =>
+  const showNext = useCallback(() => {
     setActiveImageIndex(index => (index + 1) % images.length)
+  }, [images.length])
 
-  const showPrevious = () =>
+  const showPrevious = useCallback(() => {
     setActiveImageIndex(index => (index - 1 + images.length) % images.length)
+  }, [images.length])
 
   const handleClickNext = () => {
     setIsAutoPlaying(false)
@@ -46,14 +51,21 @@ export function Carousel({
     showPrevious()
   }
 
+  const handleClickImage = (index: number) => {
+    setIsAutoPlaying(false)
+    setActiveImageIndex(index)
+  }
+
   useEffect(() => {
     if (isAutoPlaying) {
       const interval = setInterval(showNext, autoPlayInterval)
       return () => clearInterval(interval)
     }
-  }, [isAutoPlaying])
+  }, [isAutoPlaying, autoPlayInterval, showNext])
 
   useEffect(() => {
+    if (!isAutoPlaying) return
+
     setIsTransitioning(true)
 
     const timer = setTimeout(() => {
@@ -61,16 +73,17 @@ export function Carousel({
     }, transitionDuration)
 
     return () => clearTimeout(timer)
-  }, [activeImageIndex, isAutoPlaying])
+  }, [activeImageIndex, isAutoPlaying, transitionDuration])
 
   return (
     <div className={classNames.container}>
       <div className={classNames.descriptionAndButtonsContainer}>
         <div>
-          <Contentful.EditableContent.Body
-            disableEditing={true}
-            headingLevel={2}
+          <SpotCopy
             path="informal/about/meet-the-team"
+            disableEditing={true}
+            decorativeHeadings
+            headingLevel={2}
           />
 
           <div className={classNames.description({ isActive: true })}>
@@ -79,56 +92,54 @@ export function Carousel({
         </div>
 
         <div className={classNames.slideControlsContainer}>
-          <Atom
-            role="button"
-            variant="link"
+          <button
+            className="link"
             onClick={handleClickPrevious}
           >
             <Icon name="arrow-left-long" />
             <span className="sr-only">Previous</span>
-          </Atom>
-
-          <Atom
-            role="button"
-            variant="link"
-            onClick={() => setIsAutoPlaying(isAutoPlaying => !isAutoPlaying)}
-          >
-            <Icon
-              className={classNames.playPauseIcon({ isAutoPlaying })}
-              name={isAutoPlaying ? 'pause' : 'play'}
-              variant="sharp-solid"
-            />
-            <span className="sr-only">{isAutoPlaying ? 'Pause' : 'Play'}</span>
-          </Atom>
-
-          <Atom
-            role="button"
-            variant="link"
-            onClick={handleClickNext}
-          >
-            <span className="sr-only">Next</span>
-            <Icon name="arrow-right-long" />
-          </Atom>
-
-          <Atom
-            className={classNames.progressText({ isTransitioning })}
-            style={{
-              transitionDuration: `${transitionDuration}ms`,
-            }}
-            variant="label"
-          >
-            {activeImageIndex + 1} of {images.length}
-          </Atom>
+          </button>
 
           <div className={classNames.progressBarContainer({ isAutoPlaying })}>
             <div
-              className={classNames.progressBar}
+              className={classNames.progressBar({ isAutoPlaying })}
               style={{
                 transitionDuration: `${isTransitioning ? 0 : autoPlayInterval - transitionDuration}ms`,
                 width: isTransitioning ? '0' : '100%',
               }}
             />
           </div>
+
+          <button
+            className="link"
+            onClick={handleClickNext}
+          >
+            <span className="sr-only">Next</span>
+            <Icon name="arrow-right-long" />
+          </button>
+
+          <button
+            className="link"
+            onClick={() => setIsAutoPlaying(isAutoPlaying => !isAutoPlaying)}
+          >
+            <Icon
+              name={isAutoPlaying ? 'pause' : 'play'}
+              variant="sharp-solid"
+            />
+            <span className="sr-only">{isAutoPlaying ? 'Pause' : 'Play'}</span>
+          </button>
+
+          <span
+            className={twJoin(
+              'label',
+              classNames.progressText({ isTransitioning }),
+            )}
+            style={{
+              transitionDuration: `${transitionDuration}ms`,
+            }}
+          >
+            {activeImageIndex + 1} of {images.length}
+          </span>
         </div>
       </div>
 
@@ -148,7 +159,7 @@ export function Carousel({
             style={{
               transitionDuration: `${transitionDuration}ms`,
             }}
-            onClick={setActiveImageIndex.bind(null, index)}
+            onClick={handleClickImage.bind(null, index)}
           >
             {image}
           </div>

@@ -1,19 +1,14 @@
-import { getContentfulRouteMetadata } from '@/lib/getContentfulRouteMetadata'
-import { startCase } from 'lodash'
+import startCase from 'lodash/startCase'
 import { headers } from 'next/headers'
 import invariant from 'tiny-invariant'
+import { getContentfulRouteMetadata } from './getContentfulRouteMetadata'
 
 // Assumes middleware: requestHeaders.set('x-url', request.url)
 export async function generateMetadataFromContentful() {
-  invariant(
-    process.env.NEXT_PUBLIC_METADATA_BASE_URL,
-    'Missing NEXT_PUBLIC_METADATA_BASE_URL',
-  )
+  invariant(process.env.NEXT_PUBLIC_URL, 'Missing NEXT_PUBLIC_URL')
 
   const headersList = await headers()
-
-  const requestURL =
-    headersList.get('x-url') ?? process.env.NEXT_PUBLIC_METADATA_BASE_URL
+  const requestURL = headersList.get('x-url') ?? process.env.NEXT_PUBLIC_URL
 
   const { pathname } = new URL(requestURL)
 
@@ -22,7 +17,7 @@ export async function generateMetadataFromContentful() {
       routePattern: pathname,
     })
 
-  const { pageDescription, keywords, pageTitle } = matchingRouteMetadata ?? {}
+  const { description, keywords, title } = matchingRouteMetadata ?? {}
 
   const pathSegments = pathname
     .replace(baseRouteMetadata?.routePattern ?? '/', '')
@@ -30,18 +25,27 @@ export async function generateMetadataFromContentful() {
     .filter(Boolean)
 
   const finalTitle = matchingRouteMetadata
-    ? [baseRouteMetadata?.pageTitle, pageTitle].filter(Boolean).join(' - ')
+    ? [baseRouteMetadata?.title, title].filter(Boolean).join(' - ')
     : pathSegments.length
-      ? [baseRouteMetadata?.pageTitle, ...pathSegments]
+      ? [baseRouteMetadata?.title, ...pathSegments]
           .filter(Boolean)
           .map(startCase)
           .join(' - ')
-      : baseRouteMetadata?.pageTitle
+      : baseRouteMetadata?.title
 
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_METADATA_BASE_URL),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_URL),
+    icons: `/favicon-${baseRouteMetadata?.favicon ?? 'blue-500'}.svg`,
     title: finalTitle,
-    description: pageDescription ?? baseRouteMetadata?.pageDescription,
+    description: description ?? baseRouteMetadata?.description,
     keywords: keywords ?? baseRouteMetadata?.keywords ?? [],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
   }
 }

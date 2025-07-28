@@ -3,10 +3,10 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 export interface TypeRouteMetadataFields {
     routePattern: EntryFieldTypes.Symbol;
     isBaseRoute: EntryFieldTypes.Boolean;
-    pageTitle?: EntryFieldTypes.Symbol;
-    pageDescription?: EntryFieldTypes.Text;
-    keywords?: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
-    json?: EntryFieldTypes.Object;
+    title?: EntryFieldTypes.Symbol;
+    description?: EntryFieldTypes.Text;
+    keywords?: EntryFieldTypes.Text;
+    favicon?: EntryFieldTypes.Symbol<"blue-300" | "blue-500" | "fuchsia-500" | "lavender-500" | "malachite" | "pink-500" | "rust-500" | "teal-500">;
 }
 
 export type TypeRouteMetadataSkeleton = EntrySkeletonType<TypeRouteMetadataFields, "routeMetadata">;

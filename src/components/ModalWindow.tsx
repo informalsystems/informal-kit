@@ -1,123 +1,162 @@
 'use client'
 
-import { Atom } from '@/components/Atom'
-import { Icon } from '@/components/Icon'
-import { ComponentPropsWithoutRef, MouseEvent, useEffect, useId } from 'react'
+import {
+  ComponentProps,
+  ElementType,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import { useIsClient } from 'usehooks-ts'
 
-export { ModalWindow }
-export type { ModalWindowProps }
-
-type ModalWindowVariant = keyof typeof windowClassNamesByVariant
-
-interface ModalWindowProps extends ComponentPropsWithoutRef<'div'> {
-  classNamesForCloseButton?: string | string[]
+type ModalWindowProps<T extends ElementType = 'section'> = ComponentProps<T> & {
+  as?: T
   isOpen: boolean
-  variant?: ModalWindowVariant
+  propsForBackdrop?: ComponentProps<'div'>
   onClose: () => void
 }
 
-const windowClassNamesByVariant = {
-  default: twJoin('max-h-[75vh] w-[75vw]', 'p-3', 'overflow-auto'),
-}
-
-const ModalWindow = ({
+export function ModalWindow<T extends ElementType = 'section'>({
+  as,
   children,
   className,
-  classNamesForCloseButton,
   isOpen,
-  variant = 'default',
+  propsForBackdrop,
   onClose,
   ...otherProps
-}: ModalWindowProps) => {
+}: ModalWindowProps<T>) {
   const isClient = useIsClient()
-  const modalWindowContainerId = useId()
+  const [modalState, setModalState] = useState<
+    'closed' | 'opening' | 'open' | 'closing'
+  >('closed')
+  const isOpenOrOpening = ['open', 'opening'].includes(modalState)
+  const isClosedOrClosing = ['closed', 'closing'].includes(modalState)
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null)
+
+  const handleClickClose = useCallback(() => {
+    clearTimer()
+    setModalState('closing')
+
+    timerRef.current = setTimeout(() => {
+      setModalState('closed')
+      onClose()
+    }, 500)
+  }, [onClose])
 
   useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const activeElement = document.activeElement
+    if (isOpen) {
+      clearTimer()
+      setModalState('opening')
 
-      if (event.key === 'Escape') {
-        if (
-          activeElement &&
-          ['INPUT', 'TEXTAREA'].includes(activeElement.tagName ?? '')
-        ) {
-          const activeInputElement = activeElement as
-            | HTMLTextAreaElement
-            | HTMLInputElement
+      timerRef.current = setTimeout(() => {
+        setModalState('open')
+      }, 500)
 
-          activeInputElement.blur()
+      return clearTimer
+    } else {
+      handleClickClose()
+    }
+  }, [isOpen, handleClickClose])
 
-          return
-        }
-
-        onClose()
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape' && isOpen) {
+        handleClickClose()
       }
     }
 
-    document.addEventListener('keyup', handleKeyPress)
+    window.addEventListener('keydown', handleKeyDown)
 
     return () => {
-      document.removeEventListener('keyup', handleKeyPress)
+      window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [onClose])
+  }, [handleClickClose, isOpen])
 
-  const handleClickClose = (event: MouseEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    onClose()
+  function clearTimer() {
+    clearTimeout(timerRef.current ?? 0)
   }
+
+  const Component = String(as || 'section') as ElementType
 
   return !isClient
     ? null
     : createPortal(
-        <div
-          id={`modal-window-container-${modalWindowContainerId}`}
-          className={twMerge(
-            'relative z-50 transition-opacity',
-            isOpen
-              ? 'pointer-events-auto opacity-100'
-              : 'pointer-events-none opacity-0',
-            className,
-          )}
-          {...otherProps}
-        >
-          <div
-            id={`modal-window-backdrop-${modalWindowContainerId}`}
-            className="fixed top-0 left-0 z-40 h-full w-full bg-black/50 backdrop-blur-[1px]"
-            onClick={onClose}
+        <>
+          <ModalWindow.Backdrop
+            {...propsForBackdrop}
+            className={twMerge(
+              `
+                pointer-events-none
+                opacity-0
+                transition-all
+                duration-500
+              `,
+              isOpenOrOpening &&
+                `
+                  pointer-events-auto
+                  opacity-100
+                `,
+              propsForBackdrop?.className,
+            )}
+            onClick={(...args) => {
+              handleClickClose()
+              propsForBackdrop?.onClick?.(...args)
+            }}
           />
 
-          <div
-            id={`modal-window-${modalWindowContainerId}`}
+          <Component
             className={twMerge(
-              'fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
-              'flex flex-col justify-stretch',
-              'bg-bg border-border rounded-2xl shadow-2xl',
-              windowClassNamesByVariant[variant as ModalWindowVariant],
+              `
+                fixed
+                top-1/2
+                left-1/2
+                z-50
+                -translate-x-1/2
+                -translate-y-1/2
+                transition-all
+                duration-500
+              `,
+              isOpenOrOpening &&
+                `
+                  scale-100
+                  opacity-100
+                `,
+              isClosedOrClosing &&
+                `
+                  pointer-events-none
+                  scale-75
+                  opacity-0
+                `,
+              className,
             )}
+            {...otherProps}
           >
-            <Atom
-              as="button"
-              id={`modal-window-close-button-${modalWindowContainerId}`}
-              variant="button.icon"
-              className={twMerge(
-                'absolute top-3 right-3',
-                classNamesForCloseButton,
-              )}
-            >
-              <Icon
-                name="xmark"
-                onClick={handleClickClose}
-              />
-            </Atom>
-
             {children}
-          </div>
-        </div>,
+          </Component>
+        </>,
         document.body,
       )
+}
+
+ModalWindow.Backdrop = function Backdrop({
+  className,
+  ...otherProps
+}: ComponentProps<'div'>) {
+  return (
+    <div
+      className={twMerge(
+        `
+          fixed
+          inset-0
+          z-40
+          backdrop-blur-md
+        `,
+        className,
+      )}
+      {...otherProps}
+    />
+  )
 }

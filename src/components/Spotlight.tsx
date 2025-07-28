@@ -1,8 +1,8 @@
-import { Atom } from '@/components/Atom'
-import { Icon } from '@/components/Icon'
 import { useEffect, useState } from 'react'
 import { twJoin } from 'tailwind-merge'
 import { useLocalStorage } from 'usehooks-ts'
+import { Atom } from './Atom'
+import { Icon } from './Icon'
 
 export function Spotlight({
   targetSelector,

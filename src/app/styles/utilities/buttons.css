@@ -1,0 +1,62 @@
+@utility button-essentials {
+  @apply inline-flex;
+  @apply cursor-pointer;
+  @apply items-center;
+  @apply justify-center;
+  @apply gap-2;
+  @apply transition-all;
+}
+
+@utility button-primary {
+  @apply button-essentials;
+  @apply text-theme-bg-color;
+  @apply w-min;
+  @apply rounded-md;
+  @apply bg-white;
+  @apply px-6;
+  @apply py-3;
+  @apply whitespace-nowrap;
+  @apply hover:scale-105;
+}
+
+@utility button-secondary {
+  @apply button-essentials;
+  @apply bg-theme-bg-color/40;
+  @apply relative;
+  @apply z-10;
+  @apply w-min;
+  @apply rounded-md;
+  @apply border;
+  @apply px-6;
+  @apply py-3;
+  @apply whitespace-nowrap;
+  @apply text-white;
+  @apply backdrop-blur-sm;
+  @apply hover:scale-105;
+}
+
+@utility button-icon {
+  @apply button-essentials;
+  @apply bg-theme-bg-color-shaded;
+  @apply hover:bg-theme-accent-color;
+  @apply hover:text-theme-bg-color;
+  @apply size-10;
+  @apply w-min;
+  @apply rounded-full;
+  @apply hover:scale-105;
+}
+
+@utility button-tool {
+  @apply text-theme-text-color;
+  @apply hover:bg-theme-text-color/15;
+  @apply inline-flex;
+  @apply w-min;
+  @apply items-center;
+  @apply justify-center;
+  @apply gap-2;
+  @apply rounded-sm;
+  @apply px-1;
+  @apply py-0.5;
+  @apply text-sm;
+  @apply hover:scale-105;
+}

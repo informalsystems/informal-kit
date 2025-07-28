@@ -1,7 +1,7 @@
 'use client'
 
-import { getCSSVariablesFromElement } from '@/lib/getCSSVariablesFromElement'
 import { RefObject } from 'react'
+import { getCSSVariablesFromElement } from './getCSSVariablesFromElement'
 
 export function useCSSVariables(ref: RefObject<HTMLElement | null>) {
   const targetElement = ref.current

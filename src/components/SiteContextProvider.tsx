@@ -1,10 +1,21 @@
 'use client'
 
 import { Document } from '@contentful/rich-text-types'
-import { ReactNode, createContext } from 'react'
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from 'react'
 
 export interface SiteContextObject {
-  editableContent: EditableContent
+  isShowingContactModal: boolean
+  setIsShowingContactModal: Dispatch<SetStateAction<boolean>>
+  isShowingNewsletterModal: boolean
+  setIsShowingNewsletterModal: Dispatch<SetStateAction<boolean>>
+  spotCopy: SpotCopy
 }
 
 export interface MediaDescriptor {
@@ -15,29 +26,48 @@ export interface MediaDescriptor {
   width: number
 }
 
-export interface EditableContent {
-  [path: string]: {
+export interface SpotCopy {
+  [codeName: string]: {
     attachedMedia: MediaDescriptor[]
     content?: Document
-    json?: any
+    json?: unknown
     contentfulURL: string
   }
 }
 
-export const SiteContext = createContext<SiteContextObject>({
-  editableContent: {},
-})
+const initialSiteContext = {
+  isShowingContactModal: false,
+  spotCopy: {},
+  setIsShowingContactModal: () => false,
+  isShowingNewsletterModal: false,
+  setIsShowingNewsletterModal: () => false,
+}
+
+export const SiteContext = createContext<SiteContextObject>(initialSiteContext)
+
+export function useSiteContext() {
+  return useContext(SiteContext)
+}
 
 export function SiteContextProvider({
   children,
-  editableContent,
-}: {
-  children: ReactNode
-  editableContent: EditableContent
-}) {
+  ...rest
+}: Partial<SiteContextObject> & { children: ReactNode }) {
+  const [isShowingContactModal, setIsShowingContactModal] = useState(false)
+  const [isShowingNewsletterModal, setIsShowingNewsletterModal] =
+    useState(false)
   return (
-    <SiteContext.Provider value={{ editableContent }}>
+    <SiteContext
+      value={{
+        ...initialSiteContext,
+        isShowingContactModal,
+        setIsShowingContactModal,
+        isShowingNewsletterModal,
+        setIsShowingNewsletterModal,
+        ...rest,
+      }}
+    >
       {children}
-    </SiteContext.Provider>
+    </SiteContext>
   )
 }

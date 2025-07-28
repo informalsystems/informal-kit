@@ -1,6 +1,6 @@
 'use client'
 
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 import { RefObject, useEffect, useState } from 'react'
 
 export function useAdvancedHover({

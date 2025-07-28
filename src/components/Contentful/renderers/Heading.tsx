@@ -1,7 +1,8 @@
-import { ConditionalWrapper, OrphanController } from '@/components'
-import { clamp } from 'lodash'
+import clamp from 'lodash/clamp'
 import { ElementType, ReactNode, useEffect, useState } from 'react'
 import { twJoin } from 'tailwind-merge'
+import { ConditionalWrapper } from '../../ConditionalWrapper'
+import { OrphanController } from '../../OrphanController'
 
 export function Heading({
   children,
@@ -26,7 +27,14 @@ export function Heading({
     <H className={twJoin(decorated && 'is-decorated')}>
       <ConditionalWrapper
         condition={isClient && controlOrphans}
-        wrapper={children => <OrphanController>{children}</OrphanController>}
+        wrapper={children => (
+          <OrphanController
+            as="span"
+            disabledInPortrait={true}
+          >
+            {children}
+          </OrphanController>
+        )}
       >
         {children}
       </ConditionalWrapper>

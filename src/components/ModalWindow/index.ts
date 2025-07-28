@@ -1,1 +1,1 @@
-export { ModalWindow } from './ModalWindow'
+export { ModalWindow, type ModalWindowProps } from './ModalWindow'

@@ -1,0 +1,13 @@
+@theme {
+  --breakpoint-is-desktop: 1024px;
+
+  --font-display: 'Bitter', 'sans-serif';
+  --font-body: 'Inter', 'sans-serif';
+
+  --color-theme-text-color: rgb(255 255 255);
+  --color-theme-text-color-faded: rgb(255 255 255 / 70%);
+
+  --color-theme-accent-color: red;
+  --color-theme-bg-color: red;
+  --color-theme-bg-color-shaded: red;
+}

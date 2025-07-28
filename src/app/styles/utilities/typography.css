@@ -1,0 +1,64 @@
+@utility footnote {
+  @apply text-theme-text-color-faded text-sm;
+}
+
+@utility heading-base {
+  @apply font-medium;
+
+  span {
+    @apply font-display text-theme-accent-color font-medium italic;
+  }
+}
+
+@utility h1 {
+  @apply heading-base;
+  @apply text-5xl leading-[1.1em];
+}
+
+@utility h2 {
+  @apply heading-base;
+  @apply text-4xl;
+}
+
+@utility h3 {
+  @apply heading-base;
+  @apply text-3xl;
+}
+
+@utility h4 {
+  @apply heading-base;
+  @apply text-lg;
+}
+
+@utility link {
+  @apply button-essentials;
+  @apply text-theme-accent-color;
+  @apply underline;
+  @apply underline-offset-4;
+  @apply transition-all;
+  @apply hover:underline-offset-6;
+  @apply hover:text-theme-accent-color/80;
+}
+
+@utility link-subtle {
+  @apply button-essentials;
+  @apply text-inherit;
+  @apply underline-offset-4;
+  @apply transition-all;
+  @apply hover:underline;
+  @apply hover:underline-offset-4;
+  @apply hover:text-theme-accent-color;
+}
+
+@utility numeric {
+  @apply lining-nums;
+  @apply tracking-[0.1em];
+}
+
+@utility super-heading {
+  @apply text-theme-accent-color;
+  @apply text-xs;
+  @apply font-bold;
+  @apply tracking-[0.15em];
+  @apply uppercase;
+}

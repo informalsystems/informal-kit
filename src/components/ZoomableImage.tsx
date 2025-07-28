@@ -1,135 +1,162 @@
 'use client'
 
-import { ModalWindow } from '@/components'
-import { Icon } from '@/components/Icon'
 import Image from 'next/image'
 import { ComponentProps, HTMLAttributes, ReactNode, useState } from 'react'
+import { twJoin } from 'tailwind-merge'
+import { Icon } from './Icon'
+import { ModalWindow } from './ModalWindow'
 
 interface ZoomableImageProps extends HTMLAttributes<HTMLElement> {
-  height: number
   alt: string
+  caption?: ReactNode
   url: string
   width: number
+  height: number
 }
 
 export function ZoomableImage({
-  height,
   alt,
+  caption,
   url,
   width,
+  height,
   ...otherProps
 }: ZoomableImageProps) {
   const [isZoomed, setIsZoomed] = useState(false)
+  const resolvedUrl = url.startsWith('https:') ? url : `https:${url}`
+  const aspectRatio = width / height
+  const isPortrait = aspectRatio < 1
 
   return (
     <>
       <figure
-        className="
-          group
-          relative
-          flex
-          cursor-pointer
-          items-center
-          justify-center
-          overflow-hidden
-          rounded-2xl
-          border
-          bg-transparent
-          transition-all
-          duration-500
-        "
+        className="group relative break-inside-avoid"
         onClick={() => setIsZoomed(true)}
         {...otherProps}
       >
-        <Image
-          alt={alt}
-          className="h-auto w-auto"
-          height={0}
-          sizes="(max-width: 768px) 100vw, 70vw"
-          src={`https:${url}`}
-          width={0}
-        />
+        <HiddenCornerButton>
+          <Icon name="solid:up-right-and-down-left-from-center" />
+        </HiddenCornerButton>
 
-        <CloseButton>
-          <Icon name="magnifying-glass-plus" />
-        </CloseButton>
+        <div
+          className={twJoin(
+            'relative w-full',
+            'p-3',
+            'flex items-center justify-center',
+            'rounded-xl',
+            'bg-white',
+            'overflow-hidden',
+            'cursor-pointer',
+            'transition-all',
+            'duration-500',
+          )}
+        >
+          <Image
+            alt={alt}
+            className="m-0! h-auto w-full"
+            height={0}
+            sizes="(max-width: 768px) 100vw, 70vw"
+            src={resolvedUrl}
+            width={0}
+          />
+        </div>
+
+        {caption && (
+          <figcaption
+            className={twJoin(
+              'mt-1 flex items-start gap-1',
+              'text-accent-teal text-xs italic',
+            )}
+          >
+            <Icon
+              name="solid:triangle"
+              className="scale-50"
+            />
+            <span>{caption}</span>
+          </figcaption>
+        )}
       </figure>
 
       <ModalWindow
-        className="
-          group
-          h-[90vh]
-          w-[90vw]
-          cursor-pointer
-          border-4
-          border-white
-          bg-white
-        "
+        className={twJoin(
+          'group',
+          'flex flex-col p-6',
+          'cursor-pointer',
+          'overflow-visible',
+          'rounded bg-white shadow-2xl',
+        )}
         isOpen={isZoomed}
         propsForBackdrop={{
           className: `
-            bg-brand-500/50
+            bg-theme-accent-color/10
           `,
+        }}
+        style={{
+          aspectRatio,
+          height: isPortrait ? '90vh' : 'auto',
+          width: isPortrait ? 'auto' : '90vw',
         }}
         onClick={() => setIsZoomed(false)}
         onClose={() => setIsZoomed(false)}
       >
-        <CloseButton>
-          <Icon name="xmark" />
-        </CloseButton>
+        <HiddenCornerButton>
+          <Icon name="solid:down-left-and-up-right-to-center" />
+        </HiddenCornerButton>
 
         <div
-          className="
-            absolute
-            inset-0
-          "
+          className={twJoin(
+            'relative',
+            'h-full',
+            'w-full',
+            'overflow-hidden',
+            caption ? 'rounded-t' : 'rounded',
+          )}
         >
           <Image
             alt={alt}
-            className="object-contain"
+            className="object-cover"
             fill={true}
-            src={`https:${url}`}
+            src={resolvedUrl}
             sizes="100vw"
           />
         </div>
+
+        {caption && (
+          <div
+            className={twJoin(
+              'px-3 py-2',
+              'text-xs font-bold',
+              'bg-theme-bg-color-shaded',
+              'rounded-b',
+            )}
+          >
+            {caption}
+          </div>
+        )}
       </ModalWindow>
     </>
   )
 }
 
-function CloseButton({
+function HiddenCornerButton({
   children,
 }: ComponentProps<'div'> & { children: ReactNode }) {
   return (
     <div
-      className="
-        absolute
-        right-0
-        top-0
-        z-10
-        flex
-        size-16
-        cursor-pointer
-        justify-end
-        bg-linear-to-bl
-        from-transparent
-        via-transparent
-        to-transparent
-        pr-1
-        pt-1
-        text-xs
-        text-white
-        opacity-0
-        transition-all
-        group-hover:from-brand-500
-        group-hover:via-transparent
-        group-hover:to-transparent
-        group-hover:opacity-100
-        hover:group-hover:size-24
-        hover:group-hover:pr-2
-        hover:group-hover:pt-2
-        hover:group-hover:text-lg
-      "
+      className={twJoin(
+        'absolute z-10 size-8',
+        'top-0 right-0',
+        'translate-x-1/2 -translate-y-1/2',
+        'flex items-center justify-center',
+        'border-theme-accent-color',
+        'text-theme-accent-color',
+        'rounded-full border-2',
+        'bg-theme-bg-color',
+        'text-xs',
+        'cursor-pointer opacity-0 transition-all',
+        'group-hover:opacity-100',
+        'group-hover:hover:scale-105',
+      )}
     >
       {children}
     </div>

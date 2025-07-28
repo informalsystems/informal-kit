@@ -1,8 +1,8 @@
-import { Icon } from '@/components/Icon'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Icon } from './Icon'
 
-interface LoadingScreenProps extends Omit<ComponentProps<'div'>, 'children'> {}
+type LoadingScreenProps = Omit<ComponentProps<'div'>, 'children'>
 
 export function LoadingScreen({
   className,
@@ -12,13 +12,14 @@ export function LoadingScreen({
     <div
       className={twMerge(
         `
+          bg-theme-bg-color
+          text-theme-accent-color
           fixed
           inset-0
           z-1000
           flex
           items-center
           justify-center
-          bg-white
         `,
         className,
       )}

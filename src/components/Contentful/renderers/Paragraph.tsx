@@ -1,6 +1,6 @@
-import { ConditionalWrapper } from '@/components/ConditionalWrapper'
-import { OrphanController } from '@/components/OrphanController'
 import { ReactNode } from 'react'
+import { ConditionalWrapper } from '../../ConditionalWrapper'
+import { OrphanController } from '../../OrphanController'
 
 export function Paragraph({
   children,
@@ -18,9 +18,14 @@ export function Paragraph({
 
   return hasContent ? (
     <ConditionalWrapper
-      children={<p>{children}</p>}
       condition={paragraphsControlOrphans}
-      wrapper={children => <OrphanController>{children}</OrphanController>}
-    />
+      wrapper={children => (
+        <OrphanController disabledInPortrait={false}>
+          {children}
+        </OrphanController>
+      )}
+    >
+      <p>{children}</p>
+    </ConditionalWrapper>
   ) : null
 }

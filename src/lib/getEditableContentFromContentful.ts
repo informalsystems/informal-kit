@@ -1,6 +1,6 @@
-import { MediaDescriptor } from '@/components/SiteContextProvider'
-import { getContentfulEntriesByType } from '@/lib/contentfulClient'
-import { TypeEditableContentSkeleton } from '@/lib/contentfulTypes'
+import { MediaDescriptor } from '../components/SiteContextProvider'
+import { getContentfulEntriesByType } from './contentfulClient'
+import { TypeEditableContentSkeleton } from './contentfulTypes'
 
 export async function getEditableContentFromContentful(
   slugStartsWith?: string,

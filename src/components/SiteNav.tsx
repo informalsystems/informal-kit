@@ -1,15 +1,15 @@
 'use client'
 
-import { Icon } from '@/components'
-import { isExternalHref } from '@/lib/isExternalHref'
-import { useCSSVariables } from '@/lib/useCSSVariables'
-import { useIsDocumentScrolled } from '@/lib/useIsDocumentScrolled'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ComponentProps, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 import { useIsClient, useMediaQuery } from 'usehooks-ts'
+import { isExternalHref } from '../lib/isExternalHref'
+import { useCSSVariables } from '../lib/useCSSVariables'
+import { useIsDocumentScrolled } from '../lib/useIsDocumentScrolled'
+import { Icon } from './Icon'
 
 export type SiteNavigationDescriptor = {
   siteRoot: string
@@ -22,10 +22,7 @@ type HeaderMenuItemDescriptor = [
   href: string | [label: string, href: string][],
 ]
 
-type FooterMenuItemDescriptor = [
-  heading: string,
-  items: [label: string, href: string][],
-]
+type FooterMenuItemDescriptor = [label: string, href: string]
 
 export interface SiteNavProps extends ComponentProps<'nav'> {
   isInverted?: boolean
@@ -37,7 +34,7 @@ export function SiteNav({
   className,
   isInverted,
   itemDescriptors,
-  mediaQueryForMobileMode = '(orientation: portrait)',
+  mediaQueryForMobileMode = '(max-width: 1023px)',
   ...otherProps
 }: SiteNavProps) {
   const isClient = useIsClient()
@@ -46,7 +43,7 @@ export function SiteNav({
   const [isMobileNavOpen, setisMobileNavOpen] = useState(false)
   const isDocumentScrolled = useIsDocumentScrolled() && isClient
   const isMobileMode = useMediaQuery(mediaQueryForMobileMode) && isClient
-  const pathName = usePathname()
+  const pathname = usePathname()
 
   function handleClickPopupMenu() {
     ;(document.activeElement as HTMLDivElement)?.blur()
@@ -56,8 +53,8 @@ export function SiteNav({
     <nav
       className={twMerge(
         `
-          whitespace-nowrap
           font-display
+          whitespace-nowrap
           transition-all
           duration-700
           has-[ul:empty]:hidden
@@ -65,18 +62,18 @@ export function SiteNav({
         isMobileMode &&
           `
             fixed
+            top-0
+            right-0
             bottom-full
             left-0
-            right-0
-            top-0
             z-50
           `,
         isMobileMode &&
           isMobileNavOpen &&
           `
+            bg-theme-text-color/30
             bottom-0
-            bg-textColor/30
-            backdrop-blur-xs
+            backdrop-blur-sm
           `,
         isMobileNavOpen &&
           isInverted &&
@@ -137,34 +134,33 @@ export function SiteNav({
       <ul
         className={twMerge(
           `
-            inverted:text-white/80
+            is-inverted:text-white/80
             flex
             text-xs
-            dark:text-white/80
           `,
           isMobileMode
             ? `
-                absolute
-                -left-full
-                bottom-0
-                top-0
-                flex-col
-                gap-6
-                whitespace-nowrap
-                bg-brandColor
-                py-6
-                pl-6
-                pr-12
-                transition-all
-                duration-500
-              `
+              bg-theme-accent-color
+              absolute
+              top-0
+              bottom-0
+              -left-full
+              flex-col
+              gap-6
+              py-6
+              pr-12
+              pl-6
+              whitespace-nowrap
+              transition-all
+              duration-500
+            `
             : `
-                gap-4
-                lg:gap-6
-              `,
+              gap-4
+              lg:gap-6
+            `,
           isMobileNavOpen &&
             `
-              inverted
+              is-inverted
               left-0
             `,
         )}
@@ -172,14 +168,15 @@ export function SiteNav({
         {itemDescriptors.map(([label, hrefOrChildren]) => {
           const hasChildren = Array.isArray(hrefOrChildren)
           const isActive =
-            (!hasChildren && pathName.startsWith(hrefOrChildren)) ||
+            (!hasChildren && pathname.startsWith(hrefOrChildren)) ||
             (hasChildren &&
-              hrefOrChildren.some(([, href]) => pathName === href))
+              hrefOrChildren.some(([, href]) => pathname === href))
           const isExternalLink =
             typeof hrefOrChildren === 'string' && isExternalHref(hrefOrChildren)
 
           return (
             <li
+              key={label}
               className={twMerge(
                 `
                   group/navItem
@@ -194,39 +191,33 @@ export function SiteNav({
                       font-bold
                     `
                     : `
-                      inverted:border-b-white
+                      border-b-theme-accent-color
+                      is-inverted:border-b-white
                       border-b-2
-                      border-b-brandColor
                       font-bold
-                      dark:border-b-white
                     `),
               )}
-              key={label}
             >
               {hasChildren ? (
                 <>
                   <span
                     className={twMerge(
                       `
-                        inverted:text-white/60
-                        inverted:hover:text-white
-                        inverted:focus:text-white
+                        text-theme-text-color/60
+                        hover:text-theme-text-color
+                        focus:text-theme-text-color
+                        is-inverted:text-white/60
+                        is-inverted:hover:text-white
+                        is-inverted:focus:text-white
                         flex
                         items-center
                         gap-1
-                        text-textColor/60
                         transition-all
-                        hover:text-textColor
-                        focus:text-textColor
-                        dark:text-white/60
-                        dark:hover:text-white
-                        dark:focus:text-white
                       `,
                       isActive &&
                         `
-                          inverted:text-white
-                          text-textColor
-                          dark:text-white
+                          text-theme-text-color
+                          is-inverted:text-white
                         `,
                     )}
                     tabIndex={0}
@@ -249,19 +240,19 @@ export function SiteNav({
                           `
                         : `
                             not-inverted
+                            bg-theme-bg-color
+                            text-theme-text-color
+                            shadow-theme-accent-color/20
                             pointer-events-none
                             absolute
-                            left-0
                             top-full
-                            -mx-6
+                            left-1/2
                             mt-3
-                            whitespace-nowrap
-                            bg-bgColor
+                            -translate-x-1/2
                             py-3
-                            text-textColor
+                            whitespace-nowrap
                             opacity-0
                             shadow-2xl
-                            shadow-brandColor/20
                             group-has-focus/navItem:pointer-events-auto
                             group-has-focus/navItem:opacity-100
                           `,
@@ -269,7 +260,7 @@ export function SiteNav({
                     onClick={handleClickPopupMenu}
                   >
                     {hrefOrChildren.map(([label, href]) => {
-                      const isActive = pathName === href
+                      const isActive = pathname === href
                       const isExternalLink = isExternalHref(href)
 
                       return (
@@ -286,11 +277,11 @@ export function SiteNav({
                                   pl-6
                                 `
                                 : `
+                                  hover:bg-theme-accent-color/10
+                                  focus:bg-theme-accent-color/10
                                   py-2
-                                  pl-6
                                   pr-12
-                                  hover:bg-brandColor/10
-                                  focus:bg-brandColor/10
+                                  pl-6
                                 `,
                               !isActive &&
                                 isMobileMode &&
@@ -303,11 +294,12 @@ export function SiteNav({
                                     opacity-100
                                   `
                                   : `
-                                    bg-brandColor/10
+                                    bg-theme-accent-color/10
                                   `),
                             )}
                             href={href}
                             target={isExternalLink ? '_blank' : undefined}
+                            onClick={() => setisMobileNavOpen(false)}
                           >
                             {label}
                             {isExternalLink && (
@@ -323,29 +315,26 @@ export function SiteNav({
                 <Link
                   className={twMerge(
                     `
-                      inverted:text-white/60
-                      inverted:hover:text-white
-                      inverted:focus:text-white
+                      text-theme-text-color/60
+                      hover:text-theme-text-color
+                      focus:text-theme-text-color
+                      is-inverted:text-white/60
+                      is-inverted:hover:text-white
+                      is-inverted:focus:text-white
                       flex
                       items-center
                       gap-1
-                      text-textColor/60
                       transition-all
-                      hover:text-textColor
-                      focus:text-textColor
-                      dark:text-white/60
-                      dark:hover:text-white
-                      dark:focus:text-white
                     `,
                     isActive &&
                       `
-                        inverted:text-white
-                        text-textColor
-                        dark:text-white
+                        text-theme-text-color
+                        is-inverted:text-white
                       `,
                   )}
                   href={hrefOrChildren}
                   target={isExternalLink ? '_blank' : undefined}
+                  onClick={() => setisMobileNavOpen(false)}
                 >
                   {label}
                   {isExternalLink && <Icon name="arrow-up-right-from-square" />}

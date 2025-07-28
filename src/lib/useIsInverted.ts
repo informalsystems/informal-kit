@@ -1,6 +1,6 @@
 'use client'
 
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 import { RefObject, useEffect, useState } from 'react'
 
 export function useIsInverted(ref: RefObject<HTMLElement | null>) {
@@ -16,9 +16,9 @@ export function useIsInverted(ref: RefObject<HTMLElement | null>) {
         targetElement.matches('.dark') ||
         (targetElement.closest('.light') === null &&
           targetElement.closest('.dark') !== null) ||
-        targetElement.matches('.inverted') ||
+        targetElement.matches('.is-inverted') ||
         (targetElement.closest('.not-inverted') === null &&
-          targetElement.closest('.inverted') !== null)
+          targetElement.closest('.is-inverted') !== null)
 
       setisInverted(newIsInverted)
     }
@@ -37,7 +37,8 @@ export function useIsInverted(ref: RefObject<HTMLElement | null>) {
       window.removeEventListener('resize', throttledCheckIfInverted)
       window.removeEventListener('scroll', throttledCheckIfInverted)
     }
-  }, [ref.current])
+    // ref is a stable object; ref.current is intentionally not a dependency
+  }, [ref])
 
   return isInverted
 }

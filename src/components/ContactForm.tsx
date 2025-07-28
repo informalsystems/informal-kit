@@ -1,18 +1,17 @@
 'use client'
 
-import { Atom, Input, TextArea } from '@/components'
-import { useToasts } from '@/components/Toasts'
-import { FormActionResponse } from '@/lib/types'
 import { ComponentProps, useActionState, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { FormActionResponse } from '../lib/types'
+import { useToasts } from './Toasts'
 
 interface ContactFormProps extends ComponentProps<'form'> {
   inbox: string
   subject: string
 }
 
-async function sendEmail(
-  _previousState: FormActionResponse,
+export async function sendEmail(
+  previousState: FormActionResponse,
   formData: FormData,
 ) {
   const body = Object.fromEntries(formData.entries())
@@ -61,14 +60,15 @@ export function ContactForm({
   )
 
   useEffect(() => {
-    if (formActionResponse?.success) {
-      setToasts([{ message: 'Message sent successfully!', variant: 'success' }])
-    } else {
+    if (formActionResponse) {
       setToasts([
-        { message: formActionResponse?.messages?.[0], variant: 'error' },
+        {
+          message: formActionResponse.messages[0],
+          variant: formActionResponse.success ? 'success' : 'error',
+        },
       ])
     }
-  }, [formActionResponse])
+  }, [formActionResponse, setToasts])
 
   return (
     <form
@@ -100,14 +100,16 @@ export function ContactForm({
         value={inbox}
       />
 
-      <Input
+      <input
+        className="input-text"
         name="fullName"
         placeholder="Full Name"
         type="text"
         required={true}
       />
 
-      <Input
+      <input
+        className="input-text"
         name="email"
         placeholder="Email Address"
         type="email"
@@ -116,8 +118,8 @@ export function ContactForm({
 
       {children}
 
-      <TextArea
-        className="lg:col-span-2"
+      <textarea
+        className="input-text lg:col-span-2"
         name="message"
         placeholder="Message"
         rows={6}
@@ -130,12 +132,12 @@ export function ContactForm({
           lg:col-span-2
         "
       >
-        <Atom
-          as="button"
-          variant="button.primary"
+        <button
+          type="submit"
+          className="button-primary"
         >
           Send
-        </Atom>
+        </button>
       </div>
     </form>
   )

@@ -1,7 +1,8 @@
 'use client'
 
-import { iconStringToVariantAndName } from '@/lib/iconStringToVariantAndName'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { iconStringToVariantAndName } from '../../lib/iconStringToVariantAndName'
 import { IconProps } from './types'
 
 export function Icon({
@@ -12,14 +13,32 @@ export function Icon({
   variant = 'regular',
   ...otherProps
 }: IconProps) {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   const [iconVariant = variant, iconName] = iconStringToVariantAndName(name)
+
+  // Prevent server-side rendering to avoid hydration mismatch
+  if (!isMounted) {
+    return (
+      <span
+        className={twMerge(`no-underline!`, className)}
+        {...otherProps}
+      />
+    )
+  }
 
   return (
     <span
       className={twMerge(`no-underline!`, className)}
+      key={`${iconVariant}-${iconName}`}
       {...otherProps}
     >
       <i
+        data-icon
         className={twMerge(
           `
             fa

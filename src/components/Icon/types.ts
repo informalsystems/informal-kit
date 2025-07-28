@@ -2461,7 +2461,7 @@ export type RegularIconName =
   | 'right-to-line'
   | 'right'
   | 'ring-diamond'
-  | 'ring-3'
+  | 'ring'
   | 'rings-wedding'
   | 'road-barrier'
   | 'road-bridge'

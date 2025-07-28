@@ -1,68 +1,87 @@
-import { CollapsibleBox } from "@/components/CollapsibleBox"
-import { Icon } from "@/components/Icon"
-import { IconString } from "@/components/Icon/types"
-import { useToasts } from "@/components/Toasts/useToasts"
-import { ComponentProps, useState } from "react"
-import { twMerge } from "tailwind-merge"
-import { classNames } from "./classNames"
+'use client'
 
-interface ToastProps extends ComponentProps<"div"> {
+import { ComponentProps, ReactNode } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { Icon } from '../Icon'
+import { IconString } from '../Icon/types'
+import { classNamesAndVariants } from './classNamesAndVariants'
+
+export type ToastVariant = keyof (typeof classNamesAndVariants)['variants']
+
+interface ToastProps
+  extends ComponentProps<'div'>,
+    Omit<ToastDescriptor, 'message' | 'variant' | '_id'> {
   icon?: IconString
-  isDismissible?: boolean
-  variant?: keyof (typeof classNames)["variants"]
+  variant?: ToastVariant
+}
+
+export interface ToastDescriptor {
+  _id?: string
+  message: ReactNode
+  variant: ToastVariant
+  actionButtonPrimary?: {
+    label: ReactNode
+    onClick: () => void
+  }
+  actionButtonSecondary?: {
+    label: ReactNode
+    onClick: () => void
+  }
 }
 
 export function Toast({
   id,
   children,
   className,
+  actionButtonPrimary,
+  actionButtonSecondary,
   icon,
-  isDismissible = true,
-  variant = "info",
-  ...otherProps
+  variant = 'info',
 }: ToastProps) {
-  const { setToasts } = useToasts()
-  const [isDismissed, setIsDismissed] = useState(false)
-
-  function handleDismiss() {
-    setIsDismissed(true)
-  }
-
-  function dismiss() {
-    setToasts((prevToasts) => prevToasts.filter((toast) => toast._id !== id))
-  }
-
   return (
-    <CollapsibleBox
-      isCollapsed={isDismissed}
-      onCollapseEnd={dismiss}
-      {...otherProps}
+    <div
+      className={twMerge(
+        'js-toast',
+        classNamesAndVariants.toastContainer,
+        classNamesAndVariants.variants[variant].container,
+        className,
+      )}
     >
-      <div
-        className={twMerge(
-          "js-toast",
-          classNames.toastContainer,
-          classNames.variants[variant].container,
-          className
-        )}
-      >
-        <div className={classNames.iconContainer}>
-          {icon ? <Icon name={icon} /> : classNames.variants[variant].icon}
-        </div>
-
-        <div className={classNames.messageContainer}>{children}</div>
-
-        {isDismissible && (
-          <div className={classNames.dismissButtonContainer}>
-            <button
-              className={classNames.dismissButton}
-              onClick={handleDismiss}
-            >
-              Dismiss
-            </button>
-          </div>
+      <div className={classNamesAndVariants.iconContainer}>
+        {icon ? (
+          <Icon
+            name={icon}
+            variant="light"
+          />
+        ) : (
+          classNamesAndVariants.variants[variant].icon
         )}
       </div>
-    </CollapsibleBox>
+
+      {children && (
+        <div className={classNamesAndVariants.messageContainer}>{children}</div>
+      )}
+
+      {(actionButtonPrimary || actionButtonSecondary) && (
+        <div className={classNamesAndVariants.actionButtonsContainer}>
+          {actionButtonPrimary && (
+            <button
+              className={classNamesAndVariants.actionButton}
+              onClick={actionButtonPrimary.onClick}
+            >
+              {actionButtonPrimary.label}
+            </button>
+          )}
+          {actionButtonSecondary && (
+            <button
+              className={classNamesAndVariants.actionButton}
+              onClick={actionButtonSecondary.onClick}
+            >
+              {actionButtonSecondary.label}
+            </button>
+          )}
+        </div>
+      )}
+    </div>
   )
 }

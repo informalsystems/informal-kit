@@ -1,0 +1,181 @@
+@theme {
+  --animate-animateInX: animateInX 0.5s ease-in-out both;
+  --animate-animateOutX: animateOutX 0.5s ease-in-out both;
+  --animate-animateInY: animateInY 0.5s ease-in-out both;
+  --animate-animateOutY: animateOutY 0.5s ease-in-out both;
+  --animate-float: float 2.5s ease-in-out infinite alternate;
+  --animate-floatUp: floatUp 120s linear infinite;
+  --animate-forceFieldSmallInner: forceFieldSmallInner 2s ease-in-out infinite
+    alternate;
+  --animate-forceFieldSmallOuter: forceFieldSmallOuter 2s ease-in-out infinite
+    alternate;
+  --animate-forceFieldInner: forceFieldInner 2s ease-in-out infinite alternate;
+  --animate-forceFieldOuter: forceFieldOuter 2s ease-in-out infinite alternate;
+  --animate-rotatingSphere: rotatingSphere 120s linear infinite;
+  --animate-slowDriftLeft: driftLeft 60s linear infinite;
+  --animate-slowerDriftLeft: driftLeft 120s linear infinite;
+  --animate-slowestDriftLeft: driftLeft 180s linear infinite;
+  --animate-slowTwinkle: twinkle 0.25s linear infinite alternate;
+  --animate-slowerTwinkle: twinkle 0.5s linear infinite alternate;
+  --animate-wobble: wobble 2s ease-in-out infinite alternate;
+
+  @keyframes animateInX {
+    0% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes animateOutX {
+    0% {
+      max-height: 200px;
+      opacity: 1;
+      transform: translateX(0%);
+    }
+    70% {
+      max-height: 200px;
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    100% {
+      max-height: 0;
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes animateInY {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes animateOutY {
+    0% {
+      opacity: 1;
+      transform: translateY(0%);
+      display: block;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100%);
+      display: none;
+    }
+  }
+
+  @keyframes driftLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    5%,
+    95% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-120vw);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(-3%);
+    }
+    100% {
+      transform: translateY(3%);
+    }
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    100% {
+      transform: translateX(10vw) translateY(-110vh) rotate(10deg);
+    }
+  }
+
+  @keyframes forceFieldSmallInner {
+    0% {
+      opacity: 0.1;
+      stroke-width: 5px;
+    }
+    100% {
+      opacity: 0.3;
+      stroke-width: 20px;
+    }
+  }
+
+  @keyframes forceFieldSmallOuter {
+    0% {
+      opacity: 0.05;
+      stroke-width: 10px;
+    }
+    100% {
+      opacity: 0.2;
+      stroke-width: 30px;
+    }
+  }
+
+  @keyframes forceFieldInner {
+    0% {
+      opacity: 0.1;
+      stroke-width: 10px;
+    }
+    100% {
+      opacity: 0.3;
+      stroke-width: 60px;
+    }
+  }
+
+  @keyframes forceFieldOuter {
+    0% {
+      opacity: 0.05;
+      stroke-width: 20px;
+    }
+    100% {
+      opacity: 0.2;
+      stroke-width: 100px;
+    }
+  }
+
+  @keyframes rotatingSphere {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(359deg);
+    }
+  }
+
+  @keyframes twinkle {
+    0% {
+      opacity: 0.9;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes wobble {
+    0% {
+      transform: rotate(-3deg);
+    }
+    100% {
+      transform: rotate(3deg);
+    }
+  }
+}

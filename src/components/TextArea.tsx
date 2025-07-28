@@ -1,6 +1,6 @@
-import { classNames } from '@/components/Input'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { classNames } from './Input'
 
 interface TextAreaProps extends ComponentProps<'textarea'> {}
 

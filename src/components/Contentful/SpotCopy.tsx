@@ -1,19 +1,19 @@
 'use client'
 
-import { ProseBox } from '@/components'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { MediaDescriptor, SiteContext } from '@/components/SiteContextProvider'
 import Image from 'next/image'
-import { ReactNode, useContext } from 'react'
-import { twMerge } from 'tailwind-merge'
-import invariant from 'tiny-invariant'
+import { ComponentProps, ReactNode, useContext } from 'react'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { ContentfulContentRenderer } from '.'
+import { ErrorBoundary } from '../ErrorBoundary'
+import { Icon } from '../Icon'
+import { ProseBox } from '../ProseBox'
+import { MediaDescriptor, SiteContext } from '../SiteContextProvider'
 import { HoverTools, HoverToolsProps } from './HoverTools'
 
 interface SpotCopyProps<JSONShape>
   extends Omit<HoverToolsProps, 'children' | 'contentfulURL'> {
   children?: (renderProps: RenderProps<JSONShape>) => ReactNode
-  classNamesForProseContainer?: string
+  classNameForProseContainer?: string
   classNameForImageContainer?: string
   classNameForImage?: string
   decorativeHeadings?: boolean
@@ -22,40 +22,58 @@ interface SpotCopyProps<JSONShape>
   paragraphsControlOrphans?: boolean
   path: string
   imageSizes?: string
+  propsForProseContainer?: ComponentProps<typeof ProseBox>
 }
 
 interface MediaEntryWithNode extends MediaDescriptor {
   node: ReactNode
 }
 
-interface RenderProps<JSONShape extends unknown> {
+interface RenderProps<JSONShape> {
   body: ReactNode
   contentfulURL: string
   json: JSONShape
   media?: MediaEntryWithNode[]
 }
 
-export function SpotCopy<JSONShape extends unknown>({
+export function SpotCopy<JSONShape>({
   children,
-  classNamesForProseContainer,
+  classNameForProseContainer,
   classNameForImageContainer,
   classNameForImage,
   decorativeHeadings = false,
   headingLevel = 1,
   headingsControlOrphans = true,
   imageSizes,
+  propsForProseContainer,
   paragraphsControlOrphans = false,
   path,
   ...otherProps
 }: SpotCopyProps<JSONShape>) {
-  const { editableContent } = useContext(SiteContext)
+  const { spotCopy } = useContext(SiteContext)
 
-  invariant(
-    path in editableContent,
-    `editableContent not found at path ${path}`,
-  )
+  if (!(path in spotCopy)) {
+    console.error('SpotCopy path not found:', path)
 
-  const { content, contentfulURL, json, attachedMedia } = editableContent[path]
+    return process.env.NODE_ENV === 'development' ? (
+      <div
+        className={twJoin(
+          'relative z-50',
+          'flex w-fit items-center justify-center gap-3',
+          'text-red-500',
+          'border-2 border-red-400',
+          'rounded-md px-3 py-1',
+        )}
+      >
+        <Icon name="solid:fire" />
+        <span>
+          SpotCopy path not found: <code>{path}</code>
+        </span>
+      </div>
+    ) : null
+  }
+
+  const { content, contentfulURL, json, attachedMedia } = spotCopy[path]
 
   const media = attachedMedia.map(({ description, url, ...rest }) => ({
     description,
@@ -82,11 +100,12 @@ export function SpotCopy<JSONShape extends unknown>({
 
   const renderProps = {
     contentfulURL,
-    json,
+    json: json as JSONShape,
     media,
     body: (
       <ProseBox
-        className={twMerge(`prose-headings:mb-3`, classNamesForProseContainer)}
+        className={twMerge(`prose-headings:mb-3`, classNameForProseContainer)}
+        {...propsForProseContainer}
       >
         <ContentfulContentRenderer
           {...{

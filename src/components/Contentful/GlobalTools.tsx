@@ -1,17 +1,81 @@
 'use client'
 
-import { Atom } from '@/components/Atom'
-import { CollapsibleBox } from '@/components/CollapsibleBox'
-import { Icon } from '@/components/Icon'
-import { Input } from '@/components/Input'
-import { getContentfulRouteMetadata } from '@/lib/getContentfulRouteMetadata'
 import { usePathname } from 'next/navigation'
 import { ChangeEvent, ComponentProps, useEffect, useState } from 'react'
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import invariant from 'tiny-invariant'
 import { useLocalStorage } from 'usehooks-ts'
+import { getContentfulRouteMetadata } from '../../lib/getContentfulRouteMetadata'
+import { Icon } from '../Icon'
 
-interface GlobalToolsProps extends ComponentProps<'div'> {}
+type GlobalToolsProps = ComponentProps<'div'>
+
+type MetadataItemProps = {
+  label: string
+  contentfulURL: string
+  children: React.ReactNode
+}
+
+const MetadataItem = ({
+  label,
+  contentfulURL,
+  children,
+}: MetadataItemProps) => (
+  <div className="col-span-2">
+    <div className="mb-1 flex items-center gap-1 whitespace-nowrap">
+      <span className="text-xs font-bold whitespace-nowrap">{label}</span>
+      <a
+        className="link"
+        href={contentfulURL}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Edit in Contentful"
+      >
+        <Icon
+          name="regular:pencil"
+          className="size-3"
+        />
+      </a>
+    </div>
+    <div className="text-xs">{children}</div>
+  </div>
+)
+
+const HoverToEditToggle = ({
+  isEnabled,
+  onChange,
+}: {
+  isEnabled: boolean
+  onChange: (value: boolean, event: ChangeEvent<HTMLInputElement>) => void
+}) => (
+  <div className="flex items-center justify-between">
+    <div className="text-xs font-bold whitespace-nowrap">Hover-to-Edit</div>
+    <div className="flex items-center gap-3 text-xs">
+      <label className="flex items-center gap-1">
+        <input
+          className="input-radio"
+          type="radio"
+          name="isHoverToEditEnabled"
+          value="false"
+          checked={isEnabled === false}
+          onChange={onChange.bind(null, false)}
+        />
+        <span>Off</span>
+      </label>
+      <label className="flex items-center gap-1">
+        <input
+          className="input-radio"
+          type="radio"
+          name="isHoverToEditEnabled"
+          value="true"
+          checked={isEnabled === true}
+          onChange={onChange.bind(null, true)}
+        />
+        <span>On</span>
+      </label>
+    </div>
+  </div>
+)
 
 export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   invariant(process.env.NEXT_PUBLIC_URL, 'Missing NEXT_PUBLIC_URL')
@@ -26,9 +90,6 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   > | null>(null)
 
   const pathname = usePathname()
-  const transition = 'transition-all duration-200 ease-in-out'
-  const transitionDelay = 'delay-200'
-  const buttonSize = 'size-8'
 
   useEffect(() => {
     ;(async function () {
@@ -56,136 +117,85 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   const { title, description, keywords } =
     matchingRouteMetadata ?? baseRouteMetadata ?? {}
 
-  function handleChangeHoverToEdit(
+  const handleChangeHoverToEdit = (
     value: boolean,
     event: ChangeEvent<HTMLInputElement>,
-  ) {
+  ) => {
     if (event.target.checked === true) {
       setIsHoverToEditEnabled(value)
     }
   }
 
   return (
-    <div
-      className={twMerge(
-        'z-20',
-        'inverted fixed right-6 bottom-6',
-        'bg-brand-500/95 text-base text-white backdrop-blur-md',
-        transition,
-        isExpanded
-          ? ['w-96 rounded-md', 'border-2 border-white']
-          : [transitionDelay, 'w-8 rounded-full'],
-        className,
-      )}
-      {...otherProps}
-    >
+    <>
       <button
         id="global-tools-button"
         title={isExpanded ? 'Hide Page Options' : 'Show Page Options'}
         className={twMerge(
+          'fixed right-6 bottom-6 z-20',
           'flex items-center justify-center',
-          'rounded-full border-2',
-          buttonSize,
-          transition,
-          isExpanded
-            ? [
-                '-mt-4 ml-96 -translate-x-1/2 rotate-180',
-                'border-brand-500 text-brand-500 bg-white',
-              ]
-            : [transitionDelay, 'rotate-0 border-white'],
+          'size-8 rounded-full border-2 border-white',
+          'bg-brand-500/95 text-white backdrop-blur-md',
+          'hover:bg-brand-400/95 transition-colors',
+          'transition-transform duration-200',
+          isExpanded && 'rotate-180',
+          className,
         )}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Icon name={isExpanded ? 'solid:xmark' : 'solid:gear'} />
+        <Icon
+          name={isExpanded ? 'solid:xmark' : 'solid:gear'}
+          className="transition-all duration-200"
+        />
         <span className="sr-only">{isExpanded ? 'Hide' : 'Show'} Metadata</span>
       </button>
 
-      <CollapsibleBox
-        className={twJoin(transition, isExpanded && ['-mt-1', transitionDelay])}
-        isCollapsed={!isExpanded}
-      >
-        <div className="flex flex-col gap-3 p-3 pt-0">
-          {(
-            [
-              [
-                'Hover to Edit?',
-                <div className="flex items-center gap-3 py-1 text-xs">
-                  <label className="flex items-center gap-1">
-                    <Input
-                      type="radio"
-                      name="isHoverToEditEnabled"
-                      value="false"
-                      checked={isHoverToEditEnabled === false}
-                      onChange={handleChangeHoverToEdit.bind(null, false)}
-                    />
-                    <span>Off</span>
-                  </label>
+      {isExpanded && (
+        <div
+          className={twMerge(
+            'fixed right-6 bottom-20 z-20',
+            'w-[90vw] rounded-md sm:w-72',
+            'bg-brand-500/95 text-white backdrop-blur-md',
+            'border-2 border-white',
+            'flex flex-col gap-3 p-3',
+          )}
+          {...otherProps}
+        >
+          <HoverToEditToggle
+            isEnabled={isHoverToEditEnabled}
+            onChange={handleChangeHoverToEdit}
+          />
 
-                  <label className="flex items-center gap-1">
-                    <Input
-                      type="radio"
-                      name="isHoverToEditEnabled"
-                      value="true"
-                      checked={isHoverToEditEnabled === true}
-                      onChange={handleChangeHoverToEdit.bind(null, true)}
-                    />
-                    <span>On</span>
-                  </label>
-                </div>,
-              ],
-              ['Meta Title', title],
-              [
-                'Meta Keywords',
-                keywords && keywords.length > 0 ? (
-                  keywords.join(' ')
-                ) : (
-                  <span className="italic opacity-60">No Keywords</span>
-                ),
-              ],
-              [
-                'Meta Description',
-                description ?? (
-                  <span className="italic opacity-60">No Description</span>
-                ),
-              ],
-            ] as const
-          ).map(([label, value], index) => (
-            <div
-              key={label}
-              className={'flex flex-col gap-1'}
-            >
-              <div className="text-faded-text-colorInDarkMode text-xs">
-                {label}
-              </div>
-              <div className="pl-3 text-xs">{value}</div>
-            </div>
-          ))}
+          <div className="w-full border-b" />
 
-          <div className="flex flex-row-reverse gap-2">
-            <Atom
-              as="a"
-              href={contentfulURL}
-              target="_blank"
-              variant="button.primary"
-            >
-              <span>
-                {matchingRouteMetadata || baseRouteMetadata
-                  ? 'Edit in Contentful'
-                  : 'No Metadata'}
-              </span>
-              <Icon name="regular:arrow-up-right-from-square" />
-            </Atom>
+          <MetadataItem
+            label="Meta Title"
+            contentfulURL={contentfulURL}
+          >
+            {title}
+          </MetadataItem>
 
-            <Atom
-              as="button"
-              variant="button.secondary"
-              onClick={() => setIsExpanded(false)}
-            >
-              Close
-            </Atom>
-          </div>
+          <MetadataItem
+            label="Meta Keywords"
+            contentfulURL={contentfulURL}
+          >
+            {keywords && keywords.length > 0 ? (
+              keywords.join(' ')
+            ) : (
+              <span className="italic opacity-60">No Keywords</span>
+            )}
+          </MetadataItem>
+
+          <MetadataItem
+            label="Meta Description"
+            contentfulURL={contentfulURL}
+          >
+            {description ?? (
+              <span className="italic opacity-60">No Description</span>
+            )}
+          </MetadataItem>
         </div>
-      </CollapsibleBox>
-    </div>
+      )}
+    </>
   )
 }

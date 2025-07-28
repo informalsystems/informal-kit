@@ -1,7 +1,7 @@
-import { Atom } from '@/components/Atom'
-import { MenuItem, MenuItemProps } from '@/components/MenuItem'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Atom } from './Atom'
+import { MenuItem, MenuItemProps } from './MenuItem'
 
 export interface MenuProps extends Omit<ComponentProps<'ul'>, 'children'> {
   items: MenuItemProps<any>[]

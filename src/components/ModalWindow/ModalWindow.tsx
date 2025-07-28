@@ -1,16 +1,24 @@
 'use client'
 
-import { ComponentProps, ElementType, useEffect, useRef, useState } from 'react'
+import {
+  ComponentProps,
+  ElementType,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 import { useIsClient } from 'usehooks-ts'
 
-type ModalWindowProps<T extends ElementType = 'section'> = ComponentProps<T> & {
-  as?: T
-  isOpen: boolean
-  propsForBackdrop?: ComponentProps<'div'>
-  onClose: () => void
-}
+export type ModalWindowProps<T extends ElementType = 'section'> =
+  ComponentProps<T> & {
+    as?: T
+    isOpen: boolean
+    propsForBackdrop?: ComponentProps<'div'>
+    onClose: () => void
+  }
 
 export function ModalWindow<T extends ElementType = 'section'>({
   as,
@@ -29,6 +37,20 @@ export function ModalWindow<T extends ElementType = 'section'>({
   const isClosedOrClosing = ['closed', 'closing'].includes(modalState)
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null)
 
+  const handleClickClose = useCallback(() => {
+    clearTimer()
+    setModalState('closing')
+
+    timerRef.current = setTimeout(() => {
+      setModalState('closed')
+      onClose()
+    }, 500)
+  }, [onClose])
+
+  function clearTimer() {
+    clearTimeout(timerRef.current ?? 0)
+  }
+
   useEffect(() => {
     const shortcuts: Record<string, () => void> = {
       Escape: handleClickClose,
@@ -45,7 +67,7 @@ export function ModalWindow<T extends ElementType = 'section'>({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [handleClickClose])
 
   useEffect(() => {
     if (isOpen) {
@@ -60,21 +82,7 @@ export function ModalWindow<T extends ElementType = 'section'>({
     } else {
       handleClickClose()
     }
-  }, [isOpen])
-
-  function handleClickClose() {
-    clearTimer()
-    setModalState('closing')
-
-    timerRef.current = setTimeout(() => {
-      setModalState('closed')
-      onClose()
-    }, 500)
-  }
-
-  function clearTimer() {
-    clearTimeout(timerRef.current ?? 0)
-  }
+  }, [isOpen, handleClickClose])
 
   const Component = String(as || 'section') as ElementType
 
@@ -108,11 +116,13 @@ export function ModalWindow<T extends ElementType = 'section'>({
             className={twMerge(
               `
                 fixed
-                left-1/2
                 top-1/2
-                z-1000
+                left-1/2
+                z-50
+                max-h-[90vh]
                 -translate-x-1/2
                 -translate-y-1/2
+                overflow-y-auto
                 transition-all
                 duration-500
               `,
@@ -148,7 +158,7 @@ ModalWindow.Backdrop = function Backdrop({
         `
           fixed
           inset-0
-          z-999
+          z-40
           backdrop-blur-md
         `,
         className,

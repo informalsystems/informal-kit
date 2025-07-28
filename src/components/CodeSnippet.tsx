@@ -1,10 +1,10 @@
 'use client'
 
-import { CopyToClipboardButton } from '@/components/CopyToClipboardButton'
-import { Icon } from '@/components/Icon'
 import { ComponentProps } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { CopyToClipboardButton } from './CopyToClipboardButton'
+import { Icon } from './Icon'
 
 interface CodeSnippetProps extends ComponentProps<'pre'> {
   code: string
@@ -188,45 +188,33 @@ export function CodeSnippet({
       {...otherProps}
     >
       <SyntaxHighlighter
-        className="
-          overflow-x-auto
-          bg-slate-900/40
-          px-4
-          py-3
-          font-mono
-          [text-shadow:_1px_1px_0_rgb(0_0_0_/_60%)]
-        "
+        className={twJoin(
+          'overflow-x-auto bg-slate-900/40 px-4 py-3 font-mono',
+          '[text-shadow:1px_1px_0_rgb(0_0_0/60%)]',
+        )}
         language={language}
-        lineProps={{ class: 'block hover:bg-slate-900/40' } as any}
+        lineProps={{ className: 'block hover:bg-slate-900/40' }}
         showLineNumbers={true}
-        style={styles as any}
+        style={styles as Record<string, React.CSSProperties>}
         wrapLines={true}
       >
         {code}
       </SyntaxHighlighter>
 
       <div
-        className="
-          absolute
-          right-3
-          top-3
-          font-body
-          text-white
-          opacity-0
-          transition-opacity
-          hover:!opacity-100
-          group-hover:opacity-60
-        "
+        className={twJoin(
+          'font-body absolute top-3 right-3 text-white',
+          'opacity-0 transition-all group-hover:opacity-100',
+        )}
       >
-        <CopyToClipboardButton
-          children={(isCopied) => (
+        <CopyToClipboardButton payload={code}>
+          {isCopied => (
             <span>
               <Icon name={isCopied ? 'check' : 'clipboard'} />
               {isCopied ? 'Copied!' : 'Copy'}
             </span>
           )}
-          payload={code}
-        />
+        </CopyToClipboardButton>
       </div>
     </pre>
   )

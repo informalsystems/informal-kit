@@ -1,8 +1,8 @@
 'use client'
 
-import { Icon, IconString } from '@/components/Icon'
 import { ComponentProps, ElementType } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Icon, IconString } from './Icon'
 
 type FileDownloadButtonProps<T extends ElementType = 'button'> = Omit<
   ComponentProps<T>,
@@ -18,7 +18,7 @@ type FileDownloadButtonProps<T extends ElementType = 'button'> = Omit<
 interface ContentTypeIconDescriptor {
   className: string
   extension: string | null
-  icon: IconString
+  iconName: IconString
 }
 
 type SupportedContentType = keyof typeof contentTypeIconMap
@@ -27,13 +27,13 @@ const contentTypeIconMap = {
   'DEFAULT': {
     className: 'text-neutral-500',
     extension: null,
-    icon: 'file',
+    iconName: 'file',
   },
 
   'application/pdf': {
     className: 'text-red-600',
     extension: 'pdf',
-    icon: 'file-pdf',
+    iconName: 'file-pdf',
   },
 } satisfies Record<string, ContentTypeIconDescriptor>
 
@@ -51,13 +51,16 @@ export function FileDownloadButton<T extends ElementType = 'button'>({
   const {
     className: iconClassName,
     extension,
-    icon = 'file',
+    iconName = 'file',
   } = contentTypeIconMap[contentType]
 
   return (
     <Component
       className={twMerge(
         `
+          border-opacity-20
+          shadow-brandColor/5
+          hover:bg-shadedBgColor
           my-12
           flex
           w-full
@@ -65,38 +68,30 @@ export function FileDownloadButton<T extends ElementType = 'button'>({
           items-center
           justify-between
           gap-3
-          whitespace-nowrap
           rounded-md
           border-2
           border-inherit
-          border-opacity-20
           bg-white
           py-3
-          pl-3
           pr-6
+          pl-3
+          whitespace-nowrap
           no-underline
           shadow-xl
-          shadow-brandColor/5
           transition-all
-          hover:bg-shadedBgColor
         `,
         iconClassName,
+        className,
       )}
       onClick={() => {
         window.open(url, '_blank')
       }}
       {...otherProps}
     >
-      <div
-        className="
-          flex
-          items-center
-          gap-3
-        "
-      >
+      <div className="flex items-center gap-3">
         <Icon
           className="text-2xl"
-          name={icon}
+          name={iconName}
         />
 
         <div className="font-bold">
@@ -105,14 +100,7 @@ export function FileDownloadButton<T extends ElementType = 'button'>({
         </div>
       </div>
 
-      <div
-        className="
-          flex
-          items-center
-          gap-1
-          text-xs
-        "
-      >
+      <div className="flex items-center gap-1 text-xs">
         <Icon name="download" />
         <span className="underline">Download</span>
 

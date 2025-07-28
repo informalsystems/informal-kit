@@ -1,8 +1,8 @@
-import { Atom, AtomProps } from '@/components/Atom'
-import { Icon, IconString } from '@/components/Icon'
 import Link from 'next/link'
 import { ElementType, MouseEvent, ReactNode } from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
+import { Atom, AtomProps } from './Atom'
+import { Icon, IconString } from './Icon'
 
 export type MenuItemProps<T extends 'button' | 'a' | typeof Link> = Omit<
   AtomProps<T>,

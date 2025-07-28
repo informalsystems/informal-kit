@@ -3,48 +3,53 @@
 import { ComponentProps, useEffect, useRef } from 'react'
 
 interface ImageMarqueeProps extends ComponentProps<'div'> {
-  duration?: number
+  pixelsPerSecond?: number
 }
 
 export function Marquee({
   children,
-  duration = 3000,
+  pixelsPerSecond = 50,
   ...otherProps
 }: ImageMarqueeProps) {
   const innerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const container = innerRef.current!
+    const container = innerRef.current
 
-    container.style.transition = `transform ${duration}ms linear`
+    if (!container) return
+
+    container.addEventListener('transitionend', handleTransitionEnd)
+    container.style.transitionTimingFunction = 'linear'
+
+    tick()
 
     function tick() {
+      const container = innerRef.current!
       const firstChild = container.firstElementChild as HTMLDivElement
       const secondChild = firstChild.nextElementSibling as HTMLDivElement
 
       if (!(firstChild && secondChild)) return
 
-      const secondChildOffset = secondChild.offsetLeft
+      const secondChildOffsetLeft = secondChild.offsetLeft
+      const durationMs = (secondChildOffsetLeft / pixelsPerSecond) * 1000
 
+      container.style.transitionDuration = `${durationMs}ms`
       container.style.transitionProperty = 'transform'
-      container.style.transform = `translateX(-${secondChildOffset}px)`
+      container.style.transform = `translateX(-${secondChildOffsetLeft}px)`
     }
 
     function handleTransitionEnd() {
+      const container = innerRef.current!
       container.style.transitionProperty = 'none'
       container.style.transform = 'translateX(0)'
       container.appendChild(container.firstElementChild!)
       tick()
     }
 
-    container.addEventListener('transitionend', handleTransitionEnd)
-
-    tick()
-
     return () => {
       container.removeEventListener('transitionend', handleTransitionEnd)
     }
-  }, [])
+  }, [pixelsPerSecond])
 
   return (
     <div

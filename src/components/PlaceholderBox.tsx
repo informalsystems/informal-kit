@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-interface PlaceholderBoxProps extends ComponentProps<'div'> {}
+type PlaceholderBoxProps = ComponentProps<'div'>
 
 export function PlaceholderBox({
   children,
@@ -12,12 +12,12 @@ export function PlaceholderBox({
     <div
       className={twMerge(
         `
+          bg-theme-bg-color-shaded
           flex
           w-full
           items-center
           justify-center
           rounded-xl
-          bg-shadedBgColor
           p-6
         `,
         className,

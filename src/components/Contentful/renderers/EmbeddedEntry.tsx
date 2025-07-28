@@ -1,6 +1,7 @@
-import { CodeSnippet } from '@/components/CodeSnippet'
-import { FileDownloadButton } from '@/components/FileDownloadButton'
+import { CodeSnippet } from '../../CodeSnippet'
+import { FileDownloadButton } from '../../FileDownloadButton'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function EmbeddedEntry({ node }: { node: any }) {
   const entryType = node.data.target.sys.contentType.sys.id
 

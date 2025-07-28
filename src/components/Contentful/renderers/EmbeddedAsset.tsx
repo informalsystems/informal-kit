@@ -1,7 +1,9 @@
-import { ZoomableImage } from '@/components/ZoomableImage'
+import { Block, Inline, Node } from '@contentful/rich-text-types'
+import { ZoomableImage } from '../../ZoomableImage'
 
-export function EmbeddedAsset({ node }: { node: any }) {
-  const { file, description } = node.data.target.fields
+export function EmbeddedAsset({ node }: { node: Block | Inline }) {
+  const assetNode = node as Node
+  const { file, description } = assetNode.data.target.fields
 
   const {
     contentType,

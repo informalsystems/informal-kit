@@ -1,21 +1,27 @@
 'use client'
 
-import { ComponentProps, useEffect, useRef } from 'react'
+import { ComponentPropsWithoutRef, ElementType, useEffect, useRef } from 'react'
 import { useIsClient, useMediaQuery } from 'usehooks-ts'
 
 const NonBreakingSpace = String.fromCharCode(160)
 
-export function OrphanController({
+type OrphanControllerProps<T extends ElementType> = {
+  as?: T
+  disabledInPortrait?: boolean
+  children: React.ReactNode
+} & ComponentPropsWithoutRef<T>
+
+export function OrphanController<T extends ElementType = 'div'>({
+  as,
   children,
   disabledInPortrait = true,
   ...otherProps
-}: ComponentProps<'div'> & {
-  disabledInPortrait?: boolean
-}) {
+}: OrphanControllerProps<T>) {
+  const Component = as || 'div'
   const isClient = useIsClient()
-  const isPortrait =
-    useMediaQuery('(orientation: portrait)') && isClient && disabledInPortrait
-  const innerRef = useRef<HTMLDivElement>(null)
+  const isMobile =
+    useMediaQuery('(max-width: 1023px)') && isClient && disabledInPortrait
+  const innerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const element = innerRef.current
@@ -24,8 +30,8 @@ export function OrphanController({
 
     const containsNonBreakingSpace = element.innerHTML.includes('&nbsp;')
 
-    if (isPortrait || containsNonBreakingSpace) {
-      if (isPortrait) {
+    if (isMobile || containsNonBreakingSpace) {
+      if (isMobile) {
         element.innerHTML = element.innerHTML.replaceAll('&nbsp;', ' ')
       }
       return
@@ -41,14 +47,14 @@ export function OrphanController({
     const lastWord = words.slice(-1)
 
     element.innerHTML = `${allWordsExceptLast}${NonBreakingSpace}${lastWord}`
-  }, [children, disabledInPortrait, isPortrait])
+  }, [children, disabledInPortrait, isMobile])
 
   return (
-    <div
-      ref={innerRef}
+    <Component
+      ref={innerRef as React.ComponentPropsWithRef<T>['ref']}
       {...otherProps}
     >
       {children}
-    </div>
+    </Component>
   )
 }
