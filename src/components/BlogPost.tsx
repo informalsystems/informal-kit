@@ -114,8 +114,9 @@ export function BlogPost({
         <ProseBox
           className={twMerge(
             'js-table-of-contents-target',
+            '-m-3 rounded-sm p-3',
             'relative',
-            'bg-white',
+            'bg-theme-bg-color-shaded',
             'prose-headings:text-balance',
             'target:prose-headings:rounded-sm',
             'target:prose-headings:outline',
