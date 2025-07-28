@@ -6,6 +6,11 @@
   }
 }
 
+@utility themed {
+  @apply bg-theme-bg-color;
+  @apply text-theme-text-color;
+}
+
 @utility theme-informal {
   --color-theme-accent-color: var(--color-blue-500);
 
@@ -27,8 +32,7 @@
   --color-theme-text-color-faded: var(--color-blue-200);
   --color-theme-scrollbar-thumb-color: var(--color-blue-500);
 
-  @apply bg-theme-bg-color;
-  @apply text-theme-text-color;
+  @apply themed;
 }
 
 @utility theme-informal-inverted {
@@ -37,6 +41,9 @@
   --color-theme-text-color: white;
   --color-theme-text-color-faded: var(--color-blue-200);
   --color-theme-scrollbar-thumb-color: white;
+
+  @apply bg-theme-bg-color;
+  @apply text-theme-text-color;
 }
 
 @utility theme-malachite {
@@ -47,15 +54,17 @@
   --color-theme-text-color: white;
   --color-theme-text-color-faded: var(--color-malachite-400);
 
-  @apply bg-theme-bg-color;
-  @apply text-theme-text-color;
+  @apply themed;
 }
 
 @utility theme-prime {
   --color-theme-accent-color: rgb(128, 209, 255);
   --color-theme-bg-color: rgb(15, 25, 31);
   --color-theme-bg-color-shaded: rgb(99, 106, 109);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
 
+  @apply themed;
   @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
 
@@ -63,7 +72,10 @@
   --color-theme-accent-color: rgb(205, 246, 152);
   --color-theme-bg-color: rgb(20, 23, 29);
   --color-theme-bg-color-shaded: rgb(37, 43, 54);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
 
+  @apply themed;
   @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
 
@@ -71,7 +83,10 @@
   --color-theme-accent-color: rgb(85, 255, 232);
   --color-theme-bg-color: rgb(10, 31, 28);
   --color-theme-bg-color-shaded: rgb(15, 47, 42);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
 
+  @apply themed;
   @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
 
@@ -79,6 +94,9 @@
   --color-theme-accent-color: rgb(210, 203, 255);
   --color-theme-bg-color-shaded: rgb(106, 105, 109);
   --color-theme-bg-color: rgb(25, 24, 31);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
 
+  @apply themed;
   @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
