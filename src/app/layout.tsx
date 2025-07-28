@@ -1,12 +1,12 @@
 import type { Viewport } from 'next'
-import { Glegoo, Inter } from 'next/font/google'
+import { Bitter, Inter } from 'next/font/google'
 import Script from 'next/script'
-import { CSSProperties } from 'react'
 import { twJoin } from 'tailwind-merge'
 import { SiteContextProvider } from '../components/SiteContextProvider'
 import { ToastContextProvider } from '../components/Toasts'
 import { generateMetadataFromContentful } from '../lib/generateMetadataFromContentful'
-import { getEditableContentFromContentful } from '../lib/getEditableContentFromContentful'
+import { getContentfulSpotCopy } from '../lib/getContentfulSpotCopy'
+import { getRouteClassName } from '../lib/useRouteClassName'
 import './styles/global.css'
 
 export async function generateMetadata() {
@@ -22,27 +22,37 @@ export const viewport: Viewport = {
 
 const bodyFont = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
-const displayFont = Glegoo({
+const displayFont = Bitter({
   subsets: ['latin'],
-  variable: '--font-glegoo',
-  weight: ['400', '700'],
+  variable: '--font-bitter',
+  weight: '500',
+  style: ['normal', 'italic'],
 })
 
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { editableContent } = await getEditableContentFromContentful()
+  const { spotCopy } = await getContentfulSpotCopy()
+  const routeClassName = await getRouteClassName({
+    routeClassMap: {
+      '/mtcs': 'theme-mtcs',
+      '/prime': 'theme-prime',
+      '/quartz': 'theme-quartz',
+      '/': 'theme-informal',
+    },
+  })
 
   return (
-    <SiteContextProvider spotCopy={editableContent}>
+    <SiteContextProvider spotCopy={spotCopy}>
       <html
         lang="en"
-        style={{ '--text-color': 'var(--color-text-color)' } as CSSProperties}
+        className={routeClassName}
       >
         <head>
           <Script
             crossOrigin="anonymous"
-            src="https://kit.fontawesome.com/401fb1e734.js"
+            src="https://kit.fontawesome.com/ddaf2d7713.js"
+            strategy="afterInteractive"
           />
         </head>
 
@@ -51,11 +61,7 @@ export default async function RootLayout({
             bodyFont.className,
             bodyFont.variable,
             displayFont.variable,
-            `
-              text-textColor
-              min-h-screen
-              overflow-x-hidden
-            `,
+            `overflow-x-hidden`,
           )}
         >
           <ToastContextProvider>{children}</ToastContextProvider>

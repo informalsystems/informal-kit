@@ -135,8 +135,8 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
           'fixed right-6 bottom-6 z-20',
           'flex items-center justify-center',
           'size-8 rounded-full border-2 border-white',
-          'bg-brand-500/95 text-white backdrop-blur-md',
-          'hover:bg-brand-400/95 transition-colors',
+          'bg-theme-accent-color/95 text-white backdrop-blur-md',
+          'hover:bg-theme-accent-color/95 transition-colors',
           'transition-transform duration-200',
           isExpanded && 'rotate-180',
           className,
@@ -155,7 +155,7 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
           className={twMerge(
             'fixed right-6 bottom-20 z-20',
             'w-[90vw] rounded-md sm:w-72',
-            'bg-brand-500/95 text-white backdrop-blur-md',
+            'bg-theme-accent-color/95 text-white backdrop-blur-md',
             'border-2 border-white',
             'flex flex-col gap-3 p-3',
           )}

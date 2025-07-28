@@ -1,1 +1,5 @@
-@custom-variant is-active (&:where(.is-active, .is-active *));
+@custom-variant is-inverted (&:is(.is-inverted, .is-inverted *):not(.not-inverted, .not-inverted *));
+@custom-variant is-stuck (&:is(.is-stuck, .is-stuck *));
+@custom-variant is-active (&:is([data-active], [data-active] *));
+@custom-variant is-open (&:is([data-open], [data-open] *));
+@custom-variant is-closed (&:is([data-closed], [data-closed] *));

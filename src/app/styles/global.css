@@ -1,6 +1,14 @@
+@import 'tailwindcss';
+
+@config '../../../tailwind.config.ts';
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@import './theme/colors.css';
 @import './theme/keyframes.css';
 @import './theme/variables.css';
-@import './utilities/theme.css';
+@import './utilities/themes.css';
 @import './utilities/navigation.css';
 @import './utilities/buttons.css';
 @import './utilities/forms.css';

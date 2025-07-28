@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { twJoin } from 'tailwind-merge'
 import { useLocalStorage } from 'usehooks-ts'
-import { Atom } from './Atom'
 import { Icon } from './Icon'
 
 export function Spotlight({
@@ -9,7 +8,7 @@ export function Spotlight({
   isSpotlighting = false,
   borderRadius = 8,
   classNamesForBackdrop = 'fill-black/80',
-  classNamesForSpotlight = 'stroke-2 stroke-border-brand-strong',
+  classNamesForSpotlight = 'stroke-2 stroke-theme-accent-color',
   message,
   id,
 }: {
@@ -91,7 +90,7 @@ export function Spotlight({
       <div
         className={twJoin(
           'absolute p-2 pl-4 whitespace-nowrap',
-          'bg-bg-brand text-text-onbrand rounded-2xl',
+          'bg-theme-accent-color text-theme-text-color rounded-2xl',
           'flex items-center gap-1',
         )}
         style={{
@@ -103,15 +102,14 @@ export function Spotlight({
       >
         <span>{message}</span>
 
-        <Atom
-          variant="button.icon"
-          as="button"
+        <button
+          className="button-icon"
           aria-label="Dismiss message"
           onClick={() => setIsDismissed(true)}
         >
           <Icon name="xmark" />
           <span className="sr-only">Dismiss message</span>
-        </Atom>
+        </button>
       </div>
     </div>
   )

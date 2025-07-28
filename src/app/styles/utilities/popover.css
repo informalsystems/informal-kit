@@ -24,3 +24,16 @@
     @apply translate-y-2 opacity-0;
   }
 }
+
+@utility tooltip {
+  @apply p-2;
+  @apply rounded-sm;
+  @apply border;
+  @apply border-theme-bg-color;
+  @apply bg-theme-text-color;
+  @apply text-theme-bg-color;
+  @apply text-sm;
+  @apply font-normal;
+  @apply whitespace-normal;
+  @apply shadow-2xl;
+}

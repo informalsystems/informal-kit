@@ -112,12 +112,12 @@ export function ResponsiveSiteNav({
       iconRight,
       label,
       href,
-      className: twJoin(
+      'data-active': pathname?.startsWith(href ?? '') ? '' : undefined,
+      'className': twJoin(
         additionalClassName,
-        pathname?.startsWith(href ?? '') && 'is-active',
         disabled && 'pointer-events-none opacity-60',
       ),
-      onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
+      'onClick': (event: React.MouseEvent<HTMLAnchorElement>) => {
         onClick?.(event)
         additionalOnClick?.(event)
         blurActiveElement()

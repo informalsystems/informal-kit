@@ -1,32 +1,30 @@
 'use client'
 
-import { Atom, ContentfulSpotCopy, SiteContentContainer } from '../components'
-import { MenuButton } from '../components/MenuButton'
+import { ContentfulSpotCopy } from '../components/Contentful'
+import { GlobalTools } from '../components/Contentful/GlobalTools'
+import { PopupMenu } from '../components/PopupMenu'
+import { SiteContentContainer } from '../components/SiteContentContainer'
+import { Tooltipped } from '../components/Tooltipped'
 
 export default function Home() {
   return (
     <SiteContentContainer>
-      <Atom variant="label">Editable Content Demo</Atom>
+      <label className="label">Editable Content Demo</label>
       <ContentfulSpotCopy path="editable-content-demo" />
 
-      <MenuButton
-        items={[
-          {
-            icon: 'arrow-right-long',
-            label: 'Editable Content Demo',
-            onClick: () => {
-              console.log('Editable Content Demo')
-            },
-          },
-        ]}
+      <PopupMenu
+        trigger={
+          <Tooltipped tip="With a tooltip">
+            <button className="button-primary">Menu Example</button>
+          </Tooltipped>
+        }
       >
-        <Atom
-          variant="button.primary"
-          tooltip="Optional tooltip prop"
-        >
-          Editable Content Demo
-        </Atom>
-      </MenuButton>
+        <button className="button-primary">Menu Item 1</button>
+        <button className="button-primary">Menu Item 2</button>
+        <button className="button-primary">Menu Item 3</button>
+      </PopupMenu>
+
+      <GlobalTools />
     </SiteContentContainer>
   )
 }

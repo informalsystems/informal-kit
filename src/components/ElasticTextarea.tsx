@@ -8,7 +8,6 @@ import {
 } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { useMultipleRefs } from '../lib/useMultipleRefs'
-import { Atom } from './Atom'
 
 interface ElasticTextareaProps extends ComponentPropsWithRef<'textarea'> {}
 
@@ -41,10 +40,8 @@ const ElasticTextarea = forwardRef<HTMLTextAreaElement, ElasticTextareaProps>(
 
     return (
       <div className="relative w-full [font-size:0]">
-        <Atom
-          variant="input"
-          as="textarea"
-          className={className}
+        <textarea
+          className={twMerge('input', className)}
           ref={refs}
           rows={1}
           value={value}
@@ -54,7 +51,11 @@ const ElasticTextarea = forwardRef<HTMLTextAreaElement, ElasticTextareaProps>(
 
         <div
           className={twMerge(
-            `pointer-events-none absolute top-0 left-0 text-base whitespace-pre-wrap opacity-0`,
+            'opacity-0',
+            'absolute top-0 left-0',
+            'pointer-events-none',
+            'text-base',
+            'whitespace-pre-wrap',
           )}
           ref={ghostElementRef}
         >
