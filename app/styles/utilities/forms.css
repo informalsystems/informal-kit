@@ -70,13 +70,13 @@
 }
 
 @utility input-jumbo {
+  @apply w-full;
+  @apply px-6 py-3;
   @apply input-base;
   @apply hide-spinners;
   @apply text-4xl;
   @apply font-bold;
   @apply leading-10;
-  @apply px-6;
-  @apply py-3;
   @apply rounded-md;
   @apply border-0;
   @apply bg-theme-bg-color-shaded;
