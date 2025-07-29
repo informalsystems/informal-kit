@@ -1,10 +1,10 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { ChangeEvent, ComponentProps, useEffect, useState } from 'react'
+import { ChangeEvent, ComponentProps, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import invariant from 'tiny-invariant'
-import { useLocalStorage } from 'usehooks-ts'
+import { useLocalStorage, useOnClickOutside } from 'usehooks-ts'
 import { getContentfulRouteMetadata } from '../../lib/getContentfulRouteMetadata'
 import { Icon } from '../Icon'
 
@@ -81,6 +81,7 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   invariant(process.env.NEXT_PUBLIC_URL, 'Missing NEXT_PUBLIC_URL')
 
   const [isExpanded, setIsExpanded] = useState(false)
+  const modalRef = useRef<HTMLDivElement>(null)
 
   const [isHoverToEditEnabled, setIsHoverToEditEnabled] =
     useLocalStorage<boolean>('isHoverToEditEnabled', true)
@@ -90,6 +91,12 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   > | null>(null)
 
   const pathname = usePathname()
+
+  useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => {
+    if (isExpanded) {
+      setIsExpanded(false)
+    }
+  })
 
   useEffect(() => {
     ;(async function () {
@@ -158,6 +165,7 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
 
       {isExpanded && (
         <div
+          ref={modalRef}
           className={twMerge(
             'fixed right-6 bottom-20 z-20',
             'w-[90vw] rounded-md sm:w-72',
