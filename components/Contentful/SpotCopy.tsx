@@ -7,8 +7,8 @@ import { ContentfulContentRenderer } from '.'
 import { ErrorBoundary } from '../ErrorBoundary'
 import { Icon } from '../Icon'
 import { ProseBox } from '../ProseBox'
-import { MediaDescriptor, SiteContext } from '../SiteContextProvider'
 import { HoverTools, HoverToolsProps } from './HoverTools'
+import { MediaDescriptor, SpotCopyContext } from './SpotCopyProvider'
 
 interface SpotCopyProps<JSONShape>
   extends Omit<HoverToolsProps, 'children' | 'contentfulURL'> {
@@ -50,7 +50,7 @@ export function SpotCopy<JSONShape>({
   path,
   ...otherProps
 }: SpotCopyProps<JSONShape>) {
-  const { spotCopy } = useContext(SiteContext)
+  const { spotCopy } = useContext(SpotCopyContext)
 
   if (!(path in spotCopy)) {
     console.error('SpotCopy path not found:', path)

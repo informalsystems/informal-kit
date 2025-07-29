@@ -2,7 +2,7 @@ import type { Viewport } from 'next'
 import { Bitter, Inter } from 'next/font/google'
 import Script from 'next/script'
 import { twJoin } from 'tailwind-merge'
-import { SiteContextProvider } from '../components/SiteContextProvider'
+import { SpotCopyProvider } from '../components/Contentful/SpotCopyProvider'
 import { ToastContextProvider } from '../components/Toasts'
 import { generateMetadataFromContentful } from '../lib/generateMetadataFromContentful'
 import { getContentfulSpotCopy } from '../lib/getContentfulSpotCopy'
@@ -43,7 +43,7 @@ export default async function RootLayout({
   })
 
   return (
-    <SiteContextProvider spotCopy={spotCopy}>
+    <SpotCopyProvider spotCopy={spotCopy}>
       <html
         lang="en"
         className={routeClassName}
@@ -67,6 +67,6 @@ export default async function RootLayout({
           <ToastContextProvider>{children}</ToastContextProvider>
         </body>
       </html>
-    </SiteContextProvider>
+    </SpotCopyProvider>
   )
 }

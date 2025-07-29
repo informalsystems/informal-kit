@@ -9,6 +9,35 @@ import { Tooltipped } from '../components/Tooltipped'
 export default function Home() {
   return (
     <SiteContentContainer>
+      <ul className="flex flex-col gap-6">
+        <li className="flex flex-col gap-3">
+          <p>Install:</p>
+          <pre>npm install github:aaronmw/informal-kit</pre>
+        </li>
+
+        <li className="flex flex-col gap-3">
+          <p>
+            Add to <code>next.config.mjs</code>:
+          </p>
+          <pre>{[`"transpilePackages": ['informal-kit']`].join('\n')}</pre>
+        </li>
+
+        <li className="flex flex-col gap-3">
+          <p>
+            Add to <code>tsconfig.json</code>:
+          </p>
+          <pre>
+            {[
+              `"compilerOptions": {`,
+              `  "paths": {`,
+              `    "informal-kit/*": ["./node_modules/informal-kit/*"]`,
+              `  }`,
+              `}`,
+            ].join('\n')}
+          </pre>
+        </li>
+      </ul>
+
       <label className="label">Editable Content Demo</label>
       <ContentfulSpotCopy path="editable-content-demo" />
 

@@ -1,4 +1,4 @@
-import { MediaDescriptor } from '../components/SiteContextProvider'
+import { MediaDescriptor } from '../components/Contentful/SpotCopyProvider'
 import { getContentfulEntriesByType } from './contentfulClient'
 import { TypeJsonSpotCopySkeleton } from './contentfulTypes'
 

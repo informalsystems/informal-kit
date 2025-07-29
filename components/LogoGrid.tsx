@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { SpotCopy } from './Contentful/SpotCopy'
-import { MediaDescriptor } from './SiteContextProvider'
+import { MediaDescriptor } from './Contentful/SpotCopyProvider'
 
 interface LogoGridProps extends Omit<ComponentProps<'div'>, 'children'> {
   path: string
