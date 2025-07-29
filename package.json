@@ -9,6 +9,7 @@
     "lint": "next lint",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
+    "check-types": "npx tsc --noEmit > ts-errors.txt",
     "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./src/lib/contentfulTypes"
   },
   "exports": {
