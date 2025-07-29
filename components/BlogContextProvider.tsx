@@ -2,6 +2,10 @@
 
 import { ReactNode, createContext, useContext } from 'react'
 import { BlogCategory, BlogPost } from '../lib/types'
+import {
+  CodeSnippetContextProvider,
+  useCodeSnippetStyles,
+} from './CodeSnippetContextProvider'
 
 interface BlogContextType {
   categories: BlogCategory[]
@@ -26,5 +30,19 @@ export function BlogContextProvider({
   children,
   posts,
 }: BlogContextProviderProps) {
-  return <BlogContext value={{ categories, posts }}>{children}</BlogContext>
+  const { styles: defaultStyles } = useCodeSnippetStyles()
+
+  return (
+    <CodeSnippetContextProvider
+      styles={{
+        ...defaultStyles,
+        container: {
+          ...defaultStyles.container,
+          backgroundColor: 'var(--color-malachite-500)',
+        },
+      }}
+    >
+      <BlogContext value={{ categories, posts }}>{children}</BlogContext>
+    </CodeSnippetContextProvider>
+  )
 }
