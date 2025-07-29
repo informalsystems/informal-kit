@@ -9,11 +9,11 @@ import { Icon } from './Icon'
 export function FrequentlyAskedQuestions({
   faqs,
   headingLevel = 1,
-  classNameForProseContainer,
+  classNameForProseBox,
 }: {
   faqs: string[]
   headingLevel?: number
-  classNameForProseContainer?: string
+  classNameForProseBox?: string
 }) {
   const [isCollapsedByPath, setIsCollapsedByPath] = useState<
     Record<string, boolean>
@@ -46,7 +46,7 @@ export function FrequentlyAskedQuestions({
                 path={faqPath}
                 headingLevel={headingLevel}
                 className={twJoin('relative')}
-                classNameForProseContainer={classNameForProseContainer}
+                classNameForProseBox={classNameForProseBox}
               >
                 {({ body, json }) => {
                   return (

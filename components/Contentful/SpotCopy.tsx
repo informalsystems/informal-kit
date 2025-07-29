@@ -13,7 +13,7 @@ import { MediaDescriptor, SpotCopyContext } from './SpotCopyProvider'
 interface SpotCopyProps<JSONShape>
   extends Omit<HoverToolsProps, 'children' | 'contentfulURL'> {
   children?: (renderProps: RenderProps<JSONShape>) => ReactNode
-  classNameForProseContainer?: string
+  classNameForProseBox?: string
   classNameForImageContainer?: string
   classNameForImage?: string
   decorativeHeadings?: boolean
@@ -38,7 +38,7 @@ interface RenderProps<JSONShape> {
 
 export function SpotCopy<JSONShape>({
   children,
-  classNameForProseContainer,
+  classNameForProseBox,
   classNameForImageContainer,
   classNameForImage,
   decorativeHeadings = false,
@@ -104,7 +104,7 @@ export function SpotCopy<JSONShape>({
     media,
     body: (
       <ProseBox
-        className={twMerge(`prose-headings:mb-3`, classNameForProseContainer)}
+        className={twMerge(`prose-headings:mb-3`, classNameForProseBox)}
         {...propsForProseContainer}
       >
         <ContentfulContentRenderer

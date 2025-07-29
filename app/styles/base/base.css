@@ -2,6 +2,7 @@
   html {
     scroll-padding-top: 7rem;
     scroll-behavior: smooth;
+    overflow-x: hidden;
     background: var(--color-theme-bg-color);
     color: var(--color-theme-text-color);
   }
