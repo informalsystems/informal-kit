@@ -8,8 +8,8 @@
 }
 
 @utility button-primary {
-  @apply is-inverted;
   @apply bg-theme-accent-color;
+  @apply text-theme-bg-color;
   @apply button-essentials;
   @apply w-min;
   @apply rounded-md;
@@ -17,6 +17,8 @@
   @apply py-3;
   @apply whitespace-nowrap;
   @apply hover:scale-105;
+  @apply is-inverted:bg-theme-bg-color;
+  @apply is-inverted:text-theme-accent-color;
 }
 
 @utility button-secondary {
@@ -32,6 +34,8 @@
   @apply whitespace-nowrap;
   @apply backdrop-blur-sm;
   @apply hover:scale-105;
+  @apply is-inverted:border-theme-bg-color;
+  @apply is-inverted:text-theme-bg-color;
 }
 
 @utility button-icon {
