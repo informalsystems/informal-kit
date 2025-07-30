@@ -3,6 +3,7 @@
   .is-inverted,
   .is-inverted * {
     --color-theme-text-color: --value([color]);
+    @apply text-theme-text-color;
   }
 }
 
