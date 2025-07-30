@@ -8,11 +8,11 @@
 }
 
 @utility button-primary {
+  @apply is-inverted;
+  @apply bg-theme-accent-color;
   @apply button-essentials;
-  @apply text-theme-bg-color;
   @apply w-min;
   @apply rounded-md;
-  @apply bg-white;
   @apply px-6;
   @apply py-3;
   @apply whitespace-nowrap;
@@ -21,16 +21,15 @@
 
 @utility button-secondary {
   @apply button-essentials;
-  @apply bg-theme-bg-color/40;
   @apply relative;
   @apply z-10;
   @apply w-min;
-  @apply rounded-md;
-  @apply border;
   @apply px-6;
   @apply py-3;
+  @apply border-2;
+  @apply border-theme-accent-color;
+  @apply rounded-md;
   @apply whitespace-nowrap;
-  @apply text-white;
   @apply backdrop-blur-sm;
   @apply hover:scale-105;
 }
