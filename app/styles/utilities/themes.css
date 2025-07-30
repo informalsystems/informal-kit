@@ -33,6 +33,7 @@
   --color-theme-scrollbar-thumb-color: var(--color-blue-500);
 
   @apply themed;
+  @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
 
 @utility theme-informal-inverted {
@@ -44,6 +45,7 @@
 
   @apply bg-theme-bg-color;
   @apply text-theme-text-color;
+  @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
 
 @utility theme-malachite {
@@ -55,6 +57,7 @@
   --color-theme-text-color-faded: var(--color-malachite-400);
 
   @apply themed;
+  @apply set-inverted-text-color-[color:var(--color-theme-bg-color)];
 }
 
 @utility theme-prime {

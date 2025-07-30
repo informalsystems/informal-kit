@@ -99,8 +99,8 @@ function createClipboardButton(slug: string) {
       href={`#${slug}`}
       title="Click to copy link to this section"
       payload={fullUrl}
-      variant="button.icon"
       className={twJoin(
+        'button-icon',
         'inline-flex',
         'items-center justify-center align-middle',
         'size-10 rounded-full',
