@@ -1,5 +1,3 @@
-import { ComponentProps } from 'react'
-
 const filtersByVariant = {
   blue: 'invert(20%) sepia(100%) saturate(1000%) hue-rotate(200deg) brightness(80%) contrast(110%)',
 
@@ -14,7 +12,7 @@ export function BlackColorAdjustmentLayer({
   style,
   variant,
   ...otherProps
-}: ComponentProps<'div'> & {
+}: React.ComponentProps<'div'> & {
   variant: keyof typeof filtersByVariant
 }) {
   return (

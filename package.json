@@ -17,6 +17,18 @@
     "./components/*": "./components/*",
     "./lib/*": "./lib/*"
   },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^17.1.0",
     "@contentful/rich-text-react-renderer": "^16.1.0",
@@ -24,8 +36,6 @@
     "contentful": "^11.7.13",
     "lodash": "^4.17.21",
     "next": "^15.4.4",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",
     "react-markdown": "^10.1.0",
     "react-stickynode": "^5.0.2",
