@@ -1,0 +1,134 @@
+@theme {
+  --color-theme-brand-color: rgb(255, 0, 255);
+  --color-theme-accent-color: rgb(255, 0, 255);
+  --color-theme-bg-color: rgb(255, 0, 255);
+  --color-theme-bg-color-shaded: rgb(255, 0, 255);
+  --color-theme-text-color: rgb(255, 0, 255);
+  --color-theme-text-color-faded: rgb(255, 0, 255);
+  --color-theme-inverted-text-color: rgb(255, 0, 255);
+  --color-theme-scrollbar-thumb-color: rgb(255, 0, 255);
+}
+
+@utility themed {
+  @apply bg-theme-bg-color;
+  @apply text-theme-text-color;
+}
+
+@utility theme-informal {
+  --color-theme-brand-color: var(--color-blue-500);
+  --color-theme-accent-color: var(--color-teal-400);
+  --color-theme-bg-color: white;
+  --color-theme-bg-color-shaded: color-mix(
+    in srgb,
+    var(--color-blue-500) 5%,
+    transparent
+  );
+  --color-theme-text-color: var(--color-blue-500);
+  --color-theme-text-color-faded: var(--color-blue-200);
+  --color-theme-inverted-text-color: white;
+  --color-theme-scrollbar-thumb-color: var(--color-blue-500);
+
+  @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: var(--color-blue-500);
+    --color-theme-text-color: white;
+    @apply text-theme-text-color;
+  }
+}
+
+@utility theme-informal-inverted {
+  --color-theme-brand-color: var(--color-blue-500);
+  --color-theme-accent-color: var(--color-teal-400);
+  --color-theme-bg-color: var(--color-blue-500);
+  --color-theme-bg-color-shaded: color-mix(
+    in srgb,
+    var(--color-blue-700) 80%,
+    transparent
+  );
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: var(--color-blue-200);
+  --color-theme-inverted-text-color: var(--color-blue-500);
+  --color-theme-scrollbar-thumb-color: white;
+
+  @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: white;
+    --color-theme-text-color: var(--color-blue-500);
+    @apply text-theme-text-color;
+  }
+}
+
+@utility theme-malachite {
+  --color-theme-brand-color: var(--color-malachite-500);
+  --color-theme-accent-color: var(--color-orange-400);
+  --color-theme-bg-color: black;
+  --color-theme-bg-color-shaded: color-mix(
+    in srgb,
+    var(--color-malachite-500) 20%,
+    black 100%
+  );
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: var(--color-malachite-400);
+  --color-theme-inverted-text-color: black;
+  --color-theme-scrollbar-thumb-color: var(--color-malachite-500);
+
+  --font-display: 'Encode Sans Expanded', sans-serif;
+
+  @apply themed;
+}
+
+@utility theme-prime {
+  --color-theme-brand-color: rgb(128, 209, 255);
+  --color-theme-accent-color: rgb(128, 209, 255);
+  --color-theme-bg-color: rgb(15, 25, 31);
+  --color-theme-bg-color-shaded: rgb(99, 106, 109);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
+  --color-theme-inverted-text-color: rgb(15, 25, 31);
+  --color-theme-scrollbar-thumb-color: rgb(128, 209, 255);
+
+  @apply themed;
+}
+
+@utility theme-cycles {
+  --color-theme-brand-color: rgb(205, 246, 152);
+  --color-theme-accent-color: rgb(205, 246, 152);
+  --color-theme-bg-color: rgb(20, 23, 29);
+  --color-theme-bg-color-shaded: rgb(37, 43, 54);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
+  --color-theme-inverted-text-color: rgb(20, 23, 29);
+  --color-theme-scrollbar-thumb-color: rgb(205, 246, 152);
+
+  @apply themed;
+}
+
+@utility theme-mtcs {
+  --color-theme-brand-color: rgb(85, 255, 232);
+  --color-theme-accent-color: rgb(85, 255, 232);
+  --color-theme-bg-color: rgb(10, 31, 28);
+  --color-theme-bg-color-shaded: rgb(15, 47, 42);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
+  --color-theme-inverted-text-color: rgb(10, 31, 28);
+  --color-theme-scrollbar-thumb-color: rgb(85, 255, 232);
+
+  @apply themed;
+}
+
+@utility theme-quartz {
+  --color-theme-brand-color: rgb(210, 203, 255);
+  --color-theme-accent-color: rgb(210, 203, 255);
+  --color-theme-bg-color-shaded: rgb(106, 105, 109);
+  --color-theme-bg-color: rgb(25, 24, 31);
+  --color-theme-text-color: white;
+  --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
+  --color-theme-inverted-text-color: rgb(25, 24, 31);
+  --color-theme-scrollbar-thumb-color: rgb(210, 203, 255);
+
+  @apply themed;
+}

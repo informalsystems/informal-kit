@@ -1,0 +1,48 @@
+@layer components {
+  .nav-backdrop {
+    @apply bg-theme-bg-color/20;
+    @apply backdrop-blur-sm;
+  }
+
+  .nav-items {
+    @apply uppercase;
+    @apply p-6;
+    @apply text-theme-inverted-text-color;
+    @apply w-2/3;
+    @apply is-desktop:w-auto;
+    @apply is-desktop:text-theme-text-color/75;
+    @apply is-desktop:text-sm;
+    @apply is-desktop:flex;
+    @apply is-desktop:items-center;
+    @apply is-desktop:justify-center;
+    @apply is-desktop:p-0;
+    @apply is-desktop:gap-6;
+  }
+
+  .nav-item {
+    @apply transition-all;
+    @apply opacity-75;
+    @apply no-underline;
+    @apply tracking-[0.05em];
+    @apply py-2;
+    @apply hover:opacity-100;
+    @apply is-active:opacity-100;
+    @apply is-active:font-bold;
+    @apply is-active:border-b-2;
+    @apply is-active:text-theme-text-color;
+    @apply is-desktop:py-0;
+    @apply is-desktop:is-active:border-theme-text-color;
+
+    &.nav-sub-item {
+      @apply px-3 py-2;
+      @apply is-desktop:text-xs;
+      @apply hover:bg-theme-text-color/10;
+      @apply is-desktop:is-active:border-0;
+      @apply is-desktop:is-active:bg-theme-text-color/5;
+    }
+  }
+
+  .nav-bg {
+    @apply right-1/3!;
+  }
+}

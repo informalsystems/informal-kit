@@ -1,13 +1,11 @@
-import { BlogPostMetaData } from './BlogPostMetaData'
-import { ContentfulContentRenderer } from './Contentful'
-import { ProseBox } from './ProseBox'
-import { SiteContentContainer } from './SiteContentContainer'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { twJoin } from 'tailwind-merge'
 import { getBlogPostImageURL } from '../lib/getBlogPostImageURL'
 import { BlogPost } from '../lib/types'
+import { BlogPostMetaData } from './BlogPostMetaData'
+import { ContentfulContentRenderer } from './Contentful'
+import { ProseBox } from './ProseBox'
 
 interface BlogPostHeroProps {
   post: BlogPost
@@ -19,10 +17,12 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
   const featureImageURL = getBlogPostImageURL(post)
 
   return (
-    <SiteContentContainer
+    <section
       className={twJoin(
-        'mt-6 gap-6',
+        'site-content-container',
+        'mt-6',
         'flex flex-col',
+        'gap-6',
         'lg:mt-20',
         'lg:grid',
         'lg:grid-cols-[3fr_4fr]',
@@ -62,6 +62,6 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
           objectFit="cover"
         />
       </div>
-    </SiteContentContainer>
+    </section>
   )
 }

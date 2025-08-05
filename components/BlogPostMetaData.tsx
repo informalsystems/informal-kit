@@ -36,6 +36,7 @@ export function BlogPostMetaData({
       className={twMerge(
         'footnote',
         'font-medium',
+        'inline-flex flex-wrap',
         cardOptions?.classNameForMetadata,
         className,
       )}
@@ -79,7 +80,7 @@ export function BlogPostMetaData({
             <ConditionalWrapper
               condition={index === 0}
               wrapper={children => (
-                <span className="**:text-theme-accent-color whitespace-nowrap">
+                <span className="**:text-theme-brand-color whitespace-nowrap">
                   <Icon
                     name="tag"
                     variant="solid"

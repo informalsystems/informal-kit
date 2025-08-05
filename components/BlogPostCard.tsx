@@ -120,7 +120,7 @@ export function BlogPostCard({
               'absolute top-0 right-0 size-6',
               'translate-x-1/2 -translate-y-1/2',
               'flex items-center justify-center',
-              'text-theme-accent-color rounded-full bg-white text-xs',
+              'text-theme-brand-color rounded-full bg-white text-xs',
               'opacity-0 transition-opacity',
               'group-hover:opacity-100',
               classNameForExternalLinkIcon,

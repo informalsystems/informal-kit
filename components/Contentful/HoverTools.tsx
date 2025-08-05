@@ -4,7 +4,6 @@ import { ComponentProps, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { useReadLocalStorage } from 'usehooks-ts'
 import { useAdvancedHover } from '../../lib/useAdvancedHover'
-import { useIsInverted } from '../../lib/useIsInverted'
 import { Icon } from '../Icon'
 import { AnimatedOverlay } from './AnimatedOverlay'
 
@@ -16,22 +15,21 @@ const classNames = {
       'rounded-[20px]',
       'transition-[background,opacity]',
       isHovering
-        ? ['bg-theme-accent-color/5', 'opacity-100', 'duration-500']
-        : ['bg-theme-accent-color/0', 'opacity-50', 'duration-1000'],
+        ? 'bg-theme-accent-color/5 opacity-100 duration-500'
+        : 'bg-theme-accent-color/0 opacity-50 duration-1000',
     ),
 
   path: ({ isHovering = false }) =>
     twMerge(
       'stroke-theme-accent-color/30',
       'transition-all',
-      'is-inverted:stroke-white',
       isHovering ? 'opacity-100 duration-1000' : 'opacity-0 duration-500',
     ),
 
   editButton: ({ buttonPosition = 'top right', isHovering = false }) =>
     twMerge(
       'bg-theme-accent-color',
-      'text-theme-bg-color',
+      'text-white',
       'pointer-events-none',
       'absolute',
       'flex gap-1',
@@ -43,7 +41,7 @@ const classNames = {
       'hover:scale-105',
 
       buttonPosition === 'top right'
-        ? ['top-0', 'right-0', 'origin-top-right', 'rounded-bl']
+        ? 'top-0 right-0 origin-top-right rounded-bl'
         : [
             'top-1/2',
             'left-1/2',
@@ -52,7 +50,7 @@ const classNames = {
             'rounded',
           ],
 
-      isHovering && ['cursor-pointer', 'pointer-events-auto', 'opacity-100'],
+      isHovering && 'pointer-events-auto cursor-pointer opacity-100',
     ),
 }
 
@@ -85,15 +83,13 @@ export function HoverTools({
       targetElementRef: containerElementRef,
     }) && isEnabled
 
-  const isInverted = useIsInverted(containerElementRef)
-
   function handleClickToEdit() {
     window.open(contentfulURL, '_blank')
   }
 
   return (
     <div
-      className={twMerge('relative', isInverted && 'is-inverted', className)}
+      className={twMerge('relative', className)}
       ref={containerElementRef}
       {...otherProps}
     >

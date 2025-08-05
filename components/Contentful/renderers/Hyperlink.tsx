@@ -1,7 +1,6 @@
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import Link from 'next/link'
 import { MouseEvent } from 'react'
-import { twMerge } from 'tailwind-merge'
 import { isExternalHref } from '../../../lib/isExternalHref'
 import { Icon } from '../../Icon'
 
@@ -14,34 +13,35 @@ export function Hyperlink({ node }: { node: any }) {
 
   const buttonType = isButton
     ? childrenAsHtml.startsWith('[[')
-      ? 'secondary'
-      : 'primary'
+      ? 'button-secondary'
+      : 'button-primary'
     : undefined
 
-  const variant = isButton ? (`button-${buttonType!}` as const) : 'link'
+  const variant = isButton ? buttonType : 'link'
 
   const isExternalLink = isExternalHref(node.data.uri)
 
   return (
     <Link
       aria-disabled={node.data.uri === '#' ? 'true' : undefined}
-      className={twMerge('not-prose', variant)}
+      className="not-prose no-underline"
       href={node.data.uri}
       target={isExternalLink ? '_blank' : undefined}
       onClick={(event: MouseEvent) => event.stopPropagation()}
     >
       <span
+        className={variant}
         dangerouslySetInnerHTML={{
           __html: isButton
             ? childrenAsHtml.replace(/^\[+\s*(.+?)\]+\s*$/, '$1')
             : childrenAsHtml,
         }}
       />
-      {isExternalLink && (
-        <Icon
-          name="arrow-up-right-from-square"
-          variant="light"
-        />
+      {isExternalLink && !isButton && (
+        <>
+          &nbsp;
+          <Icon name="light:arrow-up-right-from-square" />
+        </>
       )}
     </Link>
   )

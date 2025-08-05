@@ -4,3 +4,4 @@
 @custom-variant is-active (&:is([data-active], [data-active] *));
 @custom-variant is-open (&:is([data-open], [data-open] *));
 @custom-variant is-closed (&:is([data-closed], [data-closed] *));
+@custom-variant is-desktop (@media (min-width: 1024px));

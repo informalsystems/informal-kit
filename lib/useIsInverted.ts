@@ -4,7 +4,7 @@ import throttle from 'lodash/throttle'
 import { RefObject, useEffect, useState } from 'react'
 
 export function useIsInverted(ref: RefObject<HTMLElement | null>) {
-  const [isInverted, setisInverted] = useState(false)
+  const [isInverted, setIsInverted] = useState(false)
 
   useEffect(() => {
     function checkIfInverted() {
@@ -13,14 +13,11 @@ export function useIsInverted(ref: RefObject<HTMLElement | null>) {
       if (!targetElement) return
 
       const newIsInverted =
-        targetElement.matches('.dark') ||
-        (targetElement.closest('.light') === null &&
-          targetElement.closest('.dark') !== null) ||
         targetElement.matches('.is-inverted') ||
         (targetElement.closest('.not-inverted') === null &&
           targetElement.closest('.is-inverted') !== null)
 
-      setisInverted(newIsInverted)
+      setIsInverted(newIsInverted)
     }
 
     const throttledCheckIfInverted = throttle(checkIfInverted, 100)
@@ -37,7 +34,6 @@ export function useIsInverted(ref: RefObject<HTMLElement | null>) {
       window.removeEventListener('resize', throttledCheckIfInverted)
       window.removeEventListener('scroll', throttledCheckIfInverted)
     }
-    // ref is a stable object; ref.current is intentionally not a dependency
   }, [ref])
 
   return isInverted

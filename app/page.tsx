@@ -3,12 +3,11 @@
 import { ContentfulSpotCopy } from '../components/Contentful'
 import { GlobalTools } from '../components/Contentful/GlobalTools'
 import { PopupMenu } from '../components/PopupMenu'
-import { SiteContentContainer } from '../components/SiteContentContainer'
 import { Tooltipped } from '../components/Tooltipped'
 
 export default function Home() {
   return (
-    <SiteContentContainer>
+    <section className="site-content-container">
       <ul className="flex flex-col gap-6">
         <li className="flex flex-col gap-3">
           <p>Install:</p>
@@ -54,6 +53,6 @@ export default function Home() {
       </PopupMenu>
 
       <GlobalTools />
-    </SiteContentContainer>
+    </section>
   )
 }

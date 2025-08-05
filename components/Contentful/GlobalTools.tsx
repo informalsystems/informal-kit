@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { ChangeEvent, ComponentProps, useEffect, useRef, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 import invariant from 'tiny-invariant'
 import { useLocalStorage, useOnClickOutside } from 'usehooks-ts'
 import { getContentfulRouteMetadata } from '../../lib/getContentfulRouteMetadata'
@@ -22,19 +22,29 @@ const MetadataItem = ({
   children,
 }: MetadataItemProps) => (
   <div className="col-span-2">
-    <div className="mb-1 flex items-center gap-1 whitespace-nowrap">
-      <span className="text-xs font-bold whitespace-nowrap">{label}</span>
+    <div
+      className={twJoin(
+        'mb-1',
+        'flex',
+        'items-center',
+        'justify-between',
+        'gap-1',
+        'text-xs',
+        'whitespace-nowrap',
+      )}
+    >
+      <span className="font-bold whitespace-nowrap">{label}</span>
       <a
-        className="link"
+        className="link group"
         href={contentfulURL}
         target="_blank"
         rel="noopener noreferrer"
         title="Edit in Contentful"
       >
-        <Icon
-          name="regular:pencil"
-          className="size-3"
-        />
+        <span className="opacity-0 transition-opacity group-hover:opacity-100">
+          Edit in Contentful
+        </span>
+        <Icon name="regular:pencil" />
       </a>
     </div>
     <div className="text-xs">{children}</div>
@@ -145,12 +155,12 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
           'rounded-full',
           'border-2',
           'border-theme-bg-color',
-          'bg-theme-accent-color/95',
+          'bg-theme-text-color/95',
           'text-theme-bg-color',
           'transition-transform duration-200',
           'backdrop-blur-md',
           'transition-colors',
-          'hover:bg-theme-accent-color/95',
+          'hover:bg-theme-text-color/95',
           isExpanded && 'rotate-180',
           className,
         )}
@@ -167,9 +177,10 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
         <div
           ref={modalRef}
           className={twMerge(
-            'fixed right-6 bottom-20 z-20',
+            'is-inverted',
+            'fixed right-6 bottom-20 z-30',
             'w-[90vw] rounded-md sm:w-72',
-            'bg-theme-accent-color/95',
+            'bg-theme-bg-color/95',
             'text-theme-bg-color',
             'backdrop-blur-md',
             'border-theme-bg-color border-2',

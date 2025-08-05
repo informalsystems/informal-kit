@@ -26,8 +26,8 @@ function NavItem({
   label,
   href,
   className,
-  onClick,
   preventDefault = false,
+  onClick,
   ...otherProps
 }: NavItemProps & React.ComponentProps<'a'>) {
   const showExternalIcon = isExternalHref(href)
@@ -91,37 +91,61 @@ export function ResponsiveSiteNav({
   }
 
   // Helper function to create NavItem props with common logic
-  function createNavItemProps(
-    item: MenuItem,
-    index: number,
-    additionalClassName?: string,
-    additionalOnClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void,
-  ) {
+  function createNavItemProps({
+    item,
+    index,
+    additionalClassName,
+    additionalOnClick,
+    isTrigger = false,
+  }: {
+    item: MenuItem
+    index: number
+    additionalClassName?: string
+    additionalOnClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void
+    isTrigger?: boolean
+  }) {
     const {
       label,
       href,
       disabled,
       iconLeft,
       iconRight,
+      menuItems,
       onClick,
       ...otherProps
     } = item
 
+    const isDirectlyActive =
+      href &&
+      (href.split('/').length - 1 === 1
+        ? pathname === href
+        : pathname.startsWith(href))
+    const hasActiveChild = menuItems?.some(
+      subItem => subItem.href && pathname?.startsWith(subItem.href),
+    )
+    const isActive = isDirectlyActive || hasActiveChild
+
     return {
       iconLeft,
-      iconRight,
+      'iconRight': isTrigger ? 'solid:chevron-down' : iconRight,
       label,
       href,
-      'data-active': pathname?.startsWith(href ?? '') ? '' : undefined,
+      'data-active': isActive ? '' : undefined,
       'className': twJoin(
         additionalClassName,
         disabled && 'pointer-events-none opacity-60',
       ),
       'onClick': (event: React.MouseEvent<HTMLAnchorElement>) => {
+        if (isTrigger) {
+          event.preventDefault()
+        }
         onClick?.(event)
         additionalOnClick?.(event)
-        blurActiveElement()
+        if (!isTrigger) {
+          blurActiveElement()
+        }
       },
+      'preventDefault': isTrigger,
       ...otherProps,
     }
   }
@@ -136,12 +160,12 @@ export function ResponsiveSiteNav({
     return (
       <NavItem
         key={item.href ?? index}
-        {...createNavItemProps(
+        {...createNavItemProps({
           item,
           index,
           additionalClassName,
           additionalOnClick,
-        )}
+        })}
       />
     )
   }
@@ -155,7 +179,7 @@ export function ResponsiveSiteNav({
 
   // Helper function to render a menu item with submenu
   function renderMenuItemWithSubmenu(item: MenuItem, index: number) {
-    const { label, href, iconLeft, iconRight, menuItems: subMenuItems } = item
+    const { menuItems: subMenuItems } = item
 
     return (
       <span
@@ -172,11 +196,13 @@ export function ResponsiveSiteNav({
           <>
             <NavItem
               key={`mobile-${index}`}
-              iconLeft={iconLeft}
-              iconRight={iconRight}
-              label={label}
-              href={href}
-              preventDefault={true}
+              {...createNavItemProps({
+                item,
+                index,
+                additionalClassName: undefined,
+                additionalOnClick: undefined,
+                isTrigger: true,
+              })}
             />
             <span className={twJoin('nav-sub-items', 'flex flex-col')}>
               {renderSubmenuItems(subMenuItems!)}
@@ -188,12 +214,13 @@ export function ResponsiveSiteNav({
             trigger={
               <NavItem
                 key={`desktop-${index}`}
-                iconLeft={iconLeft}
-                iconRight={iconRight}
-                label={label}
-                href={href}
-                className="is-desktop:w-auto"
-                preventDefault={true}
+                {...createNavItemProps({
+                  item,
+                  index,
+                  additionalClassName: 'is-desktop:w-auto',
+                  additionalOnClick: undefined,
+                  isTrigger: true,
+                })}
               />
             }
           >
@@ -286,7 +313,7 @@ export function ResponsiveSiteNav({
           '-translate-x-full opacity-0',
           'pointer-events-none',
           'transition-all',
-          'bg-theme-accent-color',
+          'bg-theme-brand-color',
           'group-focus-within/navbar:translate-x-0',
           'group-focus-within/navbar:opacity-100',
           'is-desktop:hidden',

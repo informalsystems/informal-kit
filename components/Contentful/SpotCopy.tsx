@@ -104,7 +104,7 @@ export function SpotCopy<JSONShape>({
     media,
     body: (
       <ProseBox
-        className={twMerge(`prose-headings:mb-3`, classNameForProseBox)}
+        className={classNameForProseBox}
         {...propsForProseContainer}
       >
         <ContentfulContentRenderer

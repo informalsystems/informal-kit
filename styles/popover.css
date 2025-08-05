@@ -3,8 +3,8 @@
   @apply -mx-3 py-1;
   @apply bg-theme-bg-color-shaded/80;
   @apply flex flex-col;
-  @apply overflow-hidden rounded-lg;
-  @apply shadow-theme-accent-color/20 shadow-2xl;
+  @apply overflow-hidden rounded-sm;
+  @apply shadow-theme-brand-color/20 shadow-2xl;
   @apply backdrop-blur-sm;
   @apply invisible translate-y-2 opacity-0;
 

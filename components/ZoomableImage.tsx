@@ -88,7 +88,7 @@ export function ZoomableImage({
         isOpen={isZoomed}
         propsForBackdrop={{
           className: `
-            bg-theme-accent-color/10
+            bg-theme-brand-color/10
           `,
         }}
         style={{
@@ -148,8 +148,8 @@ function HiddenCornerButton({
         'top-0 right-0',
         'translate-x-1/2 -translate-y-1/2',
         'flex items-center justify-center',
-        'border-theme-accent-color',
-        'text-theme-accent-color',
+        'border-theme-brand-color',
+        'text-theme-brand-color',
         'rounded-full border-2',
         'bg-theme-bg-color',
         'text-xs',

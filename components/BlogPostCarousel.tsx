@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 import type { BlogPost } from '../lib/types'
 import { BlogPostHero } from './BlogPostHero'
-import { SiteContentContainer } from './SiteContentContainer'
-
 interface BlogPostCarouselProps {
   posts: BlogPost[]
 }
@@ -68,7 +66,7 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
         ref={containerRef}
         className={twJoin(
           'flex w-full overflow-x-auto overflow-y-hidden',
-          'bg-theme-accent-color/10',
+          'bg-theme-brand-color/10',
           'snap-x snap-mandatory scroll-smooth',
         )}
         tabIndex={0}
@@ -97,7 +95,7 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
         className={twJoin(
           'static',
           'transition-opacity',
-          'bg-theme-accent-color/10',
+          'bg-theme-brand-color/10',
           'lg:absolute',
           'lg:bg-transparent',
           'lg:inset-x-0',
@@ -108,11 +106,14 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
           opacity: containerHeight > 0 ? 1 : 0,
         }}
       >
-        <SiteContentContainer
+        <section
           className={twJoin(
+            'site-content-container',
             'h-12',
-            'relative py-0',
-            'flex items-center justify-center gap-2',
+            'flex items-center justify-center',
+            'relative',
+            'gap-2',
+            'py-0',
             'lg:justify-end',
           )}
         >
@@ -121,10 +122,10 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
               href={`#${post.slug}`}
               className={twMerge(
                 'size-3 overflow-hidden rounded-full',
-                'border-theme-accent-color border-2',
+                'border-theme-brand-color border-2',
                 'transition-all',
                 index === activeIndex
-                  ? 'bg-theme-accent-color'
+                  ? 'bg-theme-brand-color'
                   : 'bg-transparent',
               )}
               key={`${post.slug}-${index}`}
@@ -134,7 +135,7 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
               <span className="sr-only">{index + 1}</span>
             </a>
           ))}
-        </SiteContentContainer>
+        </section>
       </div>
     </div>
   )

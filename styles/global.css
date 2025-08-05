@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+@plugin "@tailwindcss/forms";
+
+@import './colors.css';
+@import './keyframes.css';
+@import './buttons.css';
+@import './custom-variants.css';
+@import './forms.css';
+@import './layout.css';
+@import './navigation.css';
+@import './popover.css';
+@import './themes.css';
+@import './typography.css';
+@import './base.css';

@@ -1,0 +1,246 @@
+@theme {
+  --font-display: 'Bitter', 'sans-serif';
+  --font-body: 'Inter', 'sans-serif';
+}
+
+@layer components {
+  :where(.prose, .prose-sm, .prose-spot-copy) {
+    @apply max-w-[65ch];
+    @apply text-theme-text-color;
+    @apply is-inverted:text-theme-inverted-text-color;
+    @apply leading-[1.75em];
+
+    &:where(.prose-sm) {
+      @apply text-sm;
+    }
+
+    :where(& > *) {
+      @apply text-theme-text-color;
+      @apply is-inverted:text-theme-inverted-text-color;
+
+      & + & {
+        @apply mt-6;
+      }
+    }
+
+    :where(h1, h2, h3, h4, h5, h6) {
+      @apply heading-base;
+      @apply mb-3;
+      @apply font-bold;
+
+      &:first-child {
+        @apply mt-0;
+      }
+    }
+
+    :where(h3, h4, h5, h6) {
+      @apply mb-2.5;
+    }
+
+    :where(h1) {
+      @apply h1;
+    }
+
+    :where(h2) {
+      @apply h2;
+    }
+
+    :where(h3) {
+      @apply h3;
+    }
+
+    :where(h4) {
+      @apply h4;
+    }
+
+    :where(a) {
+      @apply link;
+    }
+
+    :where(strong) {
+      @apply font-medium;
+    }
+
+    :where(ul, ol) {
+      @apply my-6;
+      @apply pl-6;
+    }
+
+    :where(ul) {
+      @apply list-disc;
+    }
+
+    :where(ol) {
+      @apply list-decimal;
+    }
+
+    :where(li) {
+      @apply my-1.5;
+      @apply pl-1.5;
+    }
+
+    :where(ul li)::marker {
+      @apply text-fuchsia-500;
+    }
+
+    :where(ol li)::marker {
+      @apply text-theme-brand-color;
+      @apply font-medium;
+    }
+
+    :where(ul ul, ol ol, ul ol, ol ul) {
+      @apply mt-3;
+      @apply mb-0;
+    }
+
+    :where(ul ul) {
+      @apply list-[circle];
+    }
+
+    :where(ul ul ul) {
+      @apply list-[square];
+    }
+
+    :where(ol ol) {
+      @apply list-[lower-alpha];
+    }
+
+    :where(ol ol ol) {
+      @apply list-[lower-roman];
+    }
+
+    :where(hr, th, td) {
+      @apply border;
+      @apply border-theme-bg-color-shaded;
+    }
+
+    :where(hr) {
+      @apply border-0;
+      @apply border-t;
+    }
+
+    :where(blockquote) {
+      @apply text-theme-text-color;
+      @apply border-collapse;
+      @apply border;
+      @apply border-theme-bg-color-shaded;
+    }
+
+    :where(pre code) {
+      @apply text-theme-bg-color-shaded;
+    }
+
+    :where(pre) {
+      @apply bg-theme-text-color;
+    }
+
+    :where(:last-child) {
+      @apply mb-0;
+    }
+
+    :where(blockquote) {
+      @apply overflow-x-auto;
+      @apply whitespace-pre-wrap;
+      @apply border-x-0;
+      @apply border-y-2;
+      @apply border-y-accent-fuchsia;
+      @apply px-0 py-4;
+      @apply font-display;
+      @apply text-lg;
+      @apply not-italic;
+      @apply leading-8;
+    }
+
+    :where(blockquote p, code)::after,
+    :where(blockquote p, code)::before {
+      @apply content-none;
+    }
+
+    :where(td, th) {
+      @apply px-3 py-1;
+    }
+
+    :where(th) {
+      @apply font-bold;
+      @apply bg-theme-bg-color-shaded;
+    }
+
+    :where(tr:nth-child(even)) {
+      @apply bg-theme-bg-color-shaded/20;
+    }
+
+    &:where(.prose-spot-copy) {
+      :where(h2) {
+        @apply text-theme-brand-color!;
+        @apply uppercase;
+        @apply text-base;
+        @apply -mb-3;
+        @apply tracking-widest;
+      }
+    }
+  }
+}
+
+@utility footnote {
+  @apply text-theme-text-color-faded;
+  @apply text-xs;
+  @apply leading-[1.5em];
+}
+
+@utility heading-base {
+  @apply font-bold;
+  @apply font-display;
+  /* @apply text-theme-text-color; */
+  /* @apply is-inverted:text-theme-inverted-text-color; */
+  @apply leading-[1.5];
+}
+
+@utility h1 {
+  @apply heading-base;
+  @apply text-5xl leading-[1.2em];
+
+  strong {
+    @apply font-bold;
+    @apply text-theme-text-color-faded;
+  }
+}
+
+@utility h2 {
+  @apply heading-base;
+  @apply text-4xl;
+}
+
+@utility h3 {
+  @apply heading-base;
+  @apply text-3xl;
+}
+
+@utility h4 {
+  @apply heading-base;
+  @apply text-lg;
+}
+
+@utility numeric {
+  @apply lining-nums;
+  @apply tracking-[0.1em];
+}
+
+@utility super-heading {
+  @apply text-theme-accent-color;
+  @apply text-xs;
+  @apply font-bold;
+  @apply tracking-[0.15em];
+  @apply uppercase;
+}
+
+@utility counter {
+  @apply bg-theme-bg-color-shaded;
+  @apply rounded-full;
+  @apply px-2 py-0.5;
+}
+
+@utility important-value {
+  @apply text-5xl;
+  @apply font-semibold;
+  @apply font-display;
+}

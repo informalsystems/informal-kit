@@ -13,7 +13,7 @@ export function LoadingScreen({
       className={twMerge(
         `
           bg-theme-bg-color
-          text-theme-accent-color
+          text-theme-brand-color
           fixed
           inset-0
           z-1000

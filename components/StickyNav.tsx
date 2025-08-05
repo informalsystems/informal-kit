@@ -3,7 +3,6 @@
 import { twJoin } from 'tailwind-merge'
 import { IconString } from './Icon/types'
 import { ListNav } from './ListNav'
-import { SiteContentContainer } from './SiteContentContainer'
 import { StickyBox } from './StickyBox'
 import { TabbedNav } from './TabbedNav'
 
@@ -80,7 +79,7 @@ export function StickyNav({
       className={className}
       bottomBoundary={bottomBoundary}
     >
-      <SiteContentContainer className="py-0 lg:hidden">
+      <section className="site-content-container py-0 lg:hidden">
         <ListNav navTitle={title}>
           {items.length === 0 ? (
             <ListNav.Item className="italic">(no items)</ListNav.Item>
@@ -102,18 +101,19 @@ export function StickyNav({
             ))
           )}
         </ListNav>
-      </SiteContentContainer>
+      </section>
 
       <div
         className={twJoin(
           'relative hidden cursor-auto',
+          'border-theme-bg-color-shaded',
           'lg:block',
           'lg:is-stuck:bg-white/95',
           'lg:is-stuck:backdrop-blur-sm',
           'lg:is-stuck:border-b',
         )}
       >
-        <SiteContentContainer className="py-0">
+        <section className="site-content-container py-0">
           <TabbedNav className="is-stuck:border-b-0">
             {items.length === 0 ? (
               <TabbedNav.Tab className="italic">(no items)</TabbedNav.Tab>
@@ -130,7 +130,7 @@ export function StickyNav({
               ))
             )}
           </TabbedNav>
-        </SiteContentContainer>
+        </section>
       </div>
     </StickyBox>
   )

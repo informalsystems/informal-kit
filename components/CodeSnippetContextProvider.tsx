@@ -7,8 +7,8 @@ const defaultStyles: Record<string, CSSProperties> = {
     border: '1px solid white',
     borderRadius: '8px',
     overflow: 'hidden',
-    boxShadow: '0 0 0 10px var(--color-theme-accent-color)',
-    backgroundColor: 'var(--color-theme-accent-color)',
+    boxShadow: '0 0 0 10px var(--color-theme-brand-color)',
+    backgroundColor: 'var(--color-theme-brand-color)',
   },
   'hljs': {
     display: 'block',

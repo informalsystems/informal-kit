@@ -37,7 +37,7 @@ export function ListNav({
         'lg:is-stuck:mt-6',
         'max-lg:cursor-pointer',
         'max-lg:is-stuck:is-open:bg-theme-bg-color-shaded/70',
-        'max-lg:is-closed:bg-theme-accent-color',
+        'max-lg:is-closed:bg-theme-brand-color',
         'max-lg:is-closed:text-theme-bg-color',
         className,
       )}
@@ -53,7 +53,7 @@ export function ListNav({
           'cursor-pointer',
           'transition-all',
           'font-bold',
-          'is-open:bg-theme-accent-color',
+          'is-open:bg-theme-brand-color',
           'is-open:text-theme-bg-color',
           'lg:bg-theme-bg-color-shaded',
           'lg:pointer-events-none',
@@ -117,7 +117,7 @@ ListNav.Item = function ListNavItem({
           'is-active:text-theme-text-color',
           'is-active:font-medium',
           'hover:text-theme-text-color/80',
-          'hover:bg-theme-accent-color/10',
+          'hover:bg-theme-brand-color/10',
           'group-first/list-nav-item:border-t-0',
         )}
         href={href}

@@ -1,0 +1,100 @@
+@utility button-essentials {
+  @apply inline;
+  @apply cursor-pointer;
+  @apply transition-all;
+  @apply no-underline;
+}
+
+@utility link {
+  @apply button-essentials;
+  @apply text-theme-accent-color;
+  @apply underline;
+  @apply underline-offset-4;
+  @apply transition-all;
+  @apply hover:underline-offset-6;
+  @apply hover:text-theme-accent-color/80;
+  @apply is-inverted:text-theme-inverted-text-color;
+}
+
+@utility link-subtle {
+  @apply button-essentials;
+  @apply text-inherit;
+  @apply underline-offset-4;
+  @apply transition-all;
+  @apply hover:underline;
+  @apply hover:underline-offset-4;
+  @apply hover:text-theme-accent-color;
+  @apply is-inverted:text-theme-inverted-text-color;
+}
+
+@utility button-primary {
+  @apply button-essentials;
+  @apply inline-flex items-center justify-center;
+  @apply gap-2;
+  @apply w-min;
+  @apply rounded-md;
+  @apply px-6 py-3;
+  @apply text-xs;
+  @apply uppercase;
+  @apply no-underline;
+  @apply tracking-[0.1em];
+  @apply font-bold;
+  @apply bg-theme-text-color;
+  @apply text-theme-inverted-text-color;
+  @apply whitespace-nowrap;
+  @apply hover:scale-105;
+  @apply is-inverted:bg-theme-inverted-text-color;
+  @apply is-inverted:text-theme-bg-color;
+}
+
+@utility button-secondary {
+  @apply button-essentials;
+  @apply inline-flex items-center justify-center;
+  @apply gap-2;
+  @apply relative;
+  @apply z-10;
+  @apply w-min;
+  @apply px-6 py-3;
+  @apply text-xs;
+  @apply uppercase;
+  @apply no-underline;
+  @apply tracking-[0.1em];
+  @apply font-bold;
+  @apply text-theme-text-color;
+  @apply border-2;
+  @apply border-theme-text-color;
+  @apply rounded-md;
+  @apply whitespace-nowrap;
+  @apply backdrop-blur-sm;
+  @apply hover:scale-105;
+  @apply is-inverted:border-theme-inverted-text-color;
+  @apply is-inverted:text-theme-inverted-text-color;
+}
+
+@utility button-icon {
+  @apply button-essentials;
+  @apply inline-flex items-center justify-center;
+  @apply gap-2;
+  @apply bg-theme-bg-color-shaded;
+  @apply size-10;
+  @apply w-min;
+  @apply rounded-full;
+  @apply no-underline;
+  @apply hover:bg-theme-text-color;
+  @apply hover:text-theme-bg-color;
+  @apply hover:scale-105;
+}
+
+@utility button-tool {
+  @apply button-essentials;
+  @apply inline-flex items-center justify-center;
+  @apply gap-2;
+  @apply text-theme-text-color;
+  @apply rounded-sm;
+  @apply no-underline;
+  @apply px-1;
+  @apply py-0.5;
+  @apply text-sm;
+  @apply hover:bg-theme-text-color/15;
+  @apply hover:scale-105;
+}

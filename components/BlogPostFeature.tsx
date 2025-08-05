@@ -1,14 +1,12 @@
 'use client'
 
-import { BlogPostMetaData } from './BlogPostMetaData'
-import { SiteContentContainer } from './SiteContentContainer'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { ComponentProps } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { getBlogPostImageURL } from '../lib/getBlogPostImageURL'
 import { BlogPost as BlogPostType } from '../lib/types'
+import { BlogPostMetaData } from './BlogPostMetaData'
 
 interface BlogPostFeatureProps extends ComponentProps<'div'> {
   post: BlogPostType
@@ -27,7 +25,14 @@ export function BlogPostFeature({
       className={twMerge('relative overflow-hidden', className)}
       {...otherProps}
     >
-      <SiteContentContainer className="mt-20 flex flex-col gap-12">
+      <section
+        className={twJoin(
+          'site-content-container',
+          'mt-20',
+          'flex flex-col',
+          'gap-12',
+        )}
+      >
         <div className="is-inverted relative z-10 space-y-6">
           <h1 className="h2">{title}</h1>
 
@@ -49,7 +54,7 @@ export function BlogPostFeature({
             className="object-cover"
           />
         </div>
-      </SiteContentContainer>
+      </section>
     </div>
   )
 }

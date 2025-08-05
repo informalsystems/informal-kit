@@ -8,7 +8,7 @@ export function Spotlight({
   isSpotlighting = false,
   borderRadius = 8,
   classNamesForBackdrop = 'fill-black/80',
-  classNamesForSpotlight = 'stroke-2 stroke-theme-accent-color',
+  classNamesForSpotlight = 'stroke-2 stroke-theme-brand-color',
   message,
   id,
 }: {
@@ -90,7 +90,7 @@ export function Spotlight({
       <div
         className={twJoin(
           'absolute p-2 pl-4 whitespace-nowrap',
-          'bg-theme-accent-color text-theme-text-color rounded-2xl',
+          'bg-theme-brand-color text-theme-text-color rounded-2xl',
           'flex items-center gap-1',
         )}
         style={{

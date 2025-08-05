@@ -1,5 +1,5 @@
 import { ComponentProps, ElementType, ReactNode } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { GradientBox } from './GradientBox'
 
 type IconifiedGradientBoxProps<T extends ElementType = 'div'> =
@@ -22,16 +22,16 @@ export function IconifiedGradientBox<T extends ElementType = 'div'>({
       {...otherProps}
     >
       <div
-        className="
-          absolute
-          top-0
-          size-20
-          -translate-y-1/2
-          rounded-xl
-          bg-white
-          p-3
-          shadow-2xl
-        "
+        className={twJoin(
+          'absolute',
+          'top-0',
+          'size-20',
+          '-translate-y-1/2',
+          'rounded-xl',
+          'bg-white',
+          'p-3',
+          'shadow-2xl',
+        )}
       >
         {icon}
       </div>

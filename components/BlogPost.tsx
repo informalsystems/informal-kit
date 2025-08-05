@@ -9,7 +9,6 @@ import { BlogPost as BlogPostType } from '../lib/types'
 import { BlogPostMetaData } from './BlogPostMetaData'
 import { ContentfulContentRenderer } from './Contentful'
 import { ProseBox } from './ProseBox'
-import { SiteContentContainer } from './SiteContentContainer'
 import { StickyTableOfContents } from './StickyTableOfContents'
 
 interface BlogPostProps extends ComponentProps<'div'> {
@@ -63,12 +62,19 @@ export function BlogPost({
           className={twJoin(
             'absolute inset-0 z-0',
             '-translate-y-40',
-            'bg-theme-bg-color-shaded/30',
+            'bg-theme-bg-color-shaded',
             'pointer-events-none',
           )}
         />
 
-        <SiteContentContainer className={twJoin('flex flex-col gap-6 pt-40!')}>
+        <section
+          className={twJoin(
+            'site-content-container',
+            'flex flex-col',
+            'gap-6',
+            'pt-40!',
+          )}
+        >
           <div className="relative z-10 space-y-6">
             <h1 className="h1 text-balance">{title}</h1>
 
@@ -94,14 +100,15 @@ export function BlogPost({
               objectFit="cover"
             />
           </div>
-        </SiteContentContainer>
+        </section>
       </div>
 
-      <SiteContentContainer
+      <section
         className={twJoin(
-          'py-0',
+          'site-content-container',
           'flex flex-col',
           'gap-6',
+          'py-0',
           'lg:grid',
           'lg:grid-cols-[250px_auto]',
         )}
@@ -137,7 +144,7 @@ export function BlogPost({
             />
           )}
         </ProseBox>
-      </SiteContentContainer>
+      </section>
     </>
   )
 }

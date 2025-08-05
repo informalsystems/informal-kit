@@ -66,7 +66,7 @@ export function FrequentlyAskedQuestions({
                           <div
                             className={twJoin(
                               'relative flex size-6 items-center justify-center',
-                              'text-theme-accent-color',
+                              'text-theme-brand-color',
                               'transition-all',
                               !isCollapsed && 'rotate-315',
                             )}
@@ -76,8 +76,8 @@ export function FrequentlyAskedQuestions({
                           <div
                             className={twJoin(
                               'cursor-pointer text-lg',
-                              'hover:text-theme-accent-color',
-                              !isCollapsed && 'text-theme-accent-color',
+                              'hover:text-theme-brand-color',
+                              !isCollapsed && 'text-theme-brand-color',
                             )}
                           >
                             {json?.question}

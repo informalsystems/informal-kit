@@ -1,0 +1,69 @@
+@theme static {
+  --color-blue-50: rgb(243, 244, 248); /* #f3f4f8 */
+  --color-blue-100: rgb(206, 213, 228); /* #ced5e4 */
+  --color-blue-200: rgb(157, 171, 203); /* #9dabcb */
+  --color-blue-300: rgb(108, 129, 176); /* #6c81b0 */
+  --color-blue-400: rgb(59, 87, 151); /* #3b5797 */
+  --color-blue-500: rgb(12, 45, 124); /* #0c2d7c */
+  --color-blue-600: rgb(4, 30, 90); /* #041e5a */
+  --color-blue-700: rgb(0, 23, 64); /* #001740 */
+
+  --color-teal-50: rgb(245, 249, 250); /* #f5f9fa */
+  --color-teal-100: rgb(213, 230, 237); /* #d5e6ed */
+  --color-teal-200: rgb(173, 207, 220); /* #adcfdc */
+  --color-teal-300: rgb(129, 183, 201); /* #81b7c9 */
+  --color-teal-400: rgb(89, 159, 184); /* #599fb8 */
+  --color-teal-500: rgb(47, 135, 165); /* #2f87a5 */
+  --color-teal-600: rgb(5, 83, 110); /* #05536e */
+  --color-teal-700: rgb(2, 54, 72); /* #023648 */
+
+  --color-rust-50: rgb(252, 246, 246); /* #fcf6f6 */
+  --color-rust-100: rgb(239, 221, 220); /* #efdddc */
+  --color-rust-200: rgb(221, 186, 184); /* #ddbab8 */
+  --color-rust-300: rgb(205, 152, 149); /* #cd9895 */
+  --color-rust-400: rgb(188, 117, 113); /* #bc7571 */
+  --color-rust-500: rgb(172, 83, 77); /* #ac534d */
+
+  --color-fuchsia-50: rgb(250, 245, 249); /* #faf5f9 */
+  --color-fuchsia-100: rgb(231, 214, 232); /* #e7d6e8 */
+  --color-fuchsia-200: rgb(206, 173, 206); /* #ceadce */
+  --color-fuchsia-300: rgb(182, 133, 182); /* #b685b6 */
+  --color-fuchsia-400: rgb(159, 93, 158); /* #9f5d9e */
+  --color-fuchsia-500: rgb(135, 52, 134); /* #873486 */
+
+  --color-pink-50: rgb(253, 248, 255); /* #fdf8ff */
+  --color-pink-100: rgb(249, 227, 248); /* #f9e3f8 */
+  --color-pink-200: rgb(243, 198, 241); /* #f3c6f1 */
+  --color-pink-300: rgb(236, 170, 234); /* #ecaaea */
+  --color-pink-400: rgb(229, 140, 227); /* #e58ce3 */
+  --color-pink-500: rgb(224, 112, 221); /* #e070dd */
+
+  --color-lavender-50: rgb(251, 247, 254); /* #fbf7fe */
+  --color-lavender-100: rgb(237, 227, 251); /* #ede3fb */
+  --color-lavender-200: rgb(218, 201, 247); /* #dac9f7 */
+  --color-lavender-300: rgb(200, 175, 243); /* #c8aff3 */
+  --color-lavender-400: rgb(182, 149, 240); /* #b695f0 */
+  --color-lavender-500: rgb(162, 122, 236); /* #a27aec */
+
+  --color-malachite-50: rgb(243, 248, 245); /* #f3f8f5 */
+  --color-malachite-100: rgb(206, 228, 215); /* #cee4d7 */
+  --color-malachite-200: rgb(157, 203, 176); /* #9dcbb0 */
+  --color-malachite-300: rgb(108, 176, 136); /* #6cb088 */
+  --color-malachite-400: rgb(88, 165, 126); /* #58a57e */
+  --color-malachite-500: rgb(68, 192, 137); /* #44c089 */
+  --color-malachite-600: rgb(46, 138, 95); /* #2e8a5f */
+  --color-malachite-700: rgb(26, 81, 55); /* #1a5137 */
+
+  --color-accent-teal: var(--color-teal-500);
+  --color-accent-fuchsia: var(--color-fuchsia-500);
+  --color-accent-rust: var(--color-rust-500);
+  --color-accent-pink: var(--color-pink-500);
+  --color-accent-lavender: var(--color-lavender-500);
+  --color-accent-malachite: var(--color-malachite-500);
+
+  --color-danger: var(--color-rust-500);
+  --color-info: var(--color-fuchsia-500);
+  --color-neutral: theme(colors.slate.500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-amber-500);
+}

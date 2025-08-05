@@ -7,7 +7,7 @@ import { ToastContextProvider } from '../components/Toasts'
 import { generateMetadataFromContentful } from '../lib/generateMetadataFromContentful'
 import { getContentfulSpotCopy } from '../lib/getContentfulSpotCopy'
 import { getRouteClassName } from '../lib/useRouteClassName'
-import './styles/global.css'
+import '../styles/global.css'
 
 export async function generateMetadata() {
   return await generateMetadataFromContentful()
