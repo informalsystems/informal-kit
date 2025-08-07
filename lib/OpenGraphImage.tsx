@@ -98,7 +98,7 @@ export async function OpenGraphImage({
           {superHeading && (
             <div
               style={{
-                color: 'var(--color-teal-400)',
+                color: 'rgba(255, 255, 255, 0.6)',
                 fontFamily: 'Inter',
                 fontSize: superHeadingFontSize,
                 fontWeight: 700,
@@ -123,7 +123,7 @@ export async function OpenGraphImage({
           {subHeading && (
             <div
               style={{
-                color: 'var(--color-theme-bg-color-shaded)',
+                color: 'white',
                 display: 'flex',
                 fontFamily: 'Inter',
                 fontSize: subHeadingFontSize,
