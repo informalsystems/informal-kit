@@ -181,7 +181,7 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
             'fixed right-6 bottom-20 z-30',
             'w-[90vw] rounded-md sm:w-72',
             'bg-theme-bg-color/95',
-            'text-theme-bg-color',
+            'text-theme-text-color',
             'backdrop-blur-md',
             'border-theme-bg-color border-2',
             'flex flex-col gap-3 p-3',

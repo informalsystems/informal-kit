@@ -48,7 +48,7 @@ export const classNames = {
   progressBarContainer: ({ isAutoPlaying = false }) =>
     twMerge(
       `
-        bg-accent-teal/10
+        bg-theme-accent-color/10
         w-64
         opacity-20
         transition-all
@@ -62,7 +62,7 @@ export const classNames = {
   progressBar: ({ isAutoPlaying = false }) =>
     twMerge(
       `
-        bg-accent-teal
+        bg-theme-accent-color
         h-2
         w-0
         transition-none

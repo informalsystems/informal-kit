@@ -28,9 +28,9 @@
     @apply hover:opacity-100;
     @apply is-active:opacity-100;
     @apply is-active:font-bold;
-    @apply is-active:border-b-2;
-    @apply is-active:text-theme-text-color;
     @apply is-desktop:py-0;
+    @apply is-desktop:is-active:border-b-2;
+    @apply is-desktop:is-active:text-theme-text-color;
     @apply is-desktop:is-active:border-theme-text-color;
 
     &.nav-sub-item {

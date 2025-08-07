@@ -55,7 +55,7 @@ const ViewAllButton = ({
       name="arrow-right"
       variant="solid"
       className="
-        group-hover/link:text-accent-teal
+        group-hover/link:text-theme-accent-color
         m-0!
         transition-transform
         group-hover/link:translate-x-1

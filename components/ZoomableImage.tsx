@@ -65,7 +65,7 @@ export function ZoomableImage({
           <figcaption
             className={twJoin(
               'mt-1 flex items-start gap-1',
-              'text-accent-teal text-xs italic',
+              'text-theme-accent-color text-xs italic',
             )}
           >
             <Icon

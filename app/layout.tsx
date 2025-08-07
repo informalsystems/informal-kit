@@ -1,12 +1,13 @@
 import type { Viewport } from 'next'
 import { Bitter, Inter } from 'next/font/google'
+import { headers } from 'next/headers'
 import Script from 'next/script'
 import { twJoin } from 'tailwind-merge'
 import { SpotCopyProvider } from '../components/Contentful/SpotCopyProvider'
 import { ToastContextProvider } from '../components/Toasts'
 import { generateMetadataFromContentful } from '../lib/generateMetadataFromContentful'
 import { getContentfulSpotCopy } from '../lib/getContentfulSpotCopy'
-import { getRouteClassName } from '../lib/useRouteClassName'
+import { getClassNameFromPathname } from '../lib/useRouteClassName'
 import '../styles/global.css'
 
 export async function generateMetadata() {
@@ -33,13 +34,10 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { spotCopy } = await getContentfulSpotCopy()
-  const routeClassName = await getRouteClassName({
-    routeClassMap: {
-      '/mtcs': 'theme-mtcs',
-      '/prime': 'theme-prime',
-      '/quartz': 'theme-quartz',
-      '/': 'theme-informal',
-    },
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || '/'
+  const routeClassName = getClassNameFromPathname(pathname, {
+    '/': 'theme-informal',
   })
 
   return (

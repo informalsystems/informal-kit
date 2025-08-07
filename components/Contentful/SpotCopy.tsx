@@ -53,7 +53,7 @@ export function SpotCopy<JSONShape>({
   const { spotCopy } = useContext(SpotCopyContext)
 
   if (!(path in spotCopy)) {
-    console.error('SpotCopy path not found:', path)
+    console.error('SpotCopy path not found:', path, spotCopy)
 
     return process.env.NODE_ENV === 'development' ? (
       <div

@@ -79,45 +79,73 @@
   --font-display: 'Encode Sans Expanded', sans-serif;
 
   @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: white;
+    --color-theme-text-color: black;
+    @apply text-theme-text-color;
+  }
 }
 
 @utility theme-prime {
   --color-theme-brand-color: rgb(128, 209, 255);
   --color-theme-accent-color: rgb(128, 209, 255);
   --color-theme-bg-color: rgb(15, 25, 31);
-  --color-theme-bg-color-shaded: rgb(99, 106, 109);
+  --color-theme-bg-color-shaded: color-mix(in srgb, black 50%, transparent);
   --color-theme-text-color: white;
   --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
   --color-theme-inverted-text-color: rgb(15, 25, 31);
   --color-theme-scrollbar-thumb-color: rgb(128, 209, 255);
 
   @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: white;
+    --color-theme-text-color: rgb(15, 25, 31);
+    @apply text-theme-text-color;
+  }
 }
 
 @utility theme-cycles {
   --color-theme-brand-color: rgb(205, 246, 152);
   --color-theme-accent-color: rgb(205, 246, 152);
   --color-theme-bg-color: rgb(20, 23, 29);
-  --color-theme-bg-color-shaded: rgb(37, 43, 54);
+  --color-theme-bg-color-shaded: color-mix(in srgb, white 10%, transparent);
   --color-theme-text-color: white;
   --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
   --color-theme-inverted-text-color: rgb(20, 23, 29);
   --color-theme-scrollbar-thumb-color: rgb(205, 246, 152);
 
   @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: white;
+    --color-theme-text-color: rgb(20, 23, 29);
+    @apply text-theme-text-color;
+  }
 }
 
 @utility theme-mtcs {
   --color-theme-brand-color: rgb(85, 255, 232);
   --color-theme-accent-color: rgb(85, 255, 232);
   --color-theme-bg-color: rgb(10, 31, 28);
-  --color-theme-bg-color-shaded: rgb(15, 47, 42);
+  --color-theme-bg-color-shaded: color-mix(in srgb, white 10%, transparent);
   --color-theme-text-color: white;
   --color-theme-text-color-faded: rgba(255, 255, 255, 0.7);
   --color-theme-inverted-text-color: rgb(10, 31, 28);
   --color-theme-scrollbar-thumb-color: rgb(85, 255, 232);
 
   @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: white;
+    --color-theme-text-color: rgb(10, 31, 28);
+    @apply text-theme-text-color;
+  }
 }
 
 @utility theme-quartz {
@@ -131,4 +159,11 @@
   --color-theme-scrollbar-thumb-color: rgb(210, 203, 255);
 
   @apply themed;
+
+  &.is-inverted,
+  .is-inverted {
+    --color-theme-bg-color: white;
+    --color-theme-text-color: rgb(25, 24, 31);
+    @apply text-theme-text-color;
+  }
 }

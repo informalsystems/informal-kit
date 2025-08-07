@@ -35,9 +35,5 @@ export function SpotCopyProvider({
   children: ReactNode
   spotCopy: SpotCopy
 }) {
-  return (
-    <SpotCopyContext.Provider value={{ spotCopy }}>
-      {children}
-    </SpotCopyContext.Provider>
-  )
+  return <SpotCopyContext value={{ spotCopy }}>{children}</SpotCopyContext>
 }

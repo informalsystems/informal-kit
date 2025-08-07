@@ -82,7 +82,7 @@ export function BlogPostCard({
       <h3
         className={twMerge(
           'h4',
-          'group-hover/card:text-accent-teal',
+          'group-hover/card:text-theme-accent-color',
           'font-bold',
           classNameForTitle,
         )}
@@ -101,7 +101,12 @@ export function BlogPostCard({
 
       <Link
         className={twMerge(
-          'group hover:bg-accent-teal/5 absolute -inset-3 z-10 rounded-xl',
+          'group',
+          'hover:bg-theme-accent-color/5',
+          'absolute',
+          '-inset-3',
+          'z-10',
+          'rounded-xl',
           propsForCardSurfaceClassName,
         )}
         href={`${linkPrefix ?? ''}/blog/${post.slug}`}
