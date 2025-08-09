@@ -10,7 +10,8 @@
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "check-types": "npx tsc --noEmit > ts-errors.txt",
-    "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./lib/contentfulTypes"
+    "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./lib/contentfulTypes",
+    "get-head-sha": "git rev-parse HEAD"
   },
   "exports": {
     "./styles/*": "./styles/*",

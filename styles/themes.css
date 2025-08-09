@@ -76,8 +76,6 @@
   --color-theme-inverted-text-color: black;
   --color-theme-scrollbar-thumb-color: var(--color-malachite-500);
 
-  --font-display: 'Encode Sans Expanded', sans-serif;
-
   @apply themed;
 
   &.is-inverted,

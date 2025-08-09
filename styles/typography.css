@@ -1,6 +1,6 @@
 @theme {
-  --font-display: 'Bitter', 'sans-serif';
-  --font-body: 'Inter', 'sans-serif';
+  --font-display: serif;
+  --font-body: sans-serif;
 }
 
 @layer components {
@@ -170,12 +170,17 @@
     }
 
     &:where(.prose-spot-copy) {
-      :where(h2) {
+      :where(h1, h2, h3):first-child {
         @apply text-theme-brand-color!;
         @apply uppercase;
         @apply text-base;
         @apply -mb-3;
         @apply tracking-widest;
+        /* @apply font-bold!; */
+
+        + :where(h2, h3, h4) {
+          @apply mt-0;
+        }
       }
     }
   }
@@ -190,8 +195,6 @@
 @utility heading-base {
   @apply font-bold;
   @apply font-display;
-  /* @apply text-theme-text-color; */
-  /* @apply is-inverted:text-theme-inverted-text-color; */
   @apply leading-[1.5];
 }
 

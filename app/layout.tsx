@@ -21,11 +21,11 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
-const bodyFont = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const bodyFont = Inter({ subsets: ['latin'], variable: '--font-body' })
 
 const displayFont = Bitter({
   subsets: ['latin'],
-  variable: '--font-bitter',
+  variable: '--font-display',
   weight: '500',
   style: ['normal', 'italic'],
 })
