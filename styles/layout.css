@@ -3,5 +3,5 @@
   @apply mx-auto;
   @apply px-6 py-20;
   @apply lg:max-w-[80vw];
-  @apply 2xl:max-w-(--breakpoint-xl);
+  @apply 2xl:max-w-[1280px];
 }
