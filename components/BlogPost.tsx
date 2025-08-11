@@ -12,12 +12,14 @@ import { ProseBox } from './ProseBox'
 import { StickyTableOfContents } from './StickyTableOfContents'
 
 interface BlogPostProps extends ComponentProps<'div'> {
+  banner?: React.ReactNode
   classNamesForProseContainer?: string
   classNamesForTableOfContents?: string
   post: BlogPostType
 }
 
 export function BlogPost({
+  banner,
   className,
   classNamesForProseContainer,
   classNamesForTableOfContents,
@@ -84,6 +86,8 @@ export function BlogPost({
                 showCategories: true,
               }}
             />
+
+            {banner}
           </div>
 
           <div
