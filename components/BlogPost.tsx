@@ -89,7 +89,20 @@ export function BlogPost({
 
             {banner}
           </div>
+        </section>
+      </div>
 
+      <section
+        className={twJoin(
+          'site-content-container',
+          'flex flex-col',
+          'gap-6',
+          'py-0',
+          'lg:grid',
+          'lg:grid-cols-[auto_250px]',
+        )}
+      >
+        <div className="flex flex-col gap-6">
           <div
             className={twJoin(
               'relative z-10 aspect-video w-full',
@@ -104,50 +117,40 @@ export function BlogPost({
               objectFit="cover"
             />
           </div>
-        </section>
-      </div>
 
-      <section
-        className={twJoin(
-          'site-content-container',
-          'flex flex-col',
-          'gap-6',
-          'py-0',
-          'lg:grid',
-          'lg:grid-cols-[250px_auto]',
-        )}
-      >
+          <ProseBox
+            className={twMerge(
+              'js-table-of-contents-target',
+              '-m-3 rounded-sm p-3',
+              'relative',
+              'bg-theme-bg-color-shaded',
+              'prose-headings:text-balance',
+              'target:prose-headings:rounded-sm',
+              'target:prose-headings:outline',
+              'target:prose-headings:outline-2',
+              'target:prose-headings:outline-offset-4',
+              'target:prose-headings:outline-palette-green',
+              categories?.includes('Quint') &&
+                '[&_.text-orange-600]:text-violet-500',
+              classNamesForProseContainer,
+            )}
+          >
+            {introduction && (
+              <ContentfulContentRenderer content={introduction} />
+            )}
+            {body && (
+              <ContentfulContentRenderer
+                content={body}
+                headingLevel={2}
+              />
+            )}
+          </ProseBox>
+        </div>
+
         <StickyTableOfContents
           className={classNamesForTableOfContents}
           elementSelector=".js-table-of-contents-target"
         />
-
-        <ProseBox
-          className={twMerge(
-            'js-table-of-contents-target',
-            '-m-3 rounded-sm p-3',
-            'relative',
-            'bg-theme-bg-color-shaded',
-            'prose-headings:text-balance',
-            'target:prose-headings:rounded-sm',
-            'target:prose-headings:outline',
-            'target:prose-headings:outline-2',
-            'target:prose-headings:outline-offset-4',
-            'target:prose-headings:outline-palette-green',
-            categories?.includes('Quint') &&
-              '[&_.text-orange-600]:text-violet-500',
-            classNamesForProseContainer,
-          )}
-        >
-          {introduction && <ContentfulContentRenderer content={introduction} />}
-
-          {body && (
-            <ContentfulContentRenderer
-              content={body}
-              headingLevel={2}
-            />
-          )}
-        </ProseBox>
       </section>
     </>
   )
