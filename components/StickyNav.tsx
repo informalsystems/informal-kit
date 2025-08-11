@@ -108,7 +108,7 @@ export function StickyNav({
           'relative hidden cursor-auto',
           'border-theme-bg-color-shaded',
           'lg:block',
-          'lg:is-stuck:bg-white/95',
+          'lg:is-stuck:bg-theme-bg-color/95',
           'lg:is-stuck:backdrop-blur-sm',
           'lg:is-stuck:border-b',
         )}

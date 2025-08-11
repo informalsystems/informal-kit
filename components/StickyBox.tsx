@@ -16,7 +16,7 @@ export function StickyBox({
   children,
   top = '.site-header',
   enabled = true,
-  innerZ = 10,
+  innerZ = 20,
   className,
   bottomBoundary,
 }: StickyBoxProps) {
