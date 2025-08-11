@@ -11,7 +11,7 @@ export default function Home() {
       <ul className="flex flex-col gap-6">
         <li className="flex flex-col gap-3">
           <p>Install:</p>
-          <pre>npm install github:aaronmw/informal-kit</pre>
+          <pre>npm install informal-kit</pre>
         </li>
 
         <li className="flex flex-col gap-3">

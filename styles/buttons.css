@@ -1,5 +1,7 @@
 @utility button-essentials {
-  @apply inline;
+  @apply inline-flex;
+  @apply items-center;
+  @apply gap-1;
   @apply cursor-pointer;
   @apply transition-all;
   @apply no-underline;
@@ -36,7 +38,7 @@
   @apply px-6 py-3;
   @apply text-xs;
   @apply uppercase;
-  @apply no-underline;
+  @apply no-underline!;
   @apply tracking-[0.1em];
   @apply font-bold;
   @apply bg-theme-text-color;
@@ -57,7 +59,7 @@
   @apply px-6 py-3;
   @apply text-xs;
   @apply uppercase;
-  @apply no-underline;
+  @apply no-underline!;
   @apply tracking-[0.1em];
   @apply font-bold;
   @apply text-theme-text-color;
@@ -79,7 +81,7 @@
   @apply size-10;
   @apply w-min;
   @apply rounded-full;
-  @apply no-underline;
+  @apply no-underline!;
   @apply hover:bg-theme-text-color;
   @apply hover:text-theme-bg-color;
   @apply hover:scale-105;
@@ -91,7 +93,7 @@
   @apply gap-2;
   @apply text-theme-text-color;
   @apply rounded-sm;
-  @apply no-underline;
+  @apply no-underline!;
   @apply px-1;
   @apply py-0.5;
   @apply text-sm;

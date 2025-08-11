@@ -1,6 +1,6 @@
 {
   "name": "informal-kit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,8 +9,7 @@
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "check-types": "npx tsc --noEmit > ts-errors.txt",
-    "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./lib/contentfulTypes",
-    "get-head-sha": "git rev-parse HEAD"
+    "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./lib/contentfulTypes"
   },
   "exports": {
     "./styles/*": "./styles/*",
@@ -34,6 +33,7 @@
     "@contentful/rich-text-react-renderer": "^16.1.0",
     "@headlessui/react": "^2.2.6",
     "contentful": "^11.7.13",
+    "floating-ui": "^5.2.8",
     "lodash": "^4.17.21",
     "next": "^15.4.4",
     "react-error-boundary": "^6.0.0",
@@ -64,7 +64,6 @@
     "enquirer": "^2.4.1",
     "eslint": "^9",
     "eslint-config-next": "^15.4.4",
-    "handy-node-scripts": "github:aaronmw/handy-node-scripts",
     "postcss": "^8",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
