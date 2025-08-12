@@ -12,7 +12,6 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [containerHeight, setContainerHeight] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
-  const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
     const updateHeight = () => {
@@ -32,31 +31,45 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
   useEffect(() => {
     if (!containerRef.current) return
 
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            const index = posts.findIndex(post => post.slug === entry.target.id)
-            if (index !== -1) {
-              setActiveIndex(index)
-            }
-          }
-        })
-      },
-      {
-        root: containerRef.current,
-        threshold: 0.5,
-        rootMargin: '0px',
-      },
-    )
+    const handleScroll = () => {
+      const container = containerRef.current
+      if (!container) return
 
-    const postElements = containerRef.current.querySelectorAll('[id]')
-    postElements.forEach(element => {
-      observerRef.current?.observe(element)
-    })
+      const containerRect = container.getBoundingClientRect()
+      const containerCenter = containerRect.left + containerRect.width / 2
+
+      let bestIndex = 0
+      let bestVisibility = 0
+
+      posts.forEach((post, index) => {
+        const isExternalPost = 'link' in post && post.link
+        const id = isExternalPost ? `external-${index}` : post.slug
+        const element = container.querySelector(`#${id}`)
+
+        if (element) {
+          const elementRect = element.getBoundingClientRect()
+          const elementCenter = elementRect.left + elementRect.width / 2
+          const distance = Math.abs(containerCenter - elementCenter)
+          const visibility = Math.max(
+            0,
+            1 - distance / (containerRect.width / 2),
+          )
+
+          if (visibility > bestVisibility) {
+            bestVisibility = visibility
+            bestIndex = index
+          }
+        }
+      })
+
+      setActiveIndex(bestIndex)
+    }
+
+    containerRef.current.addEventListener('scroll', handleScroll)
+    handleScroll()
 
     return () => {
-      observerRef.current?.disconnect()
+      containerRef.current?.removeEventListener('scroll', handleScroll)
     }
   }, [posts])
 
@@ -73,22 +86,27 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
         aria-label="Featured blog posts carousel"
         role="region"
       >
-        {posts.map((post, index) => (
-          <div
-            key={`${post.slug}-${index}`}
-            id={post.slug}
-            className={twJoin(
-              'h-full w-full shrink-0 grow-0',
-              'transition-all ease-in-out',
-              'snap-start',
-            )}
-            tabIndex={-1}
-            aria-label={`Featured post ${index + 1}`}
-            role="group"
-          >
-            <BlogPostHero post={post} />
-          </div>
-        ))}
+        {posts.map((post, index) => {
+          const isExternalPost = 'link' in post && post.link
+          const id = isExternalPost ? `external-${index}` : post.slug
+
+          return (
+            <div
+              key={`${id}-${index}`}
+              id={id}
+              className={twJoin(
+                'h-full w-full shrink-0 grow-0',
+                'transition-all ease-in-out',
+                'snap-start',
+              )}
+              tabIndex={-1}
+              aria-label={`Featured post ${index + 1}`}
+              role="group"
+            >
+              <BlogPostHero post={post} />
+            </div>
+          )
+        })}
       </div>
 
       <div
@@ -117,24 +135,29 @@ export const BlogPostCarousel = ({ posts }: BlogPostCarouselProps) => {
             'lg:justify-end',
           )}
         >
-          {posts.map((post, index) => (
-            <a
-              href={`#${post.slug}`}
-              className={twMerge(
-                'size-3 overflow-hidden rounded-full',
-                'border-theme-brand-color border-2',
-                'transition-all',
-                index === activeIndex
-                  ? 'bg-theme-brand-color'
-                  : 'bg-transparent',
-              )}
-              key={`${post.slug}-${index}`}
-              tabIndex={0}
-              aria-label={`Go to post ${index + 1}: ${post.title}`}
-            >
-              <span className="sr-only">{index + 1}</span>
-            </a>
-          ))}
+          {posts.map((post, index) => {
+            const isExternalPost = 'link' in post && post.link
+            const id = isExternalPost ? `external-${index}` : post.slug
+
+            return (
+              <a
+                href={`#${id}`}
+                className={twMerge(
+                  'size-3 overflow-hidden rounded-full',
+                  'border-theme-brand-color border-2',
+                  'transition-all',
+                  index === activeIndex
+                    ? 'bg-theme-brand-color'
+                    : 'bg-transparent',
+                )}
+                key={`${id}-${index}`}
+                tabIndex={0}
+                aria-label={`Go to post ${index + 1}: ${post.title}`}
+              >
+                <span className="sr-only">{index + 1}</span>
+              </a>
+            )
+          })}
         </section>
       </div>
     </div>

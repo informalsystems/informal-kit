@@ -5,7 +5,7 @@ import { Icon } from './Icon'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ComponentProps } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { getBlogPostImageURL } from '../lib/getBlogPostImageURL'
 import { BlogPost } from '../lib/types'
 
@@ -58,6 +58,9 @@ export function BlogPostCard({
     ...restOfPropsForCardSurface
   } = propsForCardSurface ?? {}
 
+  const isExternalPost =
+    ('link' in post && post.link) || propsForCardSurface?.target === '_blank'
+
   return (
     <article
       className={twMerge(
@@ -87,6 +90,22 @@ export function BlogPostCard({
           classNameForTitle,
         )}
       >
+        {isExternalPost && (
+          <span
+            className={twJoin(
+              'inline-block',
+              'is-inverted',
+              'bg-theme-bg-color',
+              'text-xs font-bold uppercase',
+              'rounded-xs',
+              'px-1 py-0.5',
+              'mr-1',
+              'align-middle',
+            )}
+          >
+            External
+          </span>
+        )}
         {post.title}
       </h3>
 
@@ -109,7 +128,12 @@ export function BlogPostCard({
           'rounded-xl',
           propsForCardSurfaceClassName,
         )}
-        href={`${linkPrefix ?? ''}/blog/${post.slug}`}
+        href={
+          'link' in post
+            ? String(post.link)
+            : `${linkPrefix ?? ''}/blog/${post.slug}`
+        }
+        target={isExternalPost ? '_blank' : propsForCardSurface?.target}
         {...restOfPropsForCardSurface}
       >
         <ContentfulHoverTools
@@ -119,13 +143,14 @@ export function BlogPostCard({
           <span className="sr-only">Read Post</span>
         </ContentfulHoverTools>
 
-        {propsForCardSurface?.target === '_blank' && (
+        {('link' in post || propsForCardSurface?.target === '_blank') && (
           <span
             className={twMerge(
+              'is-inverted bg-theme-bg-color',
               'absolute top-0 right-0 size-6',
               'translate-x-1/2 -translate-y-1/2',
               'flex items-center justify-center',
-              'text-theme-brand-color rounded-full bg-white text-xs',
+              'rounded-full text-xs',
               'opacity-0 transition-opacity',
               'group-hover:opacity-100',
               classNameForExternalLinkIcon,

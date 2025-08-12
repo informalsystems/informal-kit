@@ -7,7 +7,7 @@ const categoriesToBackgroundImagesMap = new Map<BlogCategory, string>([
   ['Cycles', '/bg-blog-cycles.jpg'],
   ['Engineering', '/bg-blog-informal-2.jpg'],
   ['Malachite', '/bg-blog-hub-2.jpg'],
-  ['Quint', '/bg-blog-hub-1.jpg'],
+  ['Quint', '/bg-blog-quint.jpg'],
 ])
 
 export function getBlogPostImageURL({ featureImage, categories }: BlogPost) {
