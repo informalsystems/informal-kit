@@ -14,7 +14,6 @@ import { StickyTableOfContents } from './StickyTableOfContents'
 interface BlogPostProps extends ComponentProps<'div'> {
   banner?: React.ReactNode
   classNamesForProseContainer?: string
-  classNamesForTableOfContents?: string
   post: BlogPostType
 }
 
@@ -22,7 +21,6 @@ export function BlogPost({
   banner,
   className,
   classNamesForProseContainer,
-  classNamesForTableOfContents,
   post,
   ...otherProps
 }: BlogPostProps) {
@@ -57,13 +55,12 @@ export function BlogPost({
       )}
 
       <div
-        className={twMerge('relative overflow-hidden', className)}
+        className={twMerge('relative', className)}
         {...otherProps}
       >
         <div
           className={twJoin(
-            'absolute inset-0 z-0',
-            '-translate-y-40',
+            'absolute inset-0 -bottom-20 z-0',
             'bg-theme-bg-color-shaded',
             'pointer-events-none',
           )}
@@ -74,7 +71,7 @@ export function BlogPost({
             'site-content-container',
             'flex flex-col',
             'gap-6',
-            'pt-40!',
+            'pt-40 pb-12',
           )}
         >
           <div className="relative z-10 space-y-6">
@@ -99,25 +96,10 @@ export function BlogPost({
           'gap-6',
           'py-0',
           'lg:grid',
-          'lg:grid-cols-[auto_250px]',
+          'lg:grid-cols-[auto_1fr]',
         )}
       >
         <div className="flex flex-col gap-6">
-          <div
-            className={twJoin(
-              'relative z-10 aspect-video w-full',
-              'overflow-hidden rounded-lg',
-            )}
-          >
-            <Image
-              src={featureImageURL}
-              alt={title}
-              fill={true}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              objectFit="cover"
-            />
-          </div>
-
           <ProseBox
             className={twMerge(
               'js-table-of-contents-target',
@@ -135,6 +117,21 @@ export function BlogPost({
               classNamesForProseContainer,
             )}
           >
+            <div
+              className={twJoin(
+                'relative z-10 aspect-video w-full',
+                'overflow-hidden rounded-lg',
+              )}
+            >
+              <Image
+                src={featureImageURL}
+                alt={title}
+                fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                objectFit="cover"
+              />
+            </div>
+
             {introduction && (
               <ContentfulContentRenderer content={introduction} />
             )}
@@ -147,10 +144,7 @@ export function BlogPost({
           </ProseBox>
         </div>
 
-        <StickyTableOfContents
-          className={classNamesForTableOfContents}
-          elementSelector=".js-table-of-contents-target"
-        />
+        <StickyTableOfContents elementSelector=".js-table-of-contents-target" />
       </section>
     </>
   )

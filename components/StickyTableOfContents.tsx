@@ -25,6 +25,8 @@ export function StickyTableOfContents({
     headingsSelector,
   })
 
+  if (items.length === 0) return null
+
   return (
     <>
       {portals}
