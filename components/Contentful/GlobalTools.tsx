@@ -171,6 +171,25 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
           className="transition-all duration-200"
         />
         <span className="sr-only">{isExpanded ? 'Hide' : 'Show'} Metadata</span>
+
+        <div
+          className={twJoin(
+            'absolute',
+            'top-1/2 right-full -translate-y-1/2',
+            'is-inverted bg-theme-bg-color',
+            'mr-1',
+            'px-1',
+            'rounded-xs',
+            'text-[10px] font-bold uppercase',
+            'opacity-50',
+          )}
+        >
+          <span className="hidden sm:block md:hidden">sm</span>
+          <span className="hidden md:block lg:hidden">md</span>
+          <span className="hidden lg:block xl:hidden">lg</span>
+          <span className="hidden xl:block 2xl:hidden">xl</span>
+          <span className="hidden 2xl:block">2xl</span>
+        </div>
       </button>
 
       {isExpanded && (

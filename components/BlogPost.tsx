@@ -96,10 +96,23 @@ export function BlogPost({
           'gap-6',
           'py-0',
           'lg:grid',
-          'lg:grid-cols-[auto_1fr]',
+          'lg:grid-cols-[auto_250px]',
+          'xl:grid-cols-[max-content_250px]',
         )}
       >
-        <div className="flex flex-col gap-6">
+        <div className="col-start-2 col-end-3 row-start-1 row-end-2">
+          <StickyTableOfContents elementSelector=".js-table-of-contents-target" />
+        </div>
+
+        <div
+          className={twJoin(
+            'w-full',
+            'col-start-1 col-end-2 row-start-1 row-end-2',
+            'flex',
+            'flex-col',
+            'gap-6',
+          )}
+        >
           <ProseBox
             className={twMerge(
               'js-table-of-contents-target',
@@ -143,8 +156,6 @@ export function BlogPost({
             )}
           </ProseBox>
         </div>
-
-        <StickyTableOfContents elementSelector=".js-table-of-contents-target" />
       </section>
     </>
   )
