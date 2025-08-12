@@ -5,6 +5,7 @@ import { getBlogPostImageURL } from '../lib/getBlogPostImageURL'
 import { BlogPost } from '../lib/types'
 import { BlogPostMetaData } from './BlogPostMetaData'
 import { ContentfulContentRenderer } from './Contentful'
+import { Icon } from './Icon'
 import { ProseBox } from './ProseBox'
 
 interface BlogPostHeroProps {
@@ -15,6 +16,8 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
   const { excerpt, slug, title } = post
 
   const featureImageURL = getBlogPostImageURL(post)
+
+  const isExternalPost = 'link' in post && !!post.link
 
   return (
     <section
@@ -40,10 +43,11 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
         </ProseBox>
 
         <Link
-          href={`/blog/${slug}`}
+          href={isExternalPost ? String(post.link) : `/blog/${slug}`}
           className="button-primary"
         >
           Read more
+          {isExternalPost && <Icon name="arrow-up-right-from-square" />}
         </Link>
       </div>
 
