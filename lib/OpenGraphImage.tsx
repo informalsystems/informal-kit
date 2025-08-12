@@ -61,7 +61,7 @@ export async function OpenGraphImage({
     (
       <div style={{ backgroundColor: 'black', display: 'flex', ...size }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        {/* <img
           alt={alt}
           // @ts-expect-error Next.js ImageResponse requires ArrayBuffer for src in server components
           src={imageData}
@@ -76,6 +76,19 @@ export async function OpenGraphImage({
               'radial-gradient(circle at 75% 35%, black 0%, black 20%, transparent 50%, transparent 100%)',
             maskSize: `${maskWidth}% ${maskHeight}%`,
             maskPosition: `${100 + (maskWidth - 100) / 2}% ${100 + (maskHeight - 100) / 2}%`,
+          }}
+        /> */}
+
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: '#0c2d7c',
           }}
         />
 

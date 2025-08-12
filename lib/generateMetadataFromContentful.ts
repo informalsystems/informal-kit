@@ -33,6 +33,8 @@ export async function generateMetadataFromContentful() {
           .join(' - ')
       : baseRouteMetadata?.title
 
+  console.log(finalTitle)
+
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_URL),
     icons: `/favicon-${baseRouteMetadata?.favicon ?? 'blue-500'}.svg`,
