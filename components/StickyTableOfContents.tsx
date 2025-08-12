@@ -34,7 +34,7 @@ export function StickyTableOfContents({
           label,
           href,
           iconLeft: level && level > 2 ? 'light:circle-small' : undefined,
-          iconRight: 'light:arrow-right-long',
+          iconRight: 'light:arrow-down',
         }))}
         activeItemIndex={activeItemIndex}
         variant="list"
