@@ -16,11 +16,9 @@ export function getBlogPostImageURL({ featureImage, categories }: BlogPost) {
       categoriesToBackgroundImagesMap.has(category),
     )
 
-    return `${process.env.NEXT_PUBLIC_URL}${
-      matchingCategory
-        ? categoriesToBackgroundImagesMap.get(matchingCategory)
-        : '/bg-blog-informal-2.jpg'
-    }`
+    return matchingCategory
+      ? categoriesToBackgroundImagesMap.get(matchingCategory)!
+      : '/bg-blog-informal-2.jpg'
   }
 
   return `https:${(featureImage as Asset)?.fields.file?.url}`
