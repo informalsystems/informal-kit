@@ -35,7 +35,11 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
         <h1 className="h2">{title}</h1>
 
         <div className="line-clamp-3">
-          <ContentfulContentRenderer content={excerpt} />
+          {'description' in post ? (
+            <p>{String(post.description)}</p>
+          ) : (
+            <ContentfulContentRenderer content={excerpt} />
+          )}
         </div>
 
         <ProseBox>

@@ -110,7 +110,11 @@ export function BlogPostCard({
       </h3>
 
       <div className="line-clamp-3">
-        <ContentfulContentRenderer content={post.excerpt} />
+        {'description' in post ? (
+          <p>{String(post.description)}</p>
+        ) : (
+          <ContentfulContentRenderer content={post.excerpt} />
+        )}
       </div>
 
       <BlogPostMetaData
