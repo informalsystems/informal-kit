@@ -4,8 +4,12 @@ import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { getClassNameFromPathname } from '../lib/useRouteClassName'
 
+type Selector = string
+type RoutePrefix = string
+type ClassNames = string
+
 interface ThemeProviderProps {
-  routeClassNameMap: Record<string, Record<string, string>>
+  routeClassNameMap: Record<Selector, Record<RoutePrefix, ClassNames>>
 }
 
 export function ThemeProvider({ routeClassNameMap }: ThemeProviderProps) {
@@ -13,15 +17,21 @@ export function ThemeProvider({ routeClassNameMap }: ThemeProviderProps) {
 
   useEffect(() => {
     Object.entries(routeClassNameMap).forEach(([selector, routeClassMap]) => {
-      const nextClassName = getClassNameFromPathname(pathname, routeClassMap)
       const element = document.querySelector(selector) as HTMLElement | null
       if (!element) return
 
-      const allRouteClasses = Object.values(routeClassMap)
-      allRouteClasses.forEach(classToken => {
-        if (classToken) element.classList.remove(classToken)
+      Object.values(routeClassMap).forEach(classToken => {
+        if (classToken) {
+          const classes = classToken.split(' ').filter(Boolean)
+          classes.forEach(className => element.classList.remove(className))
+        }
       })
-      if (nextClassName) element.classList.add(nextClassName)
+
+      const nextClassName = getClassNameFromPathname(pathname, routeClassMap)
+      if (nextClassName) {
+        const classes = nextClassName.split(' ').filter(Boolean)
+        classes.forEach(className => element.classList.add(className))
+      }
     })
   }, [pathname, routeClassNameMap])
 

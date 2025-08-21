@@ -1,10 +1,21 @@
 'use client'
 
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useTransitionStatus,
+} from '@floating-ui/react'
 import { usePathname } from 'next/navigation'
-import { ChangeEvent, ComponentProps, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, ComponentProps, useEffect, useState } from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 import invariant from 'tiny-invariant'
-import { useLocalStorage, useOnClickOutside } from 'usehooks-ts'
+import { useLocalStorage } from 'usehooks-ts'
 import { getContentfulRouteMetadata } from '../../lib/getContentfulRouteMetadata'
 import { Icon } from '../Icon'
 
@@ -90,9 +101,7 @@ const HoverToEditToggle = ({
 export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   invariant(process.env.NEXT_PUBLIC_URL, 'Missing NEXT_PUBLIC_URL')
 
-  const [isExpanded, setIsExpanded] = useState(false)
-  const modalRef = useRef<HTMLDivElement>(null)
-
+  const [open, setOpen] = useState(false)
   const [isHoverToEditEnabled, setIsHoverToEditEnabled] =
     useLocalStorage<boolean>('isHoverToEditEnabled', true)
 
@@ -102,10 +111,25 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
 
   const pathname = usePathname()
 
-  useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => {
-    if (isExpanded) {
-      setIsExpanded(false)
-    }
+  // Floating UI setup
+  const { refs, floatingStyles, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    placement: 'top-end',
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(16), flip(), shift()],
+  })
+
+  const click = useClick(context)
+  const dismiss = useDismiss(context)
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+  ])
+
+  const { isMounted, status } = useTransitionStatus(context, {
+    duration: 300,
   })
 
   useEffect(() => {
@@ -146,8 +170,10 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
   return (
     <>
       <button
+        ref={refs.setReference}
+        {...getReferenceProps()}
         id="global-tools-button"
-        title={isExpanded ? 'Hide Page Options' : 'Show Page Options'}
+        title={open ? 'Hide Page Options' : 'Show Page Options'}
         className={twMerge(
           'fixed right-6 bottom-6 z-20',
           'flex items-center justify-center',
@@ -157,23 +183,18 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
           'border-theme-bg-color',
           'bg-theme-text-color/95',
           'text-theme-bg-color',
-          'transition-transform duration-200',
           'backdrop-blur-md',
-          'transition-colors',
+          'transition-all',
           'hover:bg-theme-text-color/95',
-          isExpanded && 'rotate-180',
+          open && 'rotate-180',
           className,
         )}
-        onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Icon
-          name={isExpanded ? 'solid:xmark' : 'solid:gear'}
-          className="transition-all duration-200"
-        />
-        <span className="sr-only">{isExpanded ? 'Hide' : 'Show'} Metadata</span>
+        <Icon name={open ? 'solid:xmark' : 'solid:gear'} />
+        <span className="sr-only">{open ? 'Hide' : 'Show'} Metadata</span>
 
         <div
-          className={twJoin(
+          className={twMerge(
             'absolute',
             'top-1/2 right-full -translate-y-1/2',
             'is-inverted bg-theme-bg-color',
@@ -181,9 +202,11 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
             'px-1',
             'rounded-xs',
             'text-[10px] font-bold uppercase',
-            'opacity-50',
+            'opacity-50 transition-opacity',
+            open ? 'opacity-0 duration-75' : 'delay-1000',
           )}
         >
+          <span className="sm:hidden">&lt;sm</span>
           <span className="hidden sm:block md:hidden">sm</span>
           <span className="hidden md:block lg:hidden">md</span>
           <span className="hidden lg:block xl:hidden">lg</span>
@@ -192,18 +215,25 @@ export function GlobalTools({ className, ...otherProps }: GlobalToolsProps) {
         </div>
       </button>
 
-      {isExpanded && (
+      {isMounted && (
         <div
-          ref={modalRef}
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
           className={twMerge(
             'is-inverted',
-            'fixed right-6 bottom-20 z-30',
+            'z-30',
             'w-[90vw] rounded-md sm:w-72',
-            'bg-theme-bg-color/95',
             'text-theme-text-color',
+            'bg-theme-bg-color/95',
             'backdrop-blur-md',
-            'border-theme-bg-color border-2',
             'flex flex-col gap-3 p-3',
+            'shadow-2xl',
+            'transition-all duration-300 ease-out',
+            // Animation classes based on status
+            status === 'open'
+              ? 'translate-x-0 opacity-100'
+              : 'translate-x-4 opacity-0',
           )}
           {...otherProps}
         >

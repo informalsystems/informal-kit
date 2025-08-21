@@ -56,6 +56,7 @@
 
   --color-theme-accent-color: var(--color-teal-500);
   --color-accent-fuchsia: var(--color-fuchsia-500);
+  --color-accent-teal: var(--color-teal-500);
   --color-accent-rust: var(--color-rust-500);
   --color-accent-pink: var(--color-pink-500);
   --color-accent-lavender: var(--color-lavender-500);

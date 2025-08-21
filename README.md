@@ -1,136 +1,74 @@
-## informal-kit
+# Informal Kit
 
-Informal Kit is a Next.js-ready UI and utilities library for React 19, Tailwind CSS v4, and TypeScript. It provides:
+A component library and utility package for Next.js applications.
 
-- UI components: `Card`, `GradientBox`, `ModalWindow`, `Icon`, `Toasts` provider, `StickyNav`, `ProseBox`, `Logo*`, tables, carousels, and more
-- Contentful helpers: `ContentfulSpotCopy`, `ContentfulGlobalTools`, `ContentfulContentRenderer`, data fetchers, and typed Contentful models
-- App utilities: SEO via `generateMetadataFromContentful`, `OpenGraphImage`, hooks (`useIsDocumentScrolled`, `useTableOfContents`, …), and helpers (`tw`, `slugify`, `pluralize`, …)
-- Styles: a global Tailwind layer you can @import
-
-### Installation
-
-Install from GitHub:
+## Installation
 
 ```bash
-npm install github:informalsystems/informal-kit
+npm install informal-kit
 ```
 
-Projects may pin a commit and add a sync script (as used in `informal.systems` and `cycles-dot-money`):
+## Usage
 
-```json
-// package.json
-{
-  "scripts": {
-    "sync-informal-kit": "npm install github:informalsystems/informal-kit"
-  },
-  "dependencies": {
-    "informal-kit": "github:informalsystems/informal-kit#<commit>"
-  }
-}
+### Components
+
+```tsx
+import { Card, Button, ModalWindow } from 'informal-kit/components'
 ```
 
-### Configuration
+### Utilities
 
-1. Next.js: transpile the package
-
-```ts
-// next.config.ts
-export default {
-  transpilePackages: ['informal-kit'],
-} as const
+```tsx
+import { slugify, pluralize } from 'informal-kit/lib'
 ```
 
-2. TypeScript paths: allow aliased imports that match the export map
+### Tailwind Utilities
 
-```json
-// tsconfig.json
-{
-  "compilerOptions": {
-    "paths": {
-      "informal-kit/*": ["./node_modules/informal-kit/*"]
-    }
-  }
-}
+```tsx
+import { twMerge, twJoin } from 'informal-kit/lib/tailwind'
 ```
 
-3. Tailwind v4: scan kit files and import the kit’s global layer
+### Styles
 
-```ts
-// tailwind.config.ts
-import type { Config } from 'tailwindcss'
-
-export default {
-  content: [
-    './**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/informal-kit/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-} satisfies Config
+```tsx
+import 'informal-kit/styles/global.css'
+import 'informal-kit/styles/buttons.css'
 ```
 
-```css
-/* app/global.css */
-@import 'tailwindcss';
-@config '../tailwind.config.ts';
-@plugin "@tailwindcss/forms";
-@import 'informal-kit/styles/global.css';
-```
+## Requirements
 
-4. Contentful env vars (required if you use Contentful helpers)
+- React ^19.1.0
+- React DOM ^19.1.0
+- Next.js ^15.4.4
+
+## Available Exports
+
+### Components
+
+- `Card` - Flexible card component
+- `ModalWindow` - Modal dialog component
+- `BlogPost` - Blog post display component
+- `Carousel` - Image/content carousel
+- And many more...
+
+### Utilities
+
+- `slugify` - Convert text to URL-friendly slugs
+- `pluralize` - Handle word pluralization
+- `distributeEvenly` - Layout utility functions
+
+### Styles
+
+- `global.css` - Base styles and CSS variables
+- `buttons.css` - Button component styles
+- `forms.css` - Form element styles
+- `typography.css` - Typography styles
+
+## Development
 
 ```bash
-CONTENTFUL_ACCESS_TOKEN=...
-CONTENTFUL_SPACE_ID=...
-CONTENTFUL_HOST_NAME=cdn.contentful.com # or preview.contentful.com
+npm run dev          # Start development server
+npm run build        # Build the package
+npm run lint         # Run ESLint
+npm run check-types  # Check TypeScript types
 ```
-
-If you use `generateMetadataFromContentful`, also set:
-
-```bash
-NEXT_PUBLIC_URL=https://your-site.example
-```
-
-and add a small middleware to expose the request URL to the function:
-
-```ts
-// middleware.ts
-import { NextResponse } from 'next/server'
-export function middleware(request: Request) {
-  const headers = new Headers((request as any).headers)
-  headers.set('x-url', (request as any).url)
-  return NextResponse.next({ request: { headers } })
-}
-```
-
-5. Next Image (optional): allow Contentful assets
-
-```ts
-// next.config.ts
-export default {
-  images: {
-    remotePatterns: [{ protocol: 'https', hostname: 'images.ctfassets.net' }],
-  },
-} as const
-```
-
-### Exports and import patterns
-
-The package export map allows direct, tree-shakeable imports:
-
-- Components: `informal-kit/components/...`
-- Lib utilities: `informal-kit/lib/...`
-- Styles: `informal-kit/styles/...`
-
-Examples:
-
-```ts
-import { ThemeProvider } from 'informal-kit/components/ThemeProvider'
-import { ToastContextProvider } from 'informal-kit/components/Toasts'
-import { getContentfulSpotCopy } from 'informal-kit/lib/getContentfulSpotCopy'
-import { OpenGraphImage } from 'informal-kit/lib/OpenGraphImage'
-```
-
-### Notes
-
-- Peer deps: React 19.1, ReactDOM 19.1
-- Built for Next.js 15 and Tailwind CSS v4
-- Consumers in production today: `informal.systems`, `cycles-dot-money`

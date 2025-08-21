@@ -1,6 +1,6 @@
 {
   "name": "informal-kit",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,7 +14,16 @@
   "exports": {
     "./styles/*": "./styles/*",
     "./components/*": "./components/*",
-    "./lib/*": "./lib/*"
+    "./lib/*": "./lib/*",
+    "./lib/lodash": "./lib/lodash/index.ts",
+    "./lib/lodash/*": "./lib/lodash/*"
+  },
+  "typesVersions": {
+    "*": {
+      "components/*": ["./components/*"],
+      "lib/*": ["./lib/*"],
+      "styles/*": ["./styles/*"]
+    }
   },
   "peerDependencies": {
     "react": "^19.1.0",
@@ -31,9 +40,12 @@
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^17.1.0",
     "@contentful/rich-text-react-renderer": "^16.1.0",
+    "@floating-ui/react": "^0.27.15",
+    "@gsap/react": "^2.1.2",
     "@headlessui/react": "^2.2.6",
     "contentful": "^11.7.13",
     "floating-ui": "^5.2.8",
+    "gsap": "^3.13.0",
     "lodash": "^4.17.21",
     "next": "^15.4.4",
     "react-error-boundary": "^6.0.0",

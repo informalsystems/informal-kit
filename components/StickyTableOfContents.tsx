@@ -1,20 +1,16 @@
 'use client'
 
 import { ComponentProps } from 'react'
-import { twMerge } from 'tailwind-merge'
 import { useTableOfContents } from '../lib/useTableOfContents'
 import { StickyNav } from './StickyNav'
 
 interface StickyTableOfContentsProps extends ComponentProps<'div'> {
-  classNamesForTableOfContents?: string
   elementSelector: string
   headingsSelector?: string
   bottomBoundary?: string | number
 }
 
 export function StickyTableOfContents({
-  className,
-  classNamesForTableOfContents,
   elementSelector,
   headingsSelector = 'h2:not(.skip)',
   bottomBoundary = elementSelector,
@@ -41,7 +37,6 @@ export function StickyTableOfContents({
         activeItemIndex={activeItemIndex}
         variant="list"
         title="Table of Contents"
-        className={twMerge(classNamesForTableOfContents, className)}
         bottomBoundary={bottomBoundary}
         {...otherProps}
       />

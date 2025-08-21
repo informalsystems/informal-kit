@@ -52,13 +52,12 @@
   @apply size-4;
   @apply appearance-none;
   @apply rounded-full;
-  @apply border-theme-brand-color border;
-  @apply bg-transparent;
-  @apply outline-none;
-  @apply checked:border-transparent;
-  @apply checked:bg-white;
-  @apply checked:shadow-[0_0_0_2px_var(--color-theme-brand-color)_inset];
   @apply transition-colors;
+  @apply outline-none;
+  @apply border-2;
+  @apply bg-transparent;
+  @apply border-theme-text-color/50;
+  @apply checked:border-theme-accent-color;
 }
 
 @utility input-checkbox {
