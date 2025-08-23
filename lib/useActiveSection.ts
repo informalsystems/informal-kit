@@ -5,19 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 export function useActiveSection(selectors: string[]): number {
   const [activeIndex, setActiveIndex] = useState(0)
   const elementsRef = useRef<Element[]>([])
-  const lastPositionsRef = useRef<number[]>([])
-  const indexOfMostVisibleRef = useRef(activeIndex)
-
-  useEffect(() => {
-    indexOfMostVisibleRef.current = activeIndex
-  }, [activeIndex])
-
-  const updateActiveIndex = useCallback((newIndex: number) => {
-    if (newIndex !== -1 && newIndex !== indexOfMostVisibleRef.current) {
-      setActiveIndex(newIndex)
-      indexOfMostVisibleRef.current = newIndex
-    }
-  }, [])
+  const rafRef = useRef<number>(undefined)
 
   const checkScrollPosition = useCallback(() => {
     if (elementsRef.current.length === 0) return
@@ -25,32 +13,72 @@ export function useActiveSection(selectors: string[]): number {
     const viewportHeight = window.innerHeight
     const viewportCenter = viewportHeight / 2
 
+    let bestIndex = 0
+    let bestScore = -Infinity
+
     elementsRef.current.forEach((element, index) => {
       const rect = element.getBoundingClientRect()
-      const currentTop = rect.top
-      const currentBottom = rect.bottom
-      const lastTop = lastPositionsRef.current[index * 2] ?? currentTop
-      const lastBottom =
-        lastPositionsRef.current[index * 2 + 1] ?? currentBottom
+      const elementTop = rect.top
+      const elementBottom = rect.bottom
+      const elementHeight = rect.height
 
-      const wasAboveCenter = lastTop <= viewportCenter
-      const isAboveCenter = currentTop <= viewportCenter
+      const visibleTop = Math.max(
+        0,
+        Math.min(viewportHeight, elementBottom) - Math.max(0, elementTop),
+      )
+      const visibleHeight = Math.min(elementHeight, viewportHeight)
+      const visibilityRatio = visibleTop / visibleHeight
 
-      if (!wasAboveCenter && isAboveCenter) {
-        updateActiveIndex(index)
+      const elementCenter = (elementTop + elementBottom) / 2
+      const distanceFromCenter = Math.abs(elementCenter - viewportCenter)
+      const normalizedDistance = distanceFromCenter / viewportHeight
+
+      const isFullyVisible = elementTop >= 0 && elementBottom <= viewportHeight
+
+      const isAtTop = elementTop >= 0 && elementTop <= viewportHeight * 0.2
+
+      let score = 0
+
+      if (isFullyVisible) {
+        score = 100 - normalizedDistance
+      } else if (isAtTop) {
+        score = 80 - normalizedDistance
+      } else {
+        score = visibilityRatio * 10 - normalizedDistance
       }
 
-      const wasBelowCenter = lastBottom >= viewportCenter
-      const isBelowCenter = currentBottom >= viewportCenter
+      console.log(`Section ${index}:`, {
+        visibilityRatio: visibilityRatio.toFixed(2),
+        distanceFromCenter: normalizedDistance.toFixed(2),
+        isFullyVisible,
+        isAtTop,
+        score: score.toFixed(2),
+      })
 
-      if (!wasBelowCenter && isBelowCenter) {
-        updateActiveIndex(index)
+      if (score > bestScore) {
+        bestScore = score
+        bestIndex = index
+      } else if (score === bestScore) {
+        if (index < bestIndex) {
+          bestIndex = index
+        }
       }
-
-      lastPositionsRef.current[index * 2] = currentTop
-      lastPositionsRef.current[index * 2 + 1] = currentBottom
     })
-  }, [updateActiveIndex])
+
+    console.log(
+      `Selected section: ${bestIndex} with score: ${bestScore.toFixed(2)}`,
+    )
+    setActiveIndex(bestIndex)
+  }, [])
+
+  const throttledCheck = useCallback(() => {
+    if (rafRef.current) return
+
+    rafRef.current = requestAnimationFrame(() => {
+      checkScrollPosition()
+      rafRef.current = undefined
+    })
+  }, [checkScrollPosition])
 
   useEffect(() => {
     if (selectors.length === 0) return
@@ -61,20 +89,17 @@ export function useActiveSection(selectors: string[]): number {
     if (validElements.length === 0) return
 
     elementsRef.current = validElements
-
-    lastPositionsRef.current = validElements.flatMap(element => {
-      const rect = element.getBoundingClientRect()
-      return [rect.top, rect.bottom]
-    })
-
     checkScrollPosition()
 
-    window.addEventListener('scroll', checkScrollPosition, { passive: true })
+    window.addEventListener('scroll', throttledCheck, { passive: true })
 
     return () => {
-      window.removeEventListener('scroll', checkScrollPosition)
+      window.removeEventListener('scroll', throttledCheck)
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
     }
-  }, [selectors, checkScrollPosition])
+  }, [selectors, checkScrollPosition, throttledCheck])
 
   return activeIndex
 }

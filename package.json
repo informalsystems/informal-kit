@@ -1,6 +1,6 @@
 {
   "name": "informal-kit",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -8,21 +8,25 @@
     "lint": "next lint",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "check-types": "npx tsc --noEmit > ts-errors.txt",
+    "check-types": "npx tsc --noEmit > ts-errors.log",
     "generate-types": ". .env.local && cf-content-types-generator --v10 --spaceId $CONTENTFUL_SPACE_ID --token $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN --out ./lib/contentfulTypes"
   },
   "exports": {
     "./styles/*": "./styles/*",
     "./components/*": "./components/*",
-    "./lib/*": "./lib/*",
-    "./lib/lodash": "./lib/lodash/index.ts",
-    "./lib/lodash/*": "./lib/lodash/*"
+    "./lib/*": "./lib/*"
   },
   "typesVersions": {
     "*": {
-      "components/*": ["./components/*"],
-      "lib/*": ["./lib/*"],
-      "styles/*": ["./styles/*"]
+      "components/*": [
+        "./components/*"
+      ],
+      "lib/*": [
+        "./lib/*"
+      ],
+      "styles/*": [
+        "./styles/*"
+      ]
     }
   },
   "peerDependencies": {

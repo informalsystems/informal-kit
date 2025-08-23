@@ -1,4 +1,4 @@
-import { pick } from 'lodash'
+import pick from 'lodash/pick'
 import { Dispatch, Reducer, useEffect, useReducer } from 'react'
 import { useIsClient } from 'usehooks-ts'
 

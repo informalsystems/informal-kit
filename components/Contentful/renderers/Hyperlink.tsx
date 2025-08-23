@@ -38,9 +38,7 @@ export function Hyperlink({ node }: { node: any }) {
         }}
       />
       {isExternalLink && !isButton && (
-        <>
-          <Icon name="light:arrow-up-right-from-square" />
-        </>
+        <Icon name="light:arrow-up-right-from-square" />
       )}
     </Link>
   )
