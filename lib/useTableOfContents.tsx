@@ -1,7 +1,6 @@
 'use client'
 
 import debounce from 'lodash/debounce'
-import throttle from 'lodash/throttle'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { twJoin } from 'tailwind-merge'
@@ -9,42 +8,7 @@ import { useInterval } from 'usehooks-ts'
 import { CopyToClipboardButton } from '../components/CopyToClipboardButton'
 import { Icon } from '../components/Icon'
 import { slugify } from './slugify'
-
-/**
- * Hook that extracts headings from a DOM element and returns them as navigation items.
- *
- * This hook handles:
- * - Finding headings in the specified element
- * - Generating unique slugs for each heading
- * - Portalling "copy to clipboard" buttons into each heading. A faded "#" with a tooltip
- * - Tracking which heading is currently active based on scroll position
- * - Adding necessary CSS classes and IDs to headings
- *
- * @param options.elementSelector - CSS selector for the container element
- * @param options.headingsSelector - CSS selector for headings (default: 'h1, h2, h3, h4, h5, h6')
- *
- * @returns Object containing items array, activeItemIndex, and portals array
- *
- * @example
- * ```tsx
- * const { items, activeItemIndex, portals } = useTableOfContents({
- *   elementSelector: '.blog-post',
- *   headingsSelector: 'h2, h3'
- * })
- *
- * return (
- *   <>
- *     {portals}
- *     <StickyNav
- *       items={items}
- *       activeItemIndex={activeItemIndex}
- *       variant="list"
- *       title="Table of Contents"
- *     />
- *   </>
- * )
- * ```
- */
+import { useActiveSection } from './useActiveSection'
 
 interface TableOfContentsItem {
   label: string
@@ -126,27 +90,21 @@ export function useTableOfContents({
 }: UseTableOfContentsOptions): UseTableOfContentsReturn {
   const [items, setItems] = useState<TableOfContentsItem[]>([])
   const [portals, setPortals] = useState<React.ReactPortal[]>([])
-  const [activeItemIndex, setActiveItemIndex] = useState(0)
   const [hasFoundItems, setHasFoundItems] = useState(false)
 
-  const observerRef = useRef<IntersectionObserver | null>(null)
   const lastProcessedHashRef = useRef<string>('')
   const currentElementSelectorRef = useRef<string>('')
   const currentHeadingsSelectorRef = useRef<string>('')
 
+  const activeItemIndex = useActiveSection(
+    items.map(item => `#${item.slug}`).filter(Boolean),
+  )
+
   const resetState = useCallback(() => {
     setItems([])
     setPortals([])
-    setActiveItemIndex(0)
     setHasFoundItems(false)
     lastProcessedHashRef.current = ''
-  }, [])
-
-  const cleanupObservers = useCallback(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect()
-      observerRef.current = null
-    }
   }, [])
 
   const processExistingHeadings = useCallback(
@@ -189,8 +147,8 @@ export function useTableOfContents({
       return headingElements
         .map(headingElement => {
           const text = (headingElement.textContent?.trim() || '').replace(
-            /\s/gm, // Find Non-breaking spaces
-            ' ', // Make them sapces again
+            /\s/gm,
+            ' ',
           )
           const baseSlug = slugify(text)
 
@@ -278,11 +236,6 @@ export function useTableOfContents({
     [getHeadingDescriptors],
   )
 
-  const throttledSetActiveItemIndex = useMemo(
-    () => throttle(setActiveItemIndex, 100),
-    [],
-  )
-
   useInterval(
     () => {
       if (!hasFoundItems) {
@@ -299,60 +252,11 @@ export function useTableOfContents({
 
     if (selectorsChanged) {
       resetState()
-      cleanupObservers()
 
       currentElementSelectorRef.current = elementSelector
       currentHeadingsSelectorRef.current = headingsSelector
     }
-  }, [elementSelector, headingsSelector, resetState, cleanupObservers])
-
-  useEffect(() => {
-    if (!items.length) return
-
-    cleanupObservers()
-
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        let newActiveIndex = -1
-        let highestIntersectionRatio = 0
-
-        entries.forEach(entry => {
-          if (
-            entry.isIntersecting &&
-            entry.intersectionRatio > highestIntersectionRatio &&
-            entry.intersectionRatio > 0.1
-          ) {
-            highestIntersectionRatio = entry.intersectionRatio
-            const slug = entry.target.id
-            const index = items.findIndex(item => item.slug === slug)
-            if (index !== -1) {
-              newActiveIndex = index
-            }
-          }
-        })
-
-        if (newActiveIndex !== -1) {
-          throttledSetActiveItemIndex(prevIndex =>
-            prevIndex !== newActiveIndex ? newActiveIndex : prevIndex,
-          )
-        }
-      },
-      {
-        rootMargin: '-10% 0px -10% 0px',
-        threshold: [0.2, 0.5, 0.8, 1],
-      },
-    )
-
-    items.forEach(({ slug }) => {
-      if (!slug) return
-      const element = document.getElementById(slug)
-      if (element) {
-        observerRef.current!.observe(element)
-      }
-    })
-
-    return cleanupObservers
-  }, [items, cleanupObservers, throttledSetActiveItemIndex])
+  }, [elementSelector, headingsSelector, resetState])
 
   return {
     items,

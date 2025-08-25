@@ -1,7 +1,5 @@
 @custom-variant is-inverted (&:is(.is-inverted, .is-inverted *):not(.not-inverted, .not-inverted *));
 @custom-variant is-stuck (&:is(.is-stuck, .is-stuck *));
-@custom-variant is-scrolled (&:is(.is-scrolled, .is-scrolled *));
 @custom-variant is-active (&:is([data-active], [data-active] *));
 @custom-variant is-open (&:is([data-open], [data-open] *));
 @custom-variant is-closed (&:is([data-closed], [data-closed] *));
-@custom-variant is-desktop (@media (min-width: 1024px));

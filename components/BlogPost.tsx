@@ -101,7 +101,10 @@ export function BlogPost({
         )}
       >
         <div className="col-start-2 col-end-3 row-start-1 row-end-2">
-          <StickyTableOfContents elementSelector=".js-table-of-contents-target" />
+          <StickyTableOfContents
+            elementSelector=".js-table-of-contents-target"
+            headingsSelector="h2:not(.skip)"
+          />
         </div>
 
         <div

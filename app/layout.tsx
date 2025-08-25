@@ -6,8 +6,8 @@ import { twJoin } from 'tailwind-merge'
 import { SpotCopyProvider } from '../components/Contentful/SpotCopyProvider'
 import { ToastContextProvider } from '../components/Toasts'
 import { generateMetadataFromContentful } from '../lib/generateMetadataFromContentful'
+import { getClassNameFromPathname } from '../lib/getClassNameFromPathname'
 import { getContentfulSpotCopy } from '../lib/getContentfulSpotCopy'
-import { getClassNameFromPathname } from '../lib/useRouteClassName'
 import '../styles/global.css'
 
 export async function generateMetadata() {

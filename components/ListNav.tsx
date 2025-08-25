@@ -30,15 +30,18 @@ export function ListNav({
         'relative z-50 overflow-hidden',
         'flex flex-col',
         'bg-theme-bg-color-shaded/50',
+        'border-2',
+        'border-transparent',
         'rounded-md',
         'transition-all',
-        'is-stuck:backdrop-blur-sm',
+        'is-stuck:backdrop-blur-md',
         'is-stuck:mt-3',
-        'lg:is-stuck:mt-6',
         'max-lg:cursor-pointer',
-        'max-lg:is-stuck:is-open:bg-theme-bg-color-shaded/70',
+        'max-lg:is-stuck:is-open:bg-theme-bg-color/60',
         'max-lg:is-closed:bg-theme-brand-color',
-        'max-lg:is-closed:text-theme-bg-color',
+        'max-lg:is-open:border-theme-brand-color',
+        'max-lg:is-open:shadow-2xl',
+        'lg:is-stuck:mt-6',
         className,
       )}
       data-open={isOpen || undefined}
@@ -49,18 +52,17 @@ export function ListNav({
         className={twJoin(
           'js-list-nav-title',
           'flex items-center justify-between',
-          'px-3 py-2',
+          'px-3 py-1',
           'cursor-pointer',
           'transition-all',
-          'font-bold',
-          'is-open:bg-theme-brand-color',
-          'is-open:text-theme-bg-color',
+          'max-lg:text-theme-text-color-faded',
+          'max-lg:is-open:bg-theme-brand-color',
           'lg:bg-theme-bg-color-shaded',
           'lg:pointer-events-none',
         )}
         onClick={handleUserInteraction}
       >
-        <h2 className={classNameForTitle}>{navTitle}</h2>
+        <h2 className={twMerge('label', classNameForTitle)}>{navTitle}</h2>
 
         <Icon
           name={isOpen ? 'solid:xmark' : 'solid:caret-down'}
@@ -101,24 +103,30 @@ ListNav.Item = function ListNavItem({
   const rightIcon = iconRight
 
   return (
-    <li className={twMerge('group/list-nav-item w-full', className)}>
+    <li
+      className={twMerge(
+        'group/list-nav-item w-full',
+        'border-t',
+        'first:border-t-0',
+        'border-theme-text-color-faded/50',
+        className,
+      )}
+    >
       <Link
         className={twMerge(
           'block',
           'flex items-center justify-between',
           'gap-2 px-3 py-2',
-          'text-xs',
           'text-balance',
           'no-underline',
           'transition-all',
           'text-theme-text-color/60',
-          'border-theme-text-color-faded/50',
-          'border-t',
           'is-active:text-theme-text-color',
           'is-active:font-medium',
           'hover:text-theme-text-color/80',
           'hover:bg-theme-brand-color/10',
           'group-first/list-nav-item:border-t-0',
+          'lg:text-xs',
         )}
         href={href}
         {...otherProps}

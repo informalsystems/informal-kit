@@ -5,7 +5,7 @@
   @apply flex flex-col;
   @apply overflow-hidden rounded-sm;
   @apply shadow-theme-brand-color/20 shadow-2xl;
-  @apply backdrop-blur-sm;
+  @apply backdrop-blur-md;
   @apply invisible translate-y-2 opacity-0;
 
   &[data-is-positioned='true'] {

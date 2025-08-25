@@ -67,7 +67,7 @@
   @apply border-theme-text-color;
   @apply rounded-md;
   @apply whitespace-nowrap;
-  @apply backdrop-blur-sm;
+  @apply backdrop-blur-md;
   @apply hover:scale-105;
   @apply is-inverted:border-theme-inverted-text-color;
   @apply is-inverted:text-theme-inverted-text-color;

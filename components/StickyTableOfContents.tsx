@@ -6,13 +6,13 @@ import { StickyNav } from './StickyNav'
 
 interface StickyTableOfContentsProps extends ComponentProps<'div'> {
   elementSelector: string
-  headingsSelector?: string
+  headingsSelector: string
   bottomBoundary?: string | number
 }
 
 export function StickyTableOfContents({
   elementSelector,
-  headingsSelector = 'h2:not(.skip)',
+  headingsSelector,
   bottomBoundary = elementSelector,
   ...otherProps
 }: StickyTableOfContentsProps) {

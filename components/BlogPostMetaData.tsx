@@ -1,11 +1,10 @@
+import Link from 'next/link'
+import React, { ComponentProps } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { BlogPost } from '../lib/types'
 import { PostCardOptions } from './BlogPostCard'
 import { ConditionalWrapper } from './ConditionalWrapper'
 import { Icon } from './Icon'
-
-import Link from 'next/link'
-import { ComponentProps } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { BlogPost } from '../lib/types'
 
 interface BlogPostMetaDataProps
   extends Omit<ComponentProps<'div'>, 'children'> {
@@ -88,10 +87,10 @@ export function BlogPostMetaData({
       {[renderedAuthors, renderedDate, renderedCategories]
         .filter(Boolean)
         .map((renderedBit, index, array) => (
-          <>
+          <React.Fragment key={index}>
             {index > 0 && <span className="mx-2">•</span>}
             {renderedBit}
-          </>
+          </React.Fragment>
         ))}
     </div>
   )

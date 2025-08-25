@@ -5,3 +5,7 @@
   @apply lg:max-w-[80vw];
   @apply 2xl:max-w-[1280px];
 }
+
+@utility debug {
+  @apply outline-2 outline-red-500;
+}

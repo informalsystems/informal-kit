@@ -217,7 +217,7 @@ export function ResponsiveSiteNav({
                 {...createNavItemProps({
                   item,
                   index,
-                  additionalClassName: 'is-desktop:w-auto',
+                  additionalClassName: 'lg:w-auto',
                   additionalOnClick: undefined,
                   isTrigger: true,
                 })}
@@ -241,16 +241,17 @@ export function ResponsiveSiteNav({
         'fixed top-0 left-0 h-screen w-screen',
         'transition-all',
         'focus-within:pointer-events-auto',
-        'is-desktop:pointer-events-auto',
-        'is-desktop:relative',
-        'is-desktop:flex',
-        'is-desktop:w-auto',
-        'is-desktop:h-auto',
+        'lg:pointer-events-auto',
+        'lg:relative',
+        'lg:flex',
+        'lg:w-auto',
+        'lg:h-auto',
         className,
       )}
       {...otherProps}
     >
       <button
+        id="mobile-menu-button"
         className={twJoin(
           'z-40 size-12',
           'absolute top-0 right-0',
@@ -259,7 +260,7 @@ export function ResponsiveSiteNav({
           'transition-all',
           'pointer-events-auto',
           'group-focus-within/navbar:rotate-180',
-          'is-desktop:hidden',
+          'lg:hidden',
         )}
       >
         <span
@@ -292,13 +293,14 @@ export function ResponsiveSiteNav({
 
       {/* Backdrop */}
       <div
+        id="mobile-menu-page-screen"
         className={twJoin(
           'nav-backdrop',
           'pointer-events-none',
           'fixed inset-0 z-10',
           'opacity-0',
           'transition-all',
-          'is-desktop:hidden',
+          'lg:hidden',
           'group-focus-within/navbar:pointer-events-auto',
           'group-focus-within/navbar:opacity-100',
         )}
@@ -307,6 +309,7 @@ export function ResponsiveSiteNav({
 
       {/* Mobile Menu Background */}
       <div
+        id="mobile-menu-bg"
         className={twJoin(
           'nav-bg',
           'absolute inset-0 z-20',
@@ -316,7 +319,7 @@ export function ResponsiveSiteNav({
           'bg-theme-brand-color',
           'group-focus-within/navbar:translate-x-0',
           'group-focus-within/navbar:opacity-100',
-          'is-desktop:hidden',
+          'lg:hidden',
         )}
       />
 
@@ -329,9 +332,9 @@ export function ResponsiveSiteNav({
           '-translate-x-full',
           'transition-all',
           'opacity-0',
-          'is-desktop:opacity-100',
-          'is-desktop:flex-row!',
-          'is-desktop:translate-x-0',
+          'lg:opacity-100',
+          'lg:flex-row!',
+          'lg:translate-x-0',
           'group-focus-within/navbar:translate-x-0',
           'group-focus-within/navbar:opacity-100',
         )}

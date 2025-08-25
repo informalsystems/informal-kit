@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
-import { getClassNameFromPathname } from '../lib/useRouteClassName'
+import { getClassNameFromPathname } from '../lib/getClassNameFromPathname'
 
 type Selector = string
 type RoutePrefix = string

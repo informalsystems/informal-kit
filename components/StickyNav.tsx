@@ -109,7 +109,7 @@ export function StickyNav({
           'border-theme-bg-color-shaded',
           'lg:block',
           'lg:is-stuck:bg-theme-bg-color/95',
-          'lg:is-stuck:backdrop-blur-sm',
+          'lg:is-stuck:backdrop-blur-md',
           'lg:is-stuck:border-b',
         )}
       >

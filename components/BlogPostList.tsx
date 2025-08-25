@@ -24,9 +24,9 @@ export function BlogPostList({
       )}
       {...otherProps}
     >
-      {posts.map(post => (
+      {posts.map((post, index) => (
         <BlogPostCard
-          key={post.slug}
+          key={`${post.slug}-${index}`}
           post={post}
           cardOptions={cardOptions}
         />

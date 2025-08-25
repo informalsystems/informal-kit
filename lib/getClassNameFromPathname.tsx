@@ -1,13 +1,13 @@
 import sortBy from 'lodash/sortBy'
 
-interface RouteClassNameOptions {
-  routeClassMap: Record<string, string>
-}
-
 export function getClassNameFromPathname(
   pathname: string,
   routeClassMap: Record<string, string>,
 ): string {
+  if (Object.keys(routeClassMap).length === 0) {
+    return ''
+  }
+
   const sortedRoutes = sortBy(
     Object.keys(routeClassMap),
     route => -route.length,
