@@ -7,6 +7,7 @@ import { twJoin } from 'tailwind-merge'
 import { useInterval } from 'usehooks-ts'
 import { CopyToClipboardButton } from '../components/CopyToClipboardButton'
 import { Icon } from '../components/Icon'
+import { Tooltipped } from '../components/Tooltipped'
 import { slugify } from './slugify'
 import { useActiveSection } from './useActiveSection'
 
@@ -58,29 +59,36 @@ function createClipboardButton(slug: string) {
   const fullUrl = `${window.location.origin}${window.location.pathname}#${slug}`
 
   return (
-    <CopyToClipboardButton
-      as="a"
-      href={`#${slug}`}
-      title="Click to copy link to this section"
-      payload={fullUrl}
+    <Tooltipped
+      tip="Copy a link to this section"
       className={twJoin(
-        'button-icon',
-        'inline-flex',
-        'items-center justify-center align-middle',
-        'size-10 rounded-full',
-        'ml-2',
-        'bg-gray-100 text-gray-600',
-        'text-base',
-        'transition-all',
-        'opacity-0',
-        'group-hover/toc-heading:scale-75',
-        'group-hover/toc-heading:opacity-100',
-        'hover:bg-gray-200',
-        'hover:text-gray-800',
+        'absolute',
+        'top-1/2 right-full -translate-y-1/2',
+        'mr-2',
       )}
     >
-      {({ isCopied }) => <Icon name={isCopied ? 'clipboard-check' : 'link'} />}
-    </CopyToClipboardButton>
+      <CopyToClipboardButton
+        as="a"
+        href={`#${slug}`}
+        title="Click to copy link to this section"
+        payload={fullUrl}
+        className={twJoin(
+          'button-icon',
+          'size-10 rounded-full',
+          'flex',
+          'items-center justify-center align-middle',
+          'text-base',
+          'transition-all',
+          'opacity-0',
+          'group-hover/toc-heading:scale-75',
+          'group-hover/toc-heading:opacity-100',
+        )}
+      >
+        {({ isCopied }) => (
+          <Icon name={isCopied ? 'clipboard-check' : 'link'} />
+        )}
+      </CopyToClipboardButton>
+    </Tooltipped>
   )
 }
 
@@ -175,21 +183,22 @@ export function useTableOfContents({
   )
 
   const setupHeadings = useCallback((descriptors: HeadingDescriptor[]) => {
-    descriptors.forEach(({ element: headingElement, slug }) => {
-      headingElement.classList.add(
-        'js-toc-heading',
-        'group/toc-heading',
-        'relative',
-      )
-      headingElement.id = slug
-    })
-  }, [])
+    const portals: React.ReactPortal[] = []
 
-  const createPortals = useCallback((descriptors: HeadingDescriptor[]) => {
-    return descriptors.map(({ element, slug }) => {
+    descriptors.forEach(({ element: headingElement, slug }) => {
+      headingElement.classList.add('js-toc-heading', 'group/toc-heading')
+      headingElement.id = slug
+
+      // Create portal for clipboard button
+      const span = document.createElement('span')
+      span.classList.add('relative')
+      headingElement.prepend(span)
+
       const button = createClipboardButton(slug)
-      return createPortal(button, element)
+      portals.push(createPortal(button, span))
     })
+
+    return portals
   }, [])
 
   const getHeadingDescriptors = useCallback(() => {
@@ -207,8 +216,6 @@ export function useTableOfContents({
       if (descriptors.length === 0) {
         return
       }
-
-      setupHeadings(descriptors)
     }
 
     const newItems = descriptors.map(descriptor => ({
@@ -218,7 +225,7 @@ export function useTableOfContents({
       slug: descriptor.slug,
     }))
 
-    const newPortals = createPortals(descriptors)
+    const newPortals = setupHeadings(descriptors)
 
     setItems(newItems)
     setPortals(newPortals)
@@ -228,7 +235,6 @@ export function useTableOfContents({
     processExistingHeadings,
     processNewHeadings,
     setupHeadings,
-    createPortals,
   ])
 
   const debouncedGetHeadingDescriptors = useMemo(

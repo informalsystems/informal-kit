@@ -25,12 +25,14 @@
 
     :where(h1, h2, h3, h4, h5, h6) {
       @apply heading-base;
-      @apply mb-3;
-      @apply font-bold;
 
       &:first-child {
         @apply mt-0;
       }
+    }
+
+    :where(h1, h2) {
+      @apply mb-3;
     }
 
     :where(h3, h4, h5, h6) {
@@ -195,7 +197,7 @@
 @utility heading-base {
   @apply font-bold;
   @apply font-display;
-  @apply leading-[1.5];
+  @apply leading-[1.25];
 }
 
 @utility h1 {
