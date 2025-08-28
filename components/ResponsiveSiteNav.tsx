@@ -150,31 +150,18 @@ export function ResponsiveSiteNav({
     }
   }
 
-  // Helper function to render a NavItem with common props
-  function renderNavItem(
-    item: MenuItem,
-    index: number,
-    additionalClassName?: string,
-    additionalOnClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void,
-  ) {
-    return (
-      <NavItem
-        key={item.href ?? index}
-        {...createNavItemProps({
-          item,
-          index,
-          additionalClassName,
-          additionalOnClick,
-        })}
-      />
-    )
-  }
-
   // Helper function to render submenu items
   function renderSubmenuItems(subMenuItems: MenuItem[]) {
-    return subMenuItems.map((item, subIndex) =>
-      renderNavItem(item, subIndex, 'nav-sub-item'),
-    )
+    return subMenuItems.map((item, subIndex) => (
+      <NavItem
+        key={item.href ?? subIndex}
+        {...createNavItemProps({
+          item,
+          index: subIndex,
+          additionalClassName: 'nav-sub-item',
+        })}
+      />
+    ))
   }
 
   // Helper function to render a menu item with submenu
@@ -342,9 +329,17 @@ export function ResponsiveSiteNav({
         {menuItems.map((item, index) => {
           const hasSubMenuItems = !!item.menuItems?.length
 
-          return !hasSubMenuItems
-            ? renderNavItem(item, index)
-            : renderMenuItemWithSubmenu(item, index)
+          return !hasSubMenuItems ? (
+            <NavItem
+              key={item.href ?? index}
+              {...createNavItemProps({
+                item,
+                index,
+              })}
+            />
+          ) : (
+            renderMenuItemWithSubmenu(item, index)
+          )
         })}
       </div>
     </nav>

@@ -24,8 +24,8 @@
     @apply tracking-[0.05em];
     @apply py-2;
     @apply hover:opacity-100;
-    @apply text-theme-text-color;
-    @apply group-focus-within/navbar:text-theme-inverted-text-color;
+    @apply text-white;
+    @apply lg:text-theme-text-color;
     @apply is-active:opacity-100;
     @apply is-active:font-bold;
     @apply lg:py-0;
