@@ -47,14 +47,6 @@ export function useActiveSection(selectors: string[]): number {
         score = visibilityRatio * 10 - normalizedDistance
       }
 
-      console.log(`Section ${index}:`, {
-        visibilityRatio: visibilityRatio.toFixed(2),
-        distanceFromCenter: normalizedDistance.toFixed(2),
-        isFullyVisible,
-        isAtTop,
-        score: score.toFixed(2),
-      })
-
       if (score > bestScore) {
         bestScore = score
         bestIndex = index
@@ -65,9 +57,6 @@ export function useActiveSection(selectors: string[]): number {
       }
     })
 
-    console.log(
-      `Selected section: ${bestIndex} with score: ${bestScore.toFixed(2)}`,
-    )
     setActiveIndex(bestIndex)
   }, [])
 
@@ -100,6 +89,21 @@ export function useActiveSection(selectors: string[]): number {
       }
     }
   }, [selectors, checkScrollPosition, throttledCheck])
+
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash) {
+      const element = document.querySelector(hash)
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+        }, 100)
+      }
+    }
+  }, [])
 
   return activeIndex
 }
