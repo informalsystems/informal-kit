@@ -3,8 +3,9 @@ import { TypeBlogPostSkeleton } from './contentfulTypes'
 
 type BlogPosts = Entry<TypeBlogPostSkeleton, undefined, string>['fields'][]
 
-export type BlogPost = BlogPosts[number] & {
+export type BlogPost = Omit<BlogPosts[number], 'featureImage'> & {
   contentfulURL: string
+  featureImage: BlogPosts[number]['featureImage'] | string
 }
 
 export type BlogCategory = BlogPost['categories'][number]

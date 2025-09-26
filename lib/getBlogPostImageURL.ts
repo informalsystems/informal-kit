@@ -21,5 +21,9 @@ export function getBlogPostImageURL({ featureImage, categories }: BlogPost) {
       : '/bg-blog-informal-2.jpg'
   }
 
+  if (typeof featureImage === 'string') {
+    return featureImage
+  }
+
   return `https:${(featureImage as Asset)?.fields.file?.url}`
 }
