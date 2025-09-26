@@ -5,7 +5,7 @@ type BlogPosts = Entry<TypeBlogPostSkeleton, undefined, string>['fields'][]
 
 export type BlogPost = Omit<BlogPosts[number], 'featureImage'> & {
   contentfulURL: string
-  featureImage: BlogPosts[number]['featureImage'] | string
+  featureImage?: BlogPosts[number]['featureImage'] | string
 }
 
 export type BlogCategory = BlogPost['categories'][number]
