@@ -1,10 +1,11 @@
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import Link from 'next/link'
 import React, { ComponentProps } from 'react'
+import readingTime from 'reading-time'
 import { twMerge } from 'tailwind-merge'
+import { pluralize } from '../lib/pluralize'
 import { BlogPost } from '../lib/types'
 import { PostCardOptions } from './BlogPostCard'
-import { ConditionalWrapper } from './ConditionalWrapper'
-import { Icon } from './Icon'
 
 interface BlogPostMetaDataProps
   extends Omit<ComponentProps<'div'>, 'children'> {
@@ -18,61 +19,57 @@ export function BlogPostMetaData({
   cardOptions,
   ...otherProps
 }: BlogPostMetaDataProps) {
-  const renderedAuthors =
-    post.authors &&
-    post.authors.length > 0 &&
-    post.authors.map((author, index) => (
-      <span
-        key={author}
-        className="inline-block whitespace-pre"
-      >
-        {author}
-        {index < post.authors.length - 2 && ', '}
-        {index === post.authors.length - 2 &&
-          (post.authors.length === 2 ? <> and </> : <>, and </>)}
-      </span>
-    ))
+  const bodyAsHtml = documentToHtmlString(post.body!)
+  const { text, time, words, minutes } = readingTime(bodyAsHtml)
 
-  const renderedDate = post.date && (
-    <span className="inline-block">
-      {post.date &&
-        new Date(post.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
+  const renderedTimeToRead =
+    minutes > 0 ? (
+      <span
+        key="timeToRead"
+        className="whitespace-nowrap"
+      >
+        {pluralize({
+          count: Math.round(minutes),
+          singular: 'minute',
+          prefixCount: true,
         })}
-    </span>
+        {cardOptions?.showCategories && (
+          <React.Fragment key="categoriesSeparator">&nbsp;• </React.Fragment>
+        )}
+      </span>
+    ) : null
+
+  const renderedAuthors = !post.authors ? null : (
+    <React.Fragment key="authors">
+      {post.authors.join(', ')}&nbsp;•{' '}
+    </React.Fragment>
+  )
+
+  const renderedDate = !post.date ? null : (
+    <React.Fragment key="date">
+      {new Date(post.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })}
+      &nbsp;•{' '}
+    </React.Fragment>
   )
 
   const renderedCategories =
-    cardOptions?.showCategories &&
-    post.categories &&
-    post.categories.length > 0 &&
-    post.categories.map((category, index) => (
-      <span
-        key={category}
-        className="inline-block"
-      >
-        <ConditionalWrapper
-          condition={index === 0}
-          wrapper={children => (
-            <span className="**:text-theme-brand-color">
-              <Icon
-                name="tag"
-                variant="solid"
-                className="mr-1"
-              />
-              {children}
-            </span>
-          )}
-        >
-          <Link href={`/blog/category/${category}`}>{category}</Link>
-        </ConditionalWrapper>
-        {index < post.categories.length - 2 && <>,&nbsp;</>}
-        {index === post.categories.length - 2 &&
-          (post.categories.length === 2 ? <> and&nbsp;</> : <>, and&nbsp;</>)}
-      </span>
-    ))
+    !cardOptions?.showCategories || !post.categories
+      ? null
+      : post.categories.map((category, index) => (
+          <React.Fragment key={category}>
+            {!!index && ', '}
+            <Link
+              href={`/blog/category/${category.toLowerCase()}`}
+              className="text-theme-accent-color relative z-20"
+            >
+              {category}
+            </Link>
+          </React.Fragment>
+        ))
 
   return (
     <div
@@ -84,14 +81,12 @@ export function BlogPostMetaData({
       )}
       {...otherProps}
     >
-      {[renderedAuthors, renderedDate, renderedCategories]
-        .filter(Boolean)
-        .map((renderedBit, index, array) => (
-          <React.Fragment key={index}>
-            {index > 0 && <span className="mx-2">•</span>}
-            {renderedBit}
-          </React.Fragment>
-        ))}
+      {[
+        renderedAuthors,
+        renderedDate,
+        renderedTimeToRead,
+        renderedCategories,
+      ].filter(Boolean)}
     </div>
   )
 }
