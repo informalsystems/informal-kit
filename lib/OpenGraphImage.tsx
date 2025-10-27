@@ -40,7 +40,21 @@ function multiplyStringLength(str: string, multiplier: number) {
 }
 
 async function fetchAsArrayBuffer(url: string) {
-  return await fetch(url).then(res => res.arrayBuffer())
+  console.log(`[OpenGraphImage] Fetching image from: ${url}`)
+  const res = await fetch(url)
+
+  if (!res.ok) {
+    console.error(
+      `[OpenGraphImage] Failed to fetch image: ${res.status} ${res.statusText}`,
+    )
+    throw new Error(`Failed to fetch image: ${res.status} ${res.statusText}`)
+  }
+
+  const arrayBuffer = await res.arrayBuffer()
+  console.log(
+    `[OpenGraphImage] Successfully fetched image: ${arrayBuffer.byteLength} bytes`,
+  )
+  return arrayBuffer
 }
 
 async function loadFonts() {
@@ -215,9 +229,33 @@ function FallbackBackground() {
 
 export async function OpenGraphImage(props: OpenGraphImageProps) {
   const { backgroundImageAbsoluteURL, backgroundImageOnly = false } = props
-  const imageData = await fetchAsArrayBuffer(backgroundImageAbsoluteURL)
 
-  if (imageData && imageData.byteLength > 0) {
+  console.log(
+    `[OpenGraphImage] Starting with backgroundImageOnly=${backgroundImageOnly}`,
+  )
+  console.log(
+    `[OpenGraphImage] backgroundImageAbsoluteURL: ${backgroundImageAbsoluteURL}`,
+  )
+
+  let imageData: ArrayBuffer | null = null
+  let hasValidImage = false
+
+  try {
+    imageData = await fetchAsArrayBuffer(backgroundImageAbsoluteURL)
+    hasValidImage = imageData && imageData.byteLength > 0
+
+    if (!hasValidImage) {
+      console.warn(
+        `[OpenGraphImage] Image data is empty or invalid (byteLength: ${imageData?.byteLength ?? 0})`,
+      )
+    }
+  } catch (error) {
+    console.error(`[OpenGraphImage] Error fetching background image:`, error)
+  }
+
+  if (hasValidImage && imageData) {
+    console.log(`[OpenGraphImage] Rendering with valid image data`)
+
     if (backgroundImageOnly) {
       return new ImageResponse(<BackgroundImage imageData={imageData} />)
     }
@@ -260,6 +298,8 @@ export async function OpenGraphImage(props: OpenGraphImageProps) {
       { ...size, fonts },
     )
   }
+
+  console.log(`[OpenGraphImage] Rendering fallback (no valid image)`)
 
   const {
     heading,
