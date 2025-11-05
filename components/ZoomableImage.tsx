@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { ComponentProps, HTMLAttributes, ReactNode, useState } from 'react'
-import { twJoin } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { Icon } from './Icon'
 import { ModalWindow } from './ModalWindow'
 
@@ -17,20 +17,20 @@ interface ZoomableImageProps extends HTMLAttributes<HTMLElement> {
 export function ZoomableImage({
   alt,
   caption,
+  className,
+  height,
   url,
   width,
-  height,
   ...otherProps
 }: ZoomableImageProps) {
   const [isZoomed, setIsZoomed] = useState(false)
-  const resolvedUrl = url.startsWith('https:') ? url : `https:${url}`
   const aspectRatio = width / height
   const isPortrait = aspectRatio < 1
 
   return (
     <>
       <figure
-        className="group relative break-inside-avoid"
+        className={twMerge('group relative break-inside-avoid', className)}
         onClick={() => setIsZoomed(true)}
         {...otherProps}
       >
@@ -44,7 +44,7 @@ export function ZoomableImage({
             'p-3',
             'flex items-center justify-center',
             'rounded-xl',
-            'bg-white',
+            'bg-theme-bg-color',
             'overflow-hidden',
             'cursor-pointer',
             'transition-all',
@@ -56,7 +56,7 @@ export function ZoomableImage({
             className="m-0! h-auto w-full"
             height={0}
             sizes="(max-width: 768px) 100vw, 70vw"
-            src={resolvedUrl}
+            src={url}
             width={0}
           />
         </div>
@@ -65,7 +65,7 @@ export function ZoomableImage({
           <figcaption
             className={twJoin(
               'mt-1 flex items-start gap-1',
-              'text-theme-accent-color text-xs italic',
+              'text-theme-accent-color italic',
             )}
           >
             <Icon
@@ -78,12 +78,13 @@ export function ZoomableImage({
       </figure>
 
       <ModalWindow
-        className={twJoin(
+        className={twMerge(
           'group',
           'flex flex-col p-6',
           'cursor-pointer',
           'overflow-visible',
-          'rounded bg-white shadow-2xl',
+          'bg-theme-bg-color rounded shadow-2xl',
+          className,
         )}
         isOpen={isZoomed}
         propsForBackdrop={{
@@ -116,7 +117,7 @@ export function ZoomableImage({
             alt={alt}
             className="object-cover"
             fill={true}
-            src={resolvedUrl}
+            src={url}
             sizes="100vw"
           />
         </div>
@@ -125,7 +126,7 @@ export function ZoomableImage({
           <div
             className={twJoin(
               'px-3 py-2',
-              'text-xs font-bold',
+              'font-bold',
               'bg-theme-bg-color-shaded',
               'rounded-b',
             )}

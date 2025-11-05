@@ -15,12 +15,13 @@ export function EmbeddedAsset({ node }: { node: Block | Inline }) {
   } = file
 
   if (contentType.startsWith('image')) {
+    const resolvedUrl = url.startsWith('https:') ? url : `https:${url}`
     return (
       <ZoomableImage
         height={height}
         alt={fileName}
         caption={description}
-        url={url}
+        url={resolvedUrl}
         width={width}
       />
     )
