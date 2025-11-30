@@ -45,22 +45,12 @@
   --color-lavender-400: rgb(182, 149, 240); /* #b695f0 */
   --color-lavender-500: rgb(162, 122, 236); /* #a27aec */
 
-  --color-malachite-50: rgb(243, 248, 245); /* #f3f8f5 */
-  --color-malachite-100: rgb(206, 228, 215); /* #cee4d7 */
-  --color-malachite-200: rgb(157, 203, 176); /* #9dcbb0 */
-  --color-malachite-300: rgb(108, 176, 136); /* #6cb088 */
-  --color-malachite-400: rgb(88, 165, 126); /* #58a57e */
-  --color-malachite-500: rgb(68, 192, 137); /* #44c089 */
-  --color-malachite-600: rgb(46, 138, 95); /* #2e8a5f */
-  --color-malachite-700: rgb(26, 81, 55); /* #1a5137 */
-
   --color-theme-accent-color: var(--color-teal-500);
   --color-accent-fuchsia: var(--color-fuchsia-500);
   --color-accent-teal: var(--color-teal-500);
   --color-accent-rust: var(--color-rust-500);
   --color-accent-pink: var(--color-pink-500);
   --color-accent-lavender: var(--color-lavender-500);
-  --color-accent-malachite: var(--color-malachite-500);
 
   --color-danger: var(--color-rust-500);
   --color-info: var(--color-fuchsia-500);

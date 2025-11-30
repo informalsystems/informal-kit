@@ -24,7 +24,7 @@ export function Hyperlink({ node }: { node: any }) {
   return (
     <Link
       aria-disabled={node.data.uri === '#' ? 'true' : undefined}
-      className="not-prose no-underline"
+      className="not-prose fart no-underline"
       href={node.data.uri}
       target={isExternalLink ? '_blank' : undefined}
       onClick={(event: MouseEvent) => event.stopPropagation()}

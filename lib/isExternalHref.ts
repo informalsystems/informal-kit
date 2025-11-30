@@ -1,6 +1,7 @@
-const pathsToTreatAsExternal = ['/staking']
-
-export function isExternalHref(href: unknown): boolean {
+export function isExternalHref(
+  href: unknown,
+  pathsToTreatAsExternal: string[] = [],
+): boolean {
   if (typeof href !== 'string') return false
 
   if (href.startsWith('http')) return true

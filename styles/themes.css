@@ -62,30 +62,6 @@
   }
 }
 
-@utility theme-malachite {
-  --color-theme-brand-color: var(--color-malachite-500);
-  --color-theme-accent-color: var(--color-orange-400);
-  --color-theme-bg-color: black;
-  --color-theme-bg-color-shaded: color-mix(
-    in srgb,
-    var(--color-malachite-500) 20%,
-    black 100%
-  );
-  --color-theme-text-color: white;
-  --color-theme-text-color-faded: var(--color-malachite-400);
-  --color-theme-inverted-text-color: black;
-  --color-theme-scrollbar-thumb-color: var(--color-malachite-500);
-
-  @apply themed;
-
-  &.is-inverted,
-  .is-inverted {
-    --color-theme-bg-color: white;
-    --color-theme-text-color: black;
-    @apply text-theme-text-color;
-  }
-}
-
 @utility theme-prime {
   --color-theme-brand-color: rgb(128, 209, 255);
   --color-theme-accent-color: rgb(128, 209, 255);

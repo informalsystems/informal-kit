@@ -33,15 +33,7 @@ export function BlogContextProvider({
   const { styles: defaultStyles } = useCodeSnippetStyles()
 
   return (
-    <CodeSnippetContextProvider
-      styles={{
-        ...defaultStyles,
-        container: {
-          ...defaultStyles.container,
-          backgroundColor: 'var(--color-malachite-500)',
-        },
-      }}
-    >
+    <CodeSnippetContextProvider styles={{ defaultStyles }}>
       <BlogContext value={{ categories, posts }}>{children}</BlogContext>
     </CodeSnippetContextProvider>
   )
